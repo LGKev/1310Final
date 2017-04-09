@@ -1,0 +1,422 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		449699E31E998EC400D5C0D8 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 449699E21E998EC400D5C0D8 /* main.c */; };
+		44969A021E998EE200D5C0D8 /* spi.c in Sources */ = {isa = PBXBuildFile; fileRef = 449699F81E998EE200D5C0D8 /* spi.c */; };
+		44969A031E998EE200D5C0D8 /* lcd.c in Sources */ = {isa = PBXBuildFile; fileRef = 449699FC1E998EE200D5C0D8 /* lcd.c */; };
+		44969A041E998EE200D5C0D8 /* mfrc522.c in Sources */ = {isa = PBXBuildFile; fileRef = 449699FD1E998EE200D5C0D8 /* mfrc522.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		449699DF1E998EC400D5C0D8 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
+		449699E21E998EC400D5C0D8 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		449699E51E998EC400D5C0D8 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		449699F71E998EE200D5C0D8 /* mfrc522_cmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mfrc522_cmd.h; sourceTree = "<group>"; };
+		449699F81E998EE200D5C0D8 /* spi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = spi.c; sourceTree = "<group>"; };
+		449699F91E998EE200D5C0D8 /* mfrc522_reg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mfrc522_reg.h; sourceTree = "<group>"; };
+		449699FA1E998EE200D5C0D8 /* mfrc522.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mfrc522.h; sourceTree = "<group>"; };
+		449699FB1E998EE200D5C0D8 /* lcd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lcd.h; sourceTree = "<group>"; };
+		449699FC1E998EE200D5C0D8 /* lcd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lcd.c; sourceTree = "<group>"; };
+		449699FD1E998EE200D5C0D8 /* mfrc522.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mfrc522.c; sourceTree = "<group>"; };
+		449699FE1E998EE200D5C0D8 /* myutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myutils.h; sourceTree = "<group>"; };
+		449699FF1E998EE200D5C0D8 /* spi_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spi_config.h; sourceTree = "<group>"; };
+		44969A001E998EE200D5C0D8 /* spi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spi.h; sourceTree = "<group>"; };
+		44969A011E998EE200D5C0D8 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		449699D41E998EC400D5C0D8 = {
+			isa = PBXGroup;
+			children = (
+				449699E11E998EC400D5C0D8 /* Mifare_SERVO */,
+				449699E01E998EC400D5C0D8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		449699E01E998EC400D5C0D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				449699DF1E998EC400D5C0D8 /* Index */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		449699E11E998EC400D5C0D8 /* Mifare_SERVO */ = {
+			isa = PBXGroup;
+			children = (
+				449699E21E998EC400D5C0D8 /* main.c */,
+				449699F71E998EE200D5C0D8 /* mfrc522_cmd.h */,
+				449699F81E998EE200D5C0D8 /* spi.c */,
+				449699F91E998EE200D5C0D8 /* mfrc522_reg.h */,
+				449699FA1E998EE200D5C0D8 /* mfrc522.h */,
+				449699FB1E998EE200D5C0D8 /* lcd.h */,
+				449699FC1E998EE200D5C0D8 /* lcd.c */,
+				449699FD1E998EE200D5C0D8 /* mfrc522.c */,
+				449699FE1E998EE200D5C0D8 /* myutils.h */,
+				449699FF1E998EE200D5C0D8 /* spi_config.h */,
+				44969A001E998EE200D5C0D8 /* spi.h */,
+				44969A011E998EE200D5C0D8 /* utils.h */,
+				449699E41E998EC400D5C0D8 /* Makefiles */,
+			);
+			path = Mifare_SERVO;
+			sourceTree = "<group>";
+		};
+		449699E41E998EC400D5C0D8 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				449699E51E998EC400D5C0D8 /* Makefile */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		449699D91E998EC400D5C0D8 /* All */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "all -C \"$(PROJECT)\"";
+			buildConfigurationList = 449699E81E998EC400D5C0D8 /* Build configuration list for PBXLegacyTarget "All" */;
+			buildPhases = (
+			);
+			buildToolPath = make;
+			dependencies = (
+			);
+			name = All;
+			passBuildSettingsInEnvironment = 1;
+			productName = All;
+		};
+		449699DA1E998EC400D5C0D8 /* Build */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "build -C \"$(PROJECT)\"";
+			buildConfigurationList = 449699EB1E998EC400D5C0D8 /* Build configuration list for PBXLegacyTarget "Build" */;
+			buildPhases = (
+			);
+			buildToolPath = make;
+			dependencies = (
+			);
+			name = Build;
+			passBuildSettingsInEnvironment = 1;
+			productName = Build;
+		};
+		449699DB1E998EC400D5C0D8 /* Upload */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "program -C \"$(PROJECT)\"";
+			buildConfigurationList = 449699EE1E998EC400D5C0D8 /* Build configuration list for PBXLegacyTarget "Upload" */;
+			buildPhases = (
+			);
+			buildToolPath = make;
+			dependencies = (
+			);
+			name = Upload;
+			passBuildSettingsInEnvironment = 1;
+			productName = Upload;
+		};
+		449699DC1E998EC400D5C0D8 /* Clean */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "clean -C \"$(PROJECT)\"";
+			buildConfigurationList = 449699F11E998EC400D5C0D8 /* Build configuration list for PBXLegacyTarget "Clean" */;
+			buildPhases = (
+			);
+			buildToolPath = make;
+			dependencies = (
+			);
+			name = Clean;
+			passBuildSettingsInEnvironment = 1;
+			productName = Clean;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		449699DE1E998EC400D5C0D8 /* Index */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 449699F41E998EC400D5C0D8 /* Build configuration list for PBXNativeTarget "Index" */;
+			buildPhases = (
+				449699DD1E998EC400D5C0D8 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Index;
+			productName = Index;
+			productReference = 449699DF1E998EC400D5C0D8 /* Index */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		449699D51E998EC400D5C0D8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Kevin Kuwata";
+				TargetAttributes = {
+					449699D91E998EC400D5C0D8 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					449699DA1E998EC400D5C0D8 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					449699DB1E998EC400D5C0D8 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					449699DC1E998EC400D5C0D8 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					449699DE1E998EC400D5C0D8 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 449699D81E998EC400D5C0D8 /* Build configuration list for PBXProject "Mifare_SERVO" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 449699D41E998EC400D5C0D8;
+			productRefGroup = 449699E01E998EC400D5C0D8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				449699D91E998EC400D5C0D8 /* All */,
+				449699DA1E998EC400D5C0D8 /* Build */,
+				449699DB1E998EC400D5C0D8 /* Upload */,
+				449699DC1E998EC400D5C0D8 /* Clean */,
+				449699DE1E998EC400D5C0D8 /* Index */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		449699DD1E998EC400D5C0D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44969A031E998EE200D5C0D8 /* lcd.c in Sources */,
+				44969A021E998EE200D5C0D8 /* spi.c in Sources */,
+				449699E31E998EC400D5C0D8 /* main.c in Sources */,
+				44969A041E998EE200D5C0D8 /* mfrc522.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		449699E61E998EC400D5C0D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1,",
+					"__AVR_ATmega328P__,",
+					"F_CPU=8000000",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/include",
+					"/usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/include-fixed",
+					"/usr/local/Cellar/avr-gcc/6.2.0/avr/include",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PATH = "$(PATH):$(PROJECT_DIR)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		449699E71E998EC400D5C0D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"__AVR_ATmega328P__,",
+					"F_CPU=8000000",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/include",
+					"/usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/include-fixed",
+					"/usr/local/Cellar/avr-gcc/6.2.0/avr/include",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PATH = "$(PATH):$(PROJECT_DIR)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		449699E91E998EC400D5C0D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		449699EA1E998EC400D5C0D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		449699EC1E998EC400D5C0D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		449699ED1E998EC400D5C0D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		449699EF1E998EC400D5C0D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		449699F01E998EC400D5C0D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		449699F21E998EC400D5C0D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		449699F31E998EC400D5C0D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		449699F51E998EC400D5C0D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		449699F61E998EC400D5C0D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		449699D81E998EC400D5C0D8 /* Build configuration list for PBXProject "Mifare_SERVO" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				449699E61E998EC400D5C0D8 /* Debug */,
+				449699E71E998EC400D5C0D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		449699E81E998EC400D5C0D8 /* Build configuration list for PBXLegacyTarget "All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				449699E91E998EC400D5C0D8 /* Debug */,
+				449699EA1E998EC400D5C0D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		449699EB1E998EC400D5C0D8 /* Build configuration list for PBXLegacyTarget "Build" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				449699EC1E998EC400D5C0D8 /* Debug */,
+				449699ED1E998EC400D5C0D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		449699EE1E998EC400D5C0D8 /* Build configuration list for PBXLegacyTarget "Upload" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				449699EF1E998EC400D5C0D8 /* Debug */,
+				449699F01E998EC400D5C0D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		449699F11E998EC400D5C0D8 /* Build configuration list for PBXLegacyTarget "Clean" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				449699F21E998EC400D5C0D8 /* Debug */,
+				449699F31E998EC400D5C0D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		449699F41E998EC400D5C0D8 /* Build configuration list for PBXNativeTarget "Index" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				449699F51E998EC400D5C0D8 /* Debug */,
+				449699F61E998EC400D5C0D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 449699D51E998EC400D5C0D8 /* Project object */;
+}

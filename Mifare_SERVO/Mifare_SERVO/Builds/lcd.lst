@@ -1,0 +1,1307 @@
+   1               		.file	"lcd.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+ 104               	.global	LCDBusyLoop
+ 106               	LCDBusyLoop:
+   1:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** /*
+   2:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * lcd.c
+   3:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * 
+   4:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * Copyright 2013 Shimon <shimon@monistit.com>
+   5:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * 
+   6:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * This program is free software; you can redistribute it and/or modify
+   7:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * it under the terms of the GNU General Public License as published by
+   8:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * the Free Software Foundation; either version 2 of the License, or
+   9:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * (at your option) any later version.
+  10:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * 
+  11:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * This program is distributed in the hope that it will be useful,
+  12:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * GNU General Public License for more details.
+  15:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * 
+  16:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * You should have received a copy of the GNU General Public License
+  17:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * along with this program; if not, write to the Free Software
+  18:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  19:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * MA 02110-1301, USA.
+  20:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * 
+  21:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  * 
+  22:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  */
+  23:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  24:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  25:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #include <avr/io.h>
+  26:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #include <inttypes.h>
+  27:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #include <util/delay.h>
+  28:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  29:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #include <lcd.h>
+  30:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  31:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //Custom Charset support
+  32:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  33:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define LCD_DATA_PORT 	PORT(LCD_DATA)
+  34:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define LCD_E_PORT 		PORT(LCD_E)
+  35:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define LCD_RS_PORT 	PORT(LCD_RS)
+  36:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define LCD_RW_PORT 	PORT(LCD_RW)
+  37:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  38:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define LCD_DATA_DDR 	DDR(LCD_DATA)
+  39:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define LCD_E_DDR 		DDR(LCD_E)
+  40:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define LCD_RS_DDR 		DDR(LCD_RS)
+  41:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define LCD_RW_DDR 		DDR(LCD_RW)
+  42:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  43:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define LCD_DATA_PIN	PIN(LCD_DATA)
+  44:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  45:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define SET_E() (LCD_E_PORT|=(1<<LCD_E_POS))
+  46:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define SET_RS() (LCD_RS_PORT|=(1<<LCD_RS_POS))
+  47:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define SET_RW() (LCD_RW_PORT|=(1<<LCD_RW_POS))
+  48:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  49:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define CLEAR_E() (LCD_E_PORT&=(~(1<<LCD_E_POS)))
+  50:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define CLEAR_RS() (LCD_RS_PORT&=(~(1<<LCD_RS_POS)))
+  51:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #define CLEAR_RW() (LCD_RW_PORT&=(~(1<<LCD_RW_POS)))
+  52:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  53:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #ifdef LCD_TYPE_162
+  54:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	#define LCD_TYPE_204
+  55:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #endif
+  56:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  57:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #ifdef LCD_TYPE_202
+  58:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	#define LCD_TYPE_204
+  59:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** #endif
+  60:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  61:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  62:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** void LCDByte(uint8_t c,uint8_t isdata)
+  63:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** {
+  64:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //Sends a byte to the LCD in 4bit mode
+  65:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //cmd=0 for data
+  66:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //cmd=1 for command
+  67:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  68:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  69:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //NOTE: THIS FUNCTION RETURS ONLY WHEN LCD HAS PROCESSED THE COMMAND
+  70:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  71:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** uint8_t hn,ln;			//Nibbles
+  72:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** uint8_t temp;
+  73:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  74:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** hn=c>>4;
+  75:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** ln=(c & 0x0F);
+  76:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  77:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** if(isdata==0)
+  78:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	CLEAR_RS();
+  79:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** else
+  80:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	SET_RS();
+  81:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  82:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** _delay_us(0.500);		//tAS
+  83:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  84:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** SET_E();
+  85:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  86:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //Send high nibble
+  87:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  88:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** temp=(LCD_DATA_PORT & (~(0X0F<<LCD_DATA_POS)))|((hn<<LCD_DATA_POS));
+  89:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** LCD_DATA_PORT=temp;
+  90:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  91:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** _delay_us(1);			//tEH
+  92:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  93:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //Now data lines are stable pull E low for transmission
+  94:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  95:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** CLEAR_E();
+  96:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  97:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** _delay_us(1);
+  98:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+  99:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //Send the lower nibble
+ 100:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** SET_E();
+ 101:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 102:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** temp=(LCD_DATA_PORT & (~(0X0F<<LCD_DATA_POS)))|((ln<<LCD_DATA_POS));
+ 103:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 104:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** LCD_DATA_PORT=temp;
+ 105:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 106:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** _delay_us(1);			//tEH
+ 107:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 108:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //SEND
+ 109:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 110:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** CLEAR_E();
+ 111:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 112:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** _delay_us(1);			//tEL
+ 113:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 114:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** LCDBusyLoop();
+ 115:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** }
+ 116:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 117:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** void LCDBusyLoop()
+ 118:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** {
+ 108               	.LM0:
+ 109               	.LFBB1:
+ 110               	/* prologue: function */
+ 111               	/* frame size = 0 */
+ 112               	/* stack size = 0 */
+ 113               	.L__stack_usage = 0
+ 119:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//This function waits till lcd is BUSY
+ 120:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 121:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	uint8_t busy,status=0x00,temp;
+ 122:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 123:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//Change Port to input type because we are reading data
+ 124:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCD_DATA_DDR&=(~(0x0f<<LCD_DATA_POS));
+ 115               	.LM1:
+ 116 0000 8AB1      		in r24,0xa
+ 117 0002 807F      		andi r24,lo8(-16)
+ 118 0004 8AB9      		out 0xa,r24
+ 125:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 126:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//change LCD mode
+ 127:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	SET_RW();		//Read mode
+ 120               	.LM2:
+ 121 0006 5E9A      		sbi 0xb,6
+ 128:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	CLEAR_RS();		//Read status
+ 123               	.LM3:
+ 124 0008 5D98      		cbi 0xb,5
+ 125               	.LBB44:
+ 126               	.LBB45:
+ 128               	.Ltext1:
+   1:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+   6:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+   9:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  12:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  17:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  21:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  33:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* $Id: delay.h.in 2506 2016-02-08 10:05:45Z joerg_wunsch $ */
+  34:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  35:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  38:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef __DOXYGEN__
+  39:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #  ifndef __HAS_DELAY_CYCLES
+  40:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #    define __HAS_DELAY_CYCLES 1
+  41:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #  endif
+  42:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif  /* __DOXYGEN__ */
+  43:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  44:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #include <inttypes.h>
+  45:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  46:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #include <math.h>
+  47:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  48:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /** \file */
+  49:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  50:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \code
+  51:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  52:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  53:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     #include <util/delay.h>
+  54:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \endcode
+  55:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  56:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  57:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  58:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  59:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     used.
+  60:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  61:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  62:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  63:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  64:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  65:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  66:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  67:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  68:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  69:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  70:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  71:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  72:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  73:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  74:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  75:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  76:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  77:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     routines linked into the application.
+  78:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  79:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  80:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  81:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  82:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  83:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** */
+  84:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  85:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  86:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
+  87:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
+  88:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+  89:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  90:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef F_CPU
+  91:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  92:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  93:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /** \ingroup util_delay
+  94:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \def F_CPU
+  95:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \brief CPU frequency in Hz
+  96:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  97:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
+  98:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     the delay macros.  This macro is normally supplied by the
+  99:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     environment (e.g. from within a project header, or the project's
+ 100:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
+ 101:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     fallback if no such user-provided definition could be found.
+ 102:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 103:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     In terms of the delay functions, the CPU frequency can be given as
+ 104:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
+ 105:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     However, the macros in <util/setbaud.h> require it to be an
+ 106:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     integer value.
+ 107:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****  */
+ 108:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** # define F_CPU 1000000UL
+ 109:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 110:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 111:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+ 112:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+ 113:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 114:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 115:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 116:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 117:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 118:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #  include <math.h>
+ 119:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 120:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 121:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /**
+ 122:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \ingroup util_delay
+ 123:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 124:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 125:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 126:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 127:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 128:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 129:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 130:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 131:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 132:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 133:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 134:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 135:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 136:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 137:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 138:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 139:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 140:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 141:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 142:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Conversion of \c __ms into clock cycles may not always result in
+ 143:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 144:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __ms
+ 145:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    microseconds of delay.
+ 146:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 147:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 148:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 149:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 150:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    respectively.
+ 151:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 152:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \note
+ 153:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 154:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
+ 155:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 156:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
+ 157:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
+ 158:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
+ 159:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
+ 160:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 161:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 162:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    not available to the compiler then.
+ 163:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 164:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****  */
+ 165:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** void
+ 166:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 167:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** {
+ 168:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	double __tmp ;
+ 169:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 170:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 171:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 172:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 173:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 174:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 175:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 176:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 177:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 178:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 179:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 180:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 181:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 182:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#else
+ 183:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		//round up by default
+ 184:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 185:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#endif
+ 186:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 188:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 189:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #else
+ 190:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	uint16_t __ticks;
+ 191:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 4e3) * __ms;
+ 192:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	if (__tmp < 1.0)
+ 193:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks = 1;
+ 194:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	else if (__tmp > 65535)
+ 195:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	{
+ 196:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		//	__ticks = requested delay in 1/10 ms
+ 197:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks = (uint16_t) (__ms * 10.0);
+ 198:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		while(__ticks)
+ 199:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		{
+ 200:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 			// wait 1/10 ms
+ 201:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 			_delay_loop_2(((F_CPU) / 4e3) / 10);
+ 202:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 			__ticks --;
+ 203:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		}
+ 204:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		return;
+ 205:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	}
+ 206:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	else
+ 207:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks = (uint16_t)__tmp;
+ 208:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	_delay_loop_2(__ticks);
+ 209:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 210:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** }
+ 211:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 212:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /**
+ 213:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \ingroup util_delay
+ 214:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 215:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Perform a delay of \c __us microseconds, using _delay_loop_1().
+ 216:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 217:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 218:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 219:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 220:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The maximal possible delay is 768 us / F_CPU in MHz.
+ 221:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 222:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    If the user requests a delay greater than the maximal possible one,
+ 223:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    _delay_us() will automatically call _delay_ms() instead.  The user
+ 224:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    will not be informed about this case.
+ 225:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 226:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 227:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 us/ F_CPU in MHz. For
+ 228:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflow results in
+ 229:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    no delay i.e., 0us.
+ 230:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 231:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Conversion of \c __us into clock cycles may not always result in
+ 232:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 233:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __us
+ 234:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    microseconds of delay.
+ 235:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 236:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 237:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 238:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 239:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    respectively.
+ 240:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 241:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \note
+ 242:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 243:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
+ 244:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 245:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
+ 246:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    with previous versions, the macro \c __DELAY_BACKWARD_COMPATIBLE__
+ 247:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
+ 248:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
+ 249:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 250:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 251:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    not available to the compiler then.
+ 252:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 253:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****  */
+ 254:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** void
+ 255:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** _delay_us(double __us)
+ 256:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** {
+ 257:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	double __tmp ;
+ 258:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 259:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 260:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 261:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 262:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 263:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e6) * __us;
+ 264:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 265:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 266:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 267:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 268:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 269:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 270:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 271:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#else
+ 272:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		//round up by default
+ 273:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 274:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#endif
+ 275:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 276:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 130               	.LM4:
+ 131 000a 00C0      		rjmp .
+ 132 000c 00C0      		rjmp .
+ 133               	.L2:
+ 134               	.LBE45:
+ 135               	.LBE44:
+ 137               	.Ltext2:
+ 129:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 130:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//Let the RW/RS lines stabilize
+ 131:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 132:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	_delay_us(0.5);		//tAS
+ 133:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 134:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	
+ 135:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	do
+ 136:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 137:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 138:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		SET_E();
+ 139               	.LM5:
+ 140 000e 5C9A      		sbi 0xb,4
+ 141               	.LBB46:
+ 142               	.LBB47:
+ 144               	.Ltext3:
+ 146               	.LM6:
+ 147 0010 00C0      		rjmp .
+ 148 0012 00C0      		rjmp .
+ 149               	.LBE47:
+ 150               	.LBE46:
+ 152               	.Ltext4:
+ 139:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 140:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		//Wait tDA for data to become available
+ 141:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		_delay_us(0.5);
+ 142:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 143:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		status=(LCD_DATA_PIN>>LCD_DATA_POS);
+ 154               	.LM7:
+ 155 0014 89B1      		in r24,0x9
+ 144:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		status=status<<4;
+ 157               	.LM8:
+ 158 0016 8295      		swap r24
+ 159 0018 807F      		andi r24,lo8(-16)
+ 160               	.LBB48:
+ 161               	.LBB49:
+ 163               	.Ltext5:
+ 165               	.LM9:
+ 166 001a 00C0      		rjmp .
+ 167 001c 00C0      		rjmp .
+ 168               	.LBE49:
+ 169               	.LBE48:
+ 171               	.Ltext6:
+ 145:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 146:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		_delay_us(0.5);
+ 147:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 148:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		//Pull E low
+ 149:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		CLEAR_E();
+ 173               	.LM10:
+ 174 001e 5C98      		cbi 0xb,4
+ 175               	.LBB50:
+ 176               	.LBB51:
+ 178               	.Ltext7:
+ 180               	.LM11:
+ 181 0020 92E0      		ldi r25,lo8(2)
+ 182 0022 9A95      	1:	dec r25
+ 183 0024 01F4      		brne 1b
+ 184 0026 00C0      		rjmp .
+ 185               	.LBE51:
+ 186               	.LBE50:
+ 188               	.Ltext8:
+ 150:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		_delay_us(1);	//tEL
+ 151:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 152:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		SET_E();
+ 190               	.LM12:
+ 191 0028 5C9A      		sbi 0xb,4
+ 192               	.LBB52:
+ 193               	.LBB53:
+ 195               	.Ltext9:
+ 197               	.LM13:
+ 198 002a 00C0      		rjmp .
+ 199 002c 00C0      		rjmp .
+ 200               	.LBE53:
+ 201               	.LBE52:
+ 203               	.Ltext10:
+ 153:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		_delay_us(0.5);
+ 154:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 155:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		temp=(LCD_DATA_PIN>>LCD_DATA_POS);
+ 205               	.LM14:
+ 206 002e 99B1      		in r25,0x9
+ 207               	.LBB54:
+ 208               	.LBB55:
+ 210               	.Ltext11:
+ 212               	.LM15:
+ 213 0030 00C0      		rjmp .
+ 214 0032 00C0      		rjmp .
+ 215               	.LBE55:
+ 216               	.LBE54:
+ 218               	.Ltext12:
+ 156:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		temp&=0x0F;
+ 157:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 158:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		status=status|temp;
+ 159:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 160:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		busy=status & 0b10000000;
+ 161:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 162:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		_delay_us(0.5);
+ 163:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		CLEAR_E();
+ 220               	.LM16:
+ 221 0034 5C98      		cbi 0xb,4
+ 222               	.LBB56:
+ 223               	.LBB57:
+ 225               	.Ltext13:
+ 227               	.LM17:
+ 228 0036 92E0      		ldi r25,lo8(2)
+ 229 0038 9A95      	1:	dec r25
+ 230 003a 01F4      		brne 1b
+ 231 003c 00C0      		rjmp .
+ 232               	.LBE57:
+ 233               	.LBE56:
+ 235               	.Ltext14:
+ 164:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		_delay_us(1);	//tEL
+ 165:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	}while(busy);
+ 237               	.LM18:
+ 238 003e 87FD      		sbrc r24,7
+ 239 0040 00C0      		rjmp .L2
+ 166:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 167:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	CLEAR_RW();		//write mode
+ 241               	.LM19:
+ 242 0042 5E98      		cbi 0xb,6
+ 168:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//Change Port to output
+ 169:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCD_DATA_DDR|=(0x0F<<LCD_DATA_POS);
+ 244               	.LM20:
+ 245 0044 8AB1      		in r24,0xa
+ 246 0046 8F60      		ori r24,lo8(15)
+ 247 0048 8AB9      		out 0xa,r24
+ 248 004a 0895      		ret
+ 250               	.Lscope1:
+ 254               	.global	LCDByte
+ 256               	LCDByte:
+  63:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** //Sends a byte to the LCD in 4bit mode
+ 258               	.LM21:
+ 259               	.LFBB2:
+ 260               	/* prologue: function */
+ 261               	/* frame size = 0 */
+ 262               	/* stack size = 0 */
+ 263               	.L__stack_usage = 0
+  74:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** ln=(c & 0x0F);
+ 265               	.LM22:
+ 266 004c 382F      		mov r19,r24
+ 267 004e 3295      		swap r19
+ 268 0050 3F70      		andi r19,lo8(15)
+  75:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 270               	.LM23:
+ 271 0052 282F      		mov r18,r24
+ 272 0054 2F70      		andi r18,lo8(15)
+  77:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	CLEAR_RS();
+ 274               	.LM24:
+ 275 0056 6111      		cpse r22,__zero_reg__
+ 276 0058 00C0      		rjmp .L5
+  78:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** else
+ 278               	.LM25:
+ 279 005a 5D98      		cbi 0xb,5
+ 280               	.L6:
+ 281               	.LBB58:
+ 282               	.LBB59:
+ 284               	.Ltext15:
+ 286               	.LM26:
+ 287 005c 00C0      		rjmp .
+ 288 005e 00C0      		rjmp .
+ 289               	.LBE59:
+ 290               	.LBE58:
+ 292               	.Ltext16:
+  84:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 294               	.LM27:
+ 295 0060 5C9A      		sbi 0xb,4
+  88:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** LCD_DATA_PORT=temp;
+ 297               	.LM28:
+ 298 0062 9BB1      		in r25,0xb
+ 299 0064 907F      		andi r25,lo8(-16)
+ 300 0066 932B      		or r25,r19
+  89:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 302               	.LM29:
+ 303 0068 9BB9      		out 0xb,r25
+ 304               	.LBB60:
+ 305               	.LBB61:
+ 307               	.Ltext17:
+ 309               	.LM30:
+ 310 006a 82E0      		ldi r24,lo8(2)
+ 311 006c 8A95      	1:	dec r24
+ 312 006e 01F4      		brne 1b
+ 313 0070 00C0      		rjmp .
+ 314               	.LBE61:
+ 315               	.LBE60:
+ 317               	.Ltext18:
+  95:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 319               	.LM31:
+ 320 0072 5C98      		cbi 0xb,4
+ 321               	.LBB62:
+ 322               	.LBB63:
+ 324               	.Ltext19:
+ 326               	.LM32:
+ 327 0074 82E0      		ldi r24,lo8(2)
+ 328 0076 8A95      	1:	dec r24
+ 329 0078 01F4      		brne 1b
+ 330 007a 00C0      		rjmp .
+ 331               	.LBE63:
+ 332               	.LBE62:
+ 334               	.Ltext20:
+ 100:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 336               	.LM33:
+ 337 007c 5C9A      		sbi 0xb,4
+ 102:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 339               	.LM34:
+ 340 007e 8BB1      		in r24,0xb
+ 341 0080 807F      		andi r24,lo8(-16)
+ 342 0082 822B      		or r24,r18
+ 104:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 344               	.LM35:
+ 345 0084 8BB9      		out 0xb,r24
+ 346               	.LBB64:
+ 347               	.LBB65:
+ 349               	.Ltext21:
+ 351               	.LM36:
+ 352 0086 82E0      		ldi r24,lo8(2)
+ 353 0088 8A95      	1:	dec r24
+ 354 008a 01F4      		brne 1b
+ 355 008c 00C0      		rjmp .
+ 356               	.LBE65:
+ 357               	.LBE64:
+ 359               	.Ltext22:
+ 110:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 361               	.LM37:
+ 362 008e 5C98      		cbi 0xb,4
+ 363               	.LBB66:
+ 364               	.LBB67:
+ 366               	.Ltext23:
+ 368               	.LM38:
+ 369 0090 82E0      		ldi r24,lo8(2)
+ 370 0092 8A95      	1:	dec r24
+ 371 0094 01F4      		brne 1b
+ 372 0096 00C0      		rjmp .
+ 373               	.LBE67:
+ 374               	.LBE66:
+ 376               	.Ltext24:
+ 114:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** }
+ 378               	.LM39:
+ 379 0098 0C94 0000 		jmp LCDBusyLoop
+ 380               	.L5:
+  80:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 382               	.LM40:
+ 383 009c 5D9A      		sbi 0xb,5
+ 384 009e 00C0      		rjmp .L6
+ 390               	.Lscope2:
+ 393               	.global	LCDInit
+ 395               	LCDInit:
+ 170:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 171:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** }
+ 172:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 173:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** void LCDInit(uint8_t style)
+ 174:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** {
+ 397               	.LM41:
+ 398               	.LFBB3:
+ 399 00a0 CF93      		push r28
+ 400               	/* prologue: function */
+ 401               	/* frame size = 0 */
+ 402               	/* stack size = 1 */
+ 403               	.L__stack_usage = 1
+ 404 00a2 C82F      		mov r28,r24
+ 405               	.LBB80:
+ 406               	.LBB81:
+ 408               	.Ltext25:
+ 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 410               	.LM42:
+ 411 00a4 8FE5      		ldi r24,lo8(-5537)
+ 412 00a6 9AEE      		ldi r25,hi8(-5537)
+ 413 00a8 0197      	1:	sbiw r24,1
+ 414 00aa 01F4      		brne 1b
+ 415 00ac 00C0      		rjmp .
+ 416 00ae 0000      		nop
+ 417               	.LBE81:
+ 418               	.LBE80:
+ 420               	.Ltext26:
+ 175:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	/*****************************************************************
+ 176:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	
+ 177:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	This function Initializes the lcd module
+ 178:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	must be called before calling lcd related functions
+ 179:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 180:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	Arguments:
+ 181:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	style = LS_BLINK,LS_ULINE(can be "OR"ed for combination)
+ 182:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LS_BLINK :The cursor is blinking type
+ 183:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LS_ULINE :Cursor is "underline" type else "block" type
+ 184:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 185:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	*****************************************************************/
+ 186:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	
+ 187:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//After power on Wait for LCD to Initialize
+ 188:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	_delay_ms(30);
+ 189:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	
+ 190:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//Set IO Ports
+ 191:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCD_DATA_DDR|=(0x0F<<LCD_DATA_POS);
+ 422               	.LM43:
+ 423 00b0 8AB1      		in r24,0xa
+ 424 00b2 8F60      		ori r24,lo8(15)
+ 425 00b4 8AB9      		out 0xa,r24
+ 192:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCD_E_DDR|=(1<<LCD_E_POS);
+ 427               	.LM44:
+ 428 00b6 549A      		sbi 0xa,4
+ 193:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCD_RS_DDR|=(1<<LCD_RS_POS);
+ 430               	.LM45:
+ 431 00b8 559A      		sbi 0xa,5
+ 194:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCD_RW_DDR|=(1<<LCD_RW_POS);
+ 433               	.LM46:
+ 434 00ba 569A      		sbi 0xa,6
+ 195:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 196:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCD_DATA_PORT&=(~(0x0F<<LCD_DATA_POS));
+ 436               	.LM47:
+ 437 00bc 8BB1      		in r24,0xb
+ 438 00be 807F      		andi r24,lo8(-16)
+ 439 00c0 8BB9      		out 0xb,r24
+ 197:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	CLEAR_E();
+ 441               	.LM48:
+ 442 00c2 5C98      		cbi 0xb,4
+ 198:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	CLEAR_RW();
+ 444               	.LM49:
+ 445 00c4 5E98      		cbi 0xb,6
+ 199:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	CLEAR_RS();
+ 447               	.LM50:
+ 448 00c6 5D98      		cbi 0xb,5
+ 449               	.LBB82:
+ 450               	.LBB83:
+ 452               	.Ltext27:
+ 454               	.LM51:
+ 455 00c8 00C0      		rjmp .
+ 456 00ca 0000      		nop
+ 457               	.LBE83:
+ 458               	.LBE82:
+ 460               	.Ltext28:
+ 200:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 201:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//Set 4-bit mode
+ 202:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	_delay_us(0.3);	//tAS
+ 203:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 204:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	SET_E();
+ 462               	.LM52:
+ 463 00cc 5C9A      		sbi 0xb,4
+ 205:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCD_DATA_PORT|=((0b00000010)<<LCD_DATA_POS); //[B] To transfer 0b00100000 i was using LCD_DATA_POR
+ 465               	.LM53:
+ 466 00ce 599A      		sbi 0xb,1
+ 467               	.LBB84:
+ 468               	.LBB85:
+ 470               	.Ltext29:
+ 472               	.LM54:
+ 473 00d0 92E0      		ldi r25,lo8(2)
+ 474 00d2 9A95      	1:	dec r25
+ 475 00d4 01F4      		brne 1b
+ 476 00d6 00C0      		rjmp .
+ 477               	.LBE85:
+ 478               	.LBE84:
+ 480               	.Ltext30:
+ 206:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	_delay_us(1);
+ 207:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	CLEAR_E();
+ 482               	.LM55:
+ 483 00d8 5C98      		cbi 0xb,4
+ 484               	.LBB86:
+ 485               	.LBB87:
+ 487               	.Ltext31:
+ 489               	.LM56:
+ 490 00da 82E0      		ldi r24,lo8(2)
+ 491 00dc 8A95      	1:	dec r24
+ 492 00de 01F4      		brne 1b
+ 493 00e0 00C0      		rjmp .
+ 494               	.LBE87:
+ 495               	.LBE86:
+ 497               	.Ltext32:
+ 208:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	_delay_us(1);
+ 209:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	
+ 210:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//Wait for LCD to execute the Functionset Command
+ 211:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDBusyLoop();                                    //[B] Forgot this delay
+ 499               	.LM57:
+ 500 00e2 0E94 0000 		call LCDBusyLoop
+ 212:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 213:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	//Now the LCD is in 4-bit mode
+ 214:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 215:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDCmd(0b00001100|style);	//Display On
+ 502               	.LM58:
+ 503 00e6 60E0      		ldi r22,0
+ 504 00e8 8C2F      		mov r24,r28
+ 505 00ea 8C60      		ori r24,lo8(12)
+ 506 00ec 0E94 0000 		call LCDByte
+ 216:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDCmd(0b00101000);			//function set 4-bit,2 line 5x7 dot format
+ 508               	.LM59:
+ 509 00f0 60E0      		ldi r22,0
+ 510 00f2 88E2      		ldi r24,lo8(40)
+ 511 00f4 0E94 0000 		call LCDByte
+ 512               	.LBB88:
+ 513               	.LBB89:
+ 514               	.LBB90:
+ 217:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 218:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	
+ 219:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDGotoXY(0,0);
+ 220:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 221:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** }
+ 222:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** void LCDWriteString(const char *msg)
+ 223:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** {
+ 224:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	/*****************************************************************
+ 225:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	
+ 226:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	This function Writes a given string to lcd at the current cursor
+ 227:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	location.
+ 228:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 229:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	Arguments:
+ 230:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	msg: a null terminated string to print
+ 231:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 232:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	Their are 8 custom char in the LCD they can be defined using
+ 233:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	"LCD Custom Character Builder" PC Software. 
+ 234:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 235:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	You can print custom character using the % symbol. For example
+ 236:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	to print custom char number 0 (which is a degree symbol), you 
+ 237:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	need to write
+ 238:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 239:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		LCDWriteString("Temp is 30%0C");
+ 240:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		                          ^^
+ 241:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 								  |----> %0 will be replaced by
+ 242:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 								  		custom char 0.
+ 243:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 244:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	So it will be printed like.
+ 245:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		
+ 246:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		Temp is 30°C
+ 247:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		
+ 248:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	In the same way you can insert any syblom numbered 0-7 	
+ 249:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 250:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 251:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	*****************************************************************/
+ 252:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  while(*msg!='\0')
+ 253:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  {
+ 254:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  	//Custom Char Support
+ 255:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	if(*msg=='%')
+ 256:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 257:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		msg++;
+ 258:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		int8_t cc=*msg-'0';
+ 259:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 260:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		if(cc>=0 && cc<=7)
+ 261:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		{
+ 262:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			LCDData(cc);
+ 263:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		}
+ 264:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		else
+ 265:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		{
+ 266:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			LCDData('%');
+ 267:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			LCDData(*msg);
+ 268:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		}
+ 269:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	}
+ 270:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	else
+ 271:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 272:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		LCDData(*msg);
+ 273:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	}
+ 274:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	msg++;
+ 275:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  }
+ 276:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** }
+ 277:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 278:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** void LCDWriteInt(int val,unsigned int field_length)
+ 279:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** {
+ 280:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	/***************************************************************
+ 281:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	This function writes a integer type value to LCD module
+ 282:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 283:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	Arguments:
+ 284:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	1)int val	: Value to print
+ 285:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 286:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	2)unsigned int field_length :total length of field in which the value is printed
+ 287:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	must be between 1-5 if it is -1 the field length is no of digits in the val
+ 288:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 289:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	****************************************************************/
+ 290:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 291:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	char str[5]={0,0,0,0,0};
+ 292:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	int i=4,j=0;
+ 293:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	while(val)
+ 294:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 295:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	str[i]=val%10;
+ 296:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	val=val/10;
+ 297:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	i--;
+ 298:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	}
+ 299:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	if(field_length==-1)
+ 300:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		while(str[j]==0) j++;
+ 301:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	else
+ 302:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		j=5-field_length;
+ 303:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 304:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	if(val<0) LCDData('-');
+ 305:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	for(i=j;i<5;i++)
+ 306:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 307:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDData(48+str[i]);
+ 308:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	}
+ 309:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** }
+ 310:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** void LCDGotoXY(uint8_t x,uint8_t y)
+ 311:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** {
+ 312:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  	if(x>=20) return;
+ 313:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 314:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	#ifdef LCD_TYPE_204
+ 315:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	
+ 316:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	switch(y)
+ 317:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 318:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		case 0:
+ 319:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 320:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		case 1:
+ 321:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			x|=0b01000000;
+ 322:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 323:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		case 2:
+ 324:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			x+=0x14;
+ 325:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 326:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		case 3:
+ 327:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			x+=0x54;
+ 328:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 329:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	}
+ 330:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 331:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	#endif
+ 332:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 333:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	#ifdef LCD_TYPE_164
+ 334:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	switch(y)
+ 335:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 336:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		case 0:
+ 337:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 338:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		case 1:
+ 339:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			x|=0b01000000;
+ 340:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 341:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		case 2:
+ 342:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			x+=0x10;
+ 343:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 344:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		case 3:
+ 345:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			x+=0x50;
+ 346:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 347:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	}
+ 348:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 349:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	#endif
+ 350:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 351:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	x|=0b10000000;
+ 352:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****   	LCDCmd(x);
+ 516               	.LM60:
+ 517 00f8 60E0      		ldi r22,0
+ 518 00fa 80E8      		ldi r24,lo8(-128)
+ 519               	/* epilogue start */
+ 520               	.LBE90:
+ 521               	.LBE89:
+ 522               	.LBE88:
+ 221:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** void LCDWriteString(const char *msg)
+ 524               	.LM61:
+ 525 00fc CF91      		pop r28
+ 526               	.LBB93:
+ 527               	.LBB92:
+ 528               	.LBB91:
+ 530               	.LM62:
+ 531 00fe 0C94 0000 		jmp LCDByte
+ 532               	.LBE91:
+ 533               	.LBE92:
+ 534               	.LBE93:
+ 536               	.Lscope3:
+ 539               	.global	LCDWriteString
+ 541               	LCDWriteString:
+ 223:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	/*****************************************************************
+ 543               	.LM63:
+ 544               	.LFBB4:
+ 545 0102 0F93      		push r16
+ 546 0104 1F93      		push r17
+ 547 0106 CF93      		push r28
+ 548 0108 DF93      		push r29
+ 549               	/* prologue: function */
+ 550               	/* frame size = 0 */
+ 551               	/* stack size = 4 */
+ 552               	.L__stack_usage = 4
+ 553 010a EC01      		movw r28,r24
+ 554               	.L9:
+ 252:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  {
+ 556               	.LM64:
+ 557 010c 8881      		ld r24,Y
+ 558 010e 8111      		cpse r24,__zero_reg__
+ 559 0110 00C0      		rjmp .L13
+ 560               	/* epilogue start */
+ 276:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 562               	.LM65:
+ 563 0112 DF91      		pop r29
+ 564 0114 CF91      		pop r28
+ 565 0116 1F91      		pop r17
+ 566 0118 0F91      		pop r16
+ 567 011a 0895      		ret
+ 568               	.L13:
+ 255:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 570               	.LM66:
+ 571 011c 8532      		cpi r24,lo8(37)
+ 572 011e 01F4      		brne .L10
+ 573               	.LBB94:
+ 257:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		int8_t cc=*msg-'0';
+ 575               	.LM67:
+ 576 0120 8E01      		movw r16,r28
+ 577 0122 0F5F      		subi r16,-1
+ 578 0124 1F4F      		sbci r17,-1
+ 258:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 580               	.LM68:
+ 581 0126 8981      		ldd r24,Y+1
+ 582 0128 8053      		subi r24,lo8(-(-48))
+ 262:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		}
+ 584               	.LM69:
+ 585 012a 61E0      		ldi r22,lo8(1)
+ 260:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		{
+ 587               	.LM70:
+ 588 012c 8830      		cpi r24,lo8(8)
+ 589 012e 00F4      		brsh .L11
+ 590               	.L14:
+ 267:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		}
+ 592               	.LM71:
+ 593 0130 0E94 0000 		call LCDByte
+ 594               	.L12:
+ 595               	.LBE94:
+ 274:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  }
+ 597               	.LM72:
+ 598 0134 E801      		movw r28,r16
+ 599 0136 2196      		adiw r28,1
+ 600 0138 00C0      		rjmp .L9
+ 601               	.L11:
+ 602               	.LBB95:
+ 266:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			LCDData(*msg);
+ 604               	.LM73:
+ 605 013a 85E2      		ldi r24,lo8(37)
+ 606 013c 0E94 0000 		call LCDByte
+ 267:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		}
+ 608               	.LM74:
+ 609 0140 61E0      		ldi r22,lo8(1)
+ 610 0142 8981      		ldd r24,Y+1
+ 611 0144 00C0      		rjmp .L14
+ 612               	.L10:
+ 613               	.LBE95:
+ 272:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	}
+ 615               	.LM75:
+ 616 0146 61E0      		ldi r22,lo8(1)
+ 617 0148 0E94 0000 		call LCDByte
+ 618 014c 8E01      		movw r16,r28
+ 619 014e 00C0      		rjmp .L12
+ 621               	.Lscope4:
+ 625               	.global	LCDWriteInt
+ 627               	LCDWriteInt:
+ 279:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	/***************************************************************
+ 629               	.LM76:
+ 630               	.LFBB5:
+ 631 0150 EF92      		push r14
+ 632 0152 FF92      		push r15
+ 633 0154 0F93      		push r16
+ 634 0156 1F93      		push r17
+ 635 0158 CF93      		push r28
+ 636 015a DF93      		push r29
+ 637 015c 00D0      		rcall .
+ 638 015e 00D0      		rcall .
+ 639 0160 1F92      		push __zero_reg__
+ 640 0162 CDB7      		in r28,__SP_L__
+ 641 0164 DEB7      		in r29,__SP_H__
+ 642               	/* prologue: function */
+ 643               	/* frame size = 5 */
+ 644               	/* stack size = 11 */
+ 645               	.L__stack_usage = 11
+ 646 0166 9B01      		movw r18,r22
+ 291:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	int i=4,j=0;
+ 648               	.LM77:
+ 649 0168 AE01      		movw r20,r28
+ 650 016a 4F5F      		subi r20,-1
+ 651 016c 5F4F      		sbci r21,-1
+ 652 016e 7A01      		movw r14,r20
+ 653 0170 45E0      		ldi r20,lo8(5)
+ 654 0172 F701      		movw r30,r14
+ 655               		0:
+ 656 0174 1192      		st Z+,__zero_reg__
+ 657 0176 4A95      		dec r20
+ 658 0178 01F4      		brne 0b
+ 659 017a FE01      		movw r30,r28
+ 660 017c 3696      		adiw r30,6
+ 295:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	val=val/10;
+ 662               	.LM78:
+ 663 017e 0AE0      		ldi r16,lo8(10)
+ 664 0180 10E0      		ldi r17,0
+ 665               	.L16:
+ 293:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 667               	.LM79:
+ 668 0182 0097      		sbiw r24,0
+ 669 0184 01F4      		brne .L17
+ 299:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 		while(str[j]==0) j++;
+ 671               	.LM80:
+ 672 0186 2F3F      		cpi r18,-1
+ 673 0188 FFEF      		ldi r31,-1
+ 674 018a 3F07      		cpc r19,r31
+ 675 018c 01F4      		brne .L18
+ 676 018e F701      		movw r30,r14
+ 677               	.L19:
+ 678 0190 8F01      		movw r16,r30
+ 679 0192 0E19      		sub r16,r14
+ 680 0194 1F09      		sbc r17,r15
+ 300:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	else
+ 682               	.LM81:
+ 683 0196 8191      		ld r24,Z+
+ 684 0198 8823      		tst r24
+ 685 019a 01F0      		breq .L19
+ 686               	.L20:
+ 687 019c 0E0D      		add r16,r14
+ 688 019e 1F1D      		adc r17,r15
+ 689               	.L21:
+ 305:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 691               	.LM82:
+ 692 01a0 C801      		movw r24,r16
+ 693 01a2 8E19      		sub r24,r14
+ 694 01a4 9F09      		sbc r25,r15
+ 695 01a6 0597      		sbiw r24,5
+ 696 01a8 04F0      		brlt .L22
+ 697               	/* epilogue start */
+ 309:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** void LCDGotoXY(uint8_t x,uint8_t y)
+ 699               	.LM83:
+ 700 01aa 0F90      		pop __tmp_reg__
+ 701 01ac 0F90      		pop __tmp_reg__
+ 702 01ae 0F90      		pop __tmp_reg__
+ 703 01b0 0F90      		pop __tmp_reg__
+ 704 01b2 0F90      		pop __tmp_reg__
+ 705 01b4 DF91      		pop r29
+ 706 01b6 CF91      		pop r28
+ 707 01b8 1F91      		pop r17
+ 708 01ba 0F91      		pop r16
+ 709 01bc FF90      		pop r15
+ 710 01be EF90      		pop r14
+ 711 01c0 0895      		ret
+ 712               	.L17:
+ 295:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	val=val/10;
+ 714               	.LM84:
+ 715 01c2 B801      		movw r22,r16
+ 716 01c4 0E94 0000 		call __divmodhi4
+ 717 01c8 8293      		st -Z,r24
+ 296:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	i--;
+ 719               	.LM85:
+ 720 01ca CB01      		movw r24,r22
+ 721 01cc 00C0      		rjmp .L16
+ 722               	.L18:
+ 302:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 724               	.LM86:
+ 725 01ce 05E0      		ldi r16,lo8(5)
+ 726 01d0 10E0      		ldi r17,0
+ 727 01d2 021B      		sub r16,r18
+ 728 01d4 130B      		sbc r17,r19
+ 729 01d6 00C0      		rjmp .L20
+ 730               	.L22:
+ 307:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	}
+ 732               	.LM87:
+ 733 01d8 F801      		movw r30,r16
+ 734 01da 8191      		ld r24,Z+
+ 735 01dc 8F01      		movw r16,r30
+ 736 01de 61E0      		ldi r22,lo8(1)
+ 737 01e0 805D      		subi r24,lo8(-(48))
+ 738 01e2 0E94 0000 		call LCDByte
+ 739 01e6 00C0      		rjmp .L21
+ 745               	.Lscope5:
+ 749               	.global	LCDGotoXY
+ 751               	LCDGotoXY:
+ 311:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c ****  	if(x>=20) return;
+ 753               	.LM88:
+ 754               	.LFBB6:
+ 755               	/* prologue: function */
+ 756               	/* frame size = 0 */
+ 757               	/* stack size = 0 */
+ 758               	.L__stack_usage = 0
+ 312:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 760               	.LM89:
+ 761 01e8 8431      		cpi r24,lo8(20)
+ 762 01ea 00F4      		brsh .L25
+ 763               	.LBB98:
+ 764               	.LBB99:
+ 316:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	{
+ 766               	.LM90:
+ 767 01ec 6230      		cpi r22,lo8(2)
+ 768 01ee 01F0      		breq .L28
+ 769 01f0 6330      		cpi r22,lo8(3)
+ 770 01f2 01F0      		breq .L29
+ 771 01f4 6130      		cpi r22,lo8(1)
+ 772 01f6 01F4      		brne .L27
+ 321:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 774               	.LM91:
+ 775 01f8 8064      		ori r24,lo8(64)
+ 776               	.L27:
+ 778               	.LM92:
+ 779 01fa 60E0      		ldi r22,0
+ 780 01fc 8068      		ori r24,lo8(-128)
+ 781 01fe 0C94 0000 		jmp LCDByte
+ 782               	.L28:
+ 324:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 784               	.LM93:
+ 785 0202 8C5E      		subi r24,lo8(-(20))
+ 786 0204 00C0      		rjmp .L27
+ 787               	.L29:
+ 327:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 			break;
+ 789               	.LM94:
+ 790 0206 8C5A      		subi r24,lo8(-(84))
+ 791 0208 00C0      		rjmp .L27
+ 792               	.L25:
+ 793 020a 0895      		ret
+ 794               	.LBE99:
+ 795               	.LBE98:
+ 797               	.Lscope6:
+ 802               	.global	LCDHexDumpXY
+ 804               	LCDHexDumpXY:
+ 353:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** }
+ 354:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 355:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 356:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 
+ 357:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** void LCDHexDumpXY(uint8_t x, uint8_t y,uint8_t d)
+ 358:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** {
+ 806               	.LM95:
+ 807               	.LFBB7:
+ 808 020c CF93      		push r28
+ 809               	/* prologue: function */
+ 810               	/* frame size = 0 */
+ 811               	/* stack size = 1 */
+ 812               	.L__stack_usage = 1
+ 813 020e C42F      		mov r28,r20
+ 359:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDGotoXY(x,y);
+ 815               	.LM96:
+ 816 0210 0E94 0000 		call LCDGotoXY
+ 360:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	uint8_t byte = '0';
+ 361:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	(((d>>4)&0x0F)<=9) ? (byte='0'+((d>>4)&0x0F)) : (byte='A'+ ((d>>4)&0x0F)-0x0A);
+ 818               	.LM97:
+ 819 0214 8C2F      		mov r24,r28
+ 820 0216 8295      		swap r24
+ 821 0218 8F70      		andi r24,lo8(15)
+ 822 021a 8A30      		cpi r24,lo8(10)
+ 823 021c 00F4      		brsh .L32
+ 825               	.LM98:
+ 826 021e 805D      		subi r24,lo8(-(48))
+ 827               	.L33:
+ 362:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDByte(byte,1);
+ 829               	.LM99:
+ 830 0220 61E0      		ldi r22,lo8(1)
+ 831 0222 0E94 0000 		call LCDByte
+ 363:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDBusyLoop();
+ 833               	.LM100:
+ 834 0226 0E94 0000 		call LCDBusyLoop
+ 835 022a 8C2F      		mov r24,r28
+ 836 022c 8F70      		andi r24,lo8(15)
+ 364:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	
+ 365:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	((d&0x0F)<=9) ? (byte='0'+ (d&0x0F)) : (byte='A'+ (d&0x0F)-0x0A);
+ 838               	.LM101:
+ 839 022e 8A30      		cpi r24,lo8(10)
+ 840 0230 00F4      		brsh .L34
+ 842               	.LM102:
+ 843 0232 805D      		subi r24,lo8(-(48))
+ 844               	.L35:
+ 366:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDByte(byte,1);
+ 846               	.LM103:
+ 847 0234 61E0      		ldi r22,lo8(1)
+ 848 0236 0E94 0000 		call LCDByte
+ 849               	/* epilogue start */
+ 367:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDBusyLoop();
+ 368:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** }
+ 851               	.LM104:
+ 852 023a CF91      		pop r28
+ 367:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDBusyLoop();
+ 854               	.LM105:
+ 855 023c 0C94 0000 		jmp LCDBusyLoop
+ 856               	.L32:
+ 361:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDByte(byte,1);
+ 858               	.LM106:
+ 859 0240 895C      		subi r24,lo8(-(55))
+ 860 0242 00C0      		rjmp .L33
+ 861               	.L34:
+ 365:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/lcd.c **** 	LCDByte(byte,1);
+ 863               	.LM107:
+ 864 0244 895C      		subi r24,lo8(-(55))
+ 865 0246 00C0      		rjmp .L35
+ 867               	.Lscope7:
+ 869               	.Letext0:
+ 870               		.ident	"GCC: (GNU) 6.2.0"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 lcd.c
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:106    .text:0000000000000000 LCDBusyLoop
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:256    .text:000000000000004c LCDByte
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:395    .text:00000000000000a0 LCDInit
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:541    .text:0000000000000102 LCDWriteString
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:627    .text:0000000000000150 LCDWriteInt
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:751    .text:00000000000001e8 LCDGotoXY
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc1ydWwE.s:804    .text:000000000000020c LCDHexDumpXY
+
+UNDEFINED SYMBOLS
+__divmodhi4
