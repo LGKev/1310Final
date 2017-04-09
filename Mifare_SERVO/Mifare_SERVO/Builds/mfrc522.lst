@@ -8,56 +8,56 @@
    9               	.Ltext0:
  112               	.global	mfrc522_write
  114               	mfrc522_write:
-   1:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** /*
-   2:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * mfrc522.c
-   3:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
-   4:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * Copyright 2013 Shimon <shimon@monistit.com>
-   5:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
-   6:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * This program is free software; you can redistribute it and/or modify
-   7:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * it under the terms of the GNU General Public License as published by
-   8:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * the Free Software Foundation; either version 2 of the License, or
-   9:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * (at your option) any later version.
-  10:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
-  11:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * This program is distributed in the hope that it will be useful,
-  12:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  13:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  14:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * GNU General Public License for more details.
-  15:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
-  16:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * You should have received a copy of the GNU General Public License
-  17:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * along with this program; if not, write to the Free Software
-  18:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-  19:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * MA 02110-1301, USA.
-  20:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
-  21:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
-  22:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  */
-  23:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #include <mfrc522.h>
-  24:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #include <spi.h>
-  25:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
-  26:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #if 1
-  27:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #include <lcd.h>
-  28:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #endif
-  29:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
-  30:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** void mfrc522_init()
-  31:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
-  32:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t byte;
-  33:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_reset();
-  34:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
-  35:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(TModeReg, 0x8D);
-  36:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TPrescalerReg, 0x3E);
-  37:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TReloadReg_1, 30);   
-  38:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TReloadReg_2, 0);	
-  39:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(TxASKReg, 0x40);	
-  40:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(ModeReg, 0x3D);
-  41:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
-  42:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	byte = mfrc522_read(TxControlReg);
-  43:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	if(!(byte&0x03))
-  44:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{
-  45:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		mfrc522_write(TxControlReg,byte|0x03);
-  46:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
-  47:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
-  48:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
-  49:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** void mfrc522_write(uint8_t reg, uint8_t data)
-  50:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
+   1:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** /*
+   2:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * mfrc522.c
+   3:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
+   4:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * Copyright 2013 Shimon <shimon@monistit.com>
+   5:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
+   6:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * This program is free software; you can redistribute it and/or modify
+   7:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * it under the terms of the GNU General Public License as published by
+   8:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * the Free Software Foundation; either version 2 of the License, or
+   9:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * (at your option) any later version.
+  10:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
+  11:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * This program is distributed in the hope that it will be useful,
+  12:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * GNU General Public License for more details.
+  15:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
+  16:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * You should have received a copy of the GNU General Public License
+  17:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * along with this program; if not, write to the Free Software
+  18:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  19:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * MA 02110-1301, USA.
+  20:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
+  21:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  * 
+  22:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  */
+  23:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #include <mfrc522.h>
+  24:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #include <spi.h>
+  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  26:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #if 1
+  27:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #include <lcd.h>
+  28:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** #endif
+  29:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  30:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** void mfrc522_init()
+  31:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
+  32:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t byte;
+  33:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_reset();
+  34:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
+  35:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(TModeReg, 0x8D);
+  36:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TPrescalerReg, 0x3E);
+  37:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TReloadReg_1, 30);   
+  38:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TReloadReg_2, 0);	
+  39:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(TxASKReg, 0x40);	
+  40:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(ModeReg, 0x3D);
+  41:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
+  42:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	byte = mfrc522_read(TxControlReg);
+  43:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	if(!(byte&0x03))
+  44:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{
+  45:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		mfrc522_write(TxControlReg,byte|0x03);
+  46:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
+  47:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
+  48:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  49:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** void mfrc522_write(uint8_t reg, uint8_t data)
+  50:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
  116               	.LM0:
  117               	.LFBB1:
  118 0000 CF93      		push r28
@@ -66,72 +66,72 @@
  121               	/* stack size = 1 */
  122               	.L__stack_usage = 1
  123 0002 C62F      		mov r28,r22
-  51:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	ENABLE_CHIP();
+  51:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	ENABLE_CHIP();
  125               	.LM1:
  126 0004 2A98      		cbi 0x5,2
-  52:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	spi_transmit((reg<<1)&0x7E);
+  52:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	spi_transmit((reg<<1)&0x7E);
  128               	.LM2:
  129 0006 880F      		lsl r24
  130 0008 8E77      		andi r24,lo8(126)
  131 000a 0E94 0000 		call spi_transmit
-  53:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	spi_transmit(data);
+  53:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	spi_transmit(data);
  133               	.LM3:
  134 000e 8C2F      		mov r24,r28
  135 0010 0E94 0000 		call spi_transmit
-  54:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	DISABLE_CHIP();
+  54:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	DISABLE_CHIP();
  137               	.LM4:
  138 0014 2A9A      		sbi 0x5,2
  139               	/* epilogue start */
-  55:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
+  55:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
  141               	.LM5:
  142 0016 CF91      		pop r28
  143 0018 0895      		ret
  145               	.Lscope1:
  148               	.global	mfrc522_read
  150               	mfrc522_read:
-  56:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
-  57:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** uint8_t mfrc522_read(uint8_t reg)
-  58:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
+  56:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  57:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** uint8_t mfrc522_read(uint8_t reg)
+  58:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
  152               	.LM6:
  153               	.LFBB2:
  154               	/* prologue: function */
  155               	/* frame size = 0 */
  156               	/* stack size = 0 */
  157               	.L__stack_usage = 0
-  59:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t data;	
-  60:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	ENABLE_CHIP();
+  59:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t data;	
+  60:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	ENABLE_CHIP();
  159               	.LM7:
  160 001a 2A98      		cbi 0x5,2
-  61:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	spi_transmit(((reg<<1)&0x7E)|0x80);
+  61:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	spi_transmit(((reg<<1)&0x7E)|0x80);
  162               	.LM8:
  163 001c 880F      		lsl r24
  164 001e 8E77      		andi r24,lo8(126)
  165 0020 8068      		ori r24,lo8(-128)
  166 0022 0E94 0000 		call spi_transmit
-  62:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	data = spi_transmit(0x00);
+  62:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	data = spi_transmit(0x00);
  168               	.LM9:
  169 0026 80E0      		ldi r24,0
  170 0028 0E94 0000 		call spi_transmit
-  63:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	DISABLE_CHIP();
+  63:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	DISABLE_CHIP();
  172               	.LM10:
  173 002c 2A9A      		sbi 0x5,2
-  64:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	return data;
-  65:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
+  64:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	return data;
+  65:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
  175               	.LM11:
  176 002e 0895      		ret
  178               	.Lscope2:
  180               	.global	mfrc522_reset
  182               	mfrc522_reset:
-  66:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
-  67:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** void mfrc522_reset()
-  68:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
+  66:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  67:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** void mfrc522_reset()
+  68:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
  184               	.LM12:
  185               	.LFBB3:
  186               	/* prologue: function */
  187               	/* frame size = 0 */
  188               	/* stack size = 0 */
  189               	.L__stack_usage = 0
-  69:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(CommandReg,SoftReset_CMD);
+  69:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(CommandReg,SoftReset_CMD);
  191               	.LM13:
  192 0030 6FE0      		ldi r22,lo8(15)
  193 0032 81E0      		ldi r24,lo8(1)
@@ -139,56 +139,56 @@
  196               	.Lscope3:
  198               	.global	mfrc522_init
  200               	mfrc522_init:
-  31:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t byte;
+  31:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t byte;
  202               	.LM14:
  203               	.LFBB4:
  204               	/* prologue: function */
  205               	/* frame size = 0 */
  206               	/* stack size = 0 */
  207               	.L__stack_usage = 0
-  33:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
+  33:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
  209               	.LM15:
  210 0038 0E94 0000 		call mfrc522_reset
-  35:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TPrescalerReg, 0x3E);
+  35:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TPrescalerReg, 0x3E);
  212               	.LM16:
  213 003c 6DE8      		ldi r22,lo8(-115)
  214 003e 8AE2      		ldi r24,lo8(42)
  215 0040 0E94 0000 		call mfrc522_write
-  36:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TReloadReg_1, 30);   
+  36:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TReloadReg_1, 30);   
  217               	.LM17:
  218 0044 6EE3      		ldi r22,lo8(62)
  219 0046 8BE2      		ldi r24,lo8(43)
  220 0048 0E94 0000 		call mfrc522_write
-  37:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TReloadReg_2, 0);	
+  37:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(TReloadReg_2, 0);	
  222               	.LM18:
  223 004c 6EE1      		ldi r22,lo8(30)
  224 004e 8CE2      		ldi r24,lo8(44)
  225 0050 0E94 0000 		call mfrc522_write
-  38:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(TxASKReg, 0x40);	
+  38:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(TxASKReg, 0x40);	
  227               	.LM19:
  228 0054 60E0      		ldi r22,0
  229 0056 8DE2      		ldi r24,lo8(45)
  230 0058 0E94 0000 		call mfrc522_write
-  39:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(ModeReg, 0x3D);
+  39:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(ModeReg, 0x3D);
  232               	.LM20:
  233 005c 60E4      		ldi r22,lo8(64)
  234 005e 85E1      		ldi r24,lo8(21)
  235 0060 0E94 0000 		call mfrc522_write
-  40:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
+  40:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
  237               	.LM21:
  238 0064 6DE3      		ldi r22,lo8(61)
  239 0066 81E1      		ldi r24,lo8(17)
  240 0068 0E94 0000 		call mfrc522_write
-  42:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	if(!(byte&0x03))
+  42:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	if(!(byte&0x03))
  242               	.LM22:
  243 006c 84E1      		ldi r24,lo8(20)
  244 006e 0E94 0000 		call mfrc522_read
-  43:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{
+  43:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{
  246               	.LM23:
  247 0072 982F      		mov r25,r24
  248 0074 9370      		andi r25,lo8(3)
  249 0076 01F4      		brne .L4
-  45:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
+  45:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
  251               	.LM24:
  252 0078 682F      		mov r22,r24
  253 007a 6360      		ori r22,lo8(3)
@@ -199,28 +199,28 @@
  262               	.Lscope4:
  267               	.global	mfrc522_to_card
  269               	mfrc522_to_card:
-  70:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
-  71:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
-  72:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** uint8_t	mfrc522_request(uint8_t req_mode, uint8_t * tag_type)
-  73:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
-  74:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t  status;  
-  75:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint32_t backBits;//The received data bits
-  76:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
-  77:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(BitFramingReg, 0x07);//TxLastBists = BitFramingReg[2..0]	???
-  78:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
-  79:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	tag_type[0] = req_mode;
-  80:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	status = mfrc522_to_card(Transceive_CMD, tag_type, 1, tag_type, &backBits);
-  81:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
-  82:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	if ((status != CARD_FOUND) || (backBits != 0x10))
-  83:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{    
-  84:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		status = ERROR;
-  85:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
-  86:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****    
-  87:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	return status;
-  88:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
-  89:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
-  90:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data,
-  91:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
+  70:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
+  71:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  72:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** uint8_t	mfrc522_request(uint8_t req_mode, uint8_t * tag_type)
+  73:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
+  74:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t  status;  
+  75:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint32_t backBits;//The received data bits
+  76:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  77:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(BitFramingReg, 0x07);//TxLastBists = BitFramingReg[2..0]	???
+  78:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
+  79:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	tag_type[0] = req_mode;
+  80:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	status = mfrc522_to_card(Transceive_CMD, tag_type, 1, tag_type, &backBits);
+  81:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  82:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	if ((status != CARD_FOUND) || (backBits != 0x10))
+  83:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{    
+  84:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		status = ERROR;
+  85:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
+  86:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****    
+  87:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	return status;
+  88:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
+  89:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  90:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data,
+  91:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
  271               	.LM25:
  272               	.LFBB5:
  273 0084 3F92      		push r3
@@ -249,15 +249,15 @@
  296 00aa 842E      		mov r8,r20
  297 00ac 7901      		movw r14,r18
  298 00ae E801      		movw r28,r16
-  92:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t status = ERROR;
-  93:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t irqEn = 0x00;
-  94:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t waitIRq = 0x00;
-  95:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t lastBits;
-  96:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t n;
-  97:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t	tmp;
-  98:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint32_t i;
-  99:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 100:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     switch (cmd)
+  92:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t status = ERROR;
+  93:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t irqEn = 0x00;
+  94:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t waitIRq = 0x00;
+  95:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t lastBits;
+  96:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t n;
+  97:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t	tmp;
+  98:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint32_t i;
+  99:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 100:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     switch (cmd)
  300               	.LM26:
  301 00b0 8CE0      		ldi r24,lo8(12)
  302 00b2 D816      		cp r13,r24
@@ -267,61 +267,61 @@
  306 00ba DE16      		cp r13,r30
  307 00bc 01F4      		brne .+2
  308 00be 00C0      		rjmp .L25
-  94:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t lastBits;
+  94:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t lastBits;
  310               	.LM27:
  311 00c0 312C      		mov r3,__zero_reg__
-  93:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t waitIRq = 0x00;
+  93:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t waitIRq = 0x00;
  313               	.LM28:
  314 00c2 C12C      		mov r12,__zero_reg__
  315               	.L9:
- 101:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {
- 102:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         case MFAuthent_CMD:		//Certification cards close
- 103:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{
- 104:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			irqEn = 0x12;
- 105:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			waitIRq = 0x10;
- 106:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
- 107:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
- 108:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		case Transceive_CMD:	//Transmit FIFO data
- 109:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{
- 110:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			irqEn = 0x77;
- 111:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			waitIRq = 0x30;
- 112:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
- 113:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
- 114:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		default:
- 115:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
- 116:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
- 117:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****    
- 118:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     //mfrc522_write(ComIEnReg, irqEn|0x80);	//Interrupt request
- 119:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     n=mfrc522_read(ComIrqReg);
+ 101:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {
+ 102:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         case MFAuthent_CMD:		//Certification cards close
+ 103:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{
+ 104:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			irqEn = 0x12;
+ 105:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			waitIRq = 0x10;
+ 106:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
+ 107:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
+ 108:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		case Transceive_CMD:	//Transmit FIFO data
+ 109:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{
+ 110:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			irqEn = 0x77;
+ 111:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			waitIRq = 0x30;
+ 112:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
+ 113:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
+ 114:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		default:
+ 115:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
+ 116:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
+ 117:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****    
+ 118:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     //mfrc522_write(ComIEnReg, irqEn|0x80);	//Interrupt request
+ 119:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     n=mfrc522_read(ComIrqReg);
  317               	.LM29:
  318 00c4 84E0      		ldi r24,lo8(4)
  319 00c6 0E94 0000 		call mfrc522_read
- 120:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(ComIrqReg,n&(~0x80));//clear all interrupt bits
+ 120:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(ComIrqReg,n&(~0x80));//clear all interrupt bits
  321               	.LM30:
  322 00ca 682F      		mov r22,r24
  323 00cc 6F77      		andi r22,lo8(127)
  324 00ce 84E0      		ldi r24,lo8(4)
  325 00d0 0E94 0000 		call mfrc522_write
- 121:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     n=mfrc522_read(FIFOLevelReg);
+ 121:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     n=mfrc522_read(FIFOLevelReg);
  327               	.LM31:
  328 00d4 8AE0      		ldi r24,lo8(10)
  329 00d6 0E94 0000 		call mfrc522_read
- 122:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(FIFOLevelReg,n|0x80);//flush FIFO data
+ 122:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     mfrc522_write(FIFOLevelReg,n|0x80);//flush FIFO data
  331               	.LM32:
  332 00da 682F      		mov r22,r24
  333 00dc 6068      		ori r22,lo8(-128)
  334 00de 8AE0      		ldi r24,lo8(10)
  335 00e0 0E94 0000 		call mfrc522_write
- 123:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     
- 124:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
+ 123:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     
+ 124:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
  337               	.LM33:
  338 00e4 60E0      		ldi r22,0
  339 00e6 81E0      		ldi r24,lo8(1)
  340 00e8 0E94 0000 		call mfrc522_write
  341 00ec 8501      		movw r16,r10
- 125:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 126:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	//Writing data to the FIFO
- 127:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     for (i=0; i<send_data_len; i++)
+ 125:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 126:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	//Writing data to the FIFO
+ 127:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     for (i=0; i<send_data_len; i++)
  343               	.LM34:
  344 00ee 412C      		mov r4,__zero_reg__
  345 00f0 512C      		mov r5,__zero_reg__
@@ -337,34 +337,34 @@
  356 0100 7B04      		cpc r7,r11
  357 0102 00F4      		brsh .+2
  358 0104 00C0      		rjmp .L11
- 128:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {   
- 129:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		mfrc522_write(FIFODataReg, send_data[i]);    
- 130:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
- 131:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 132:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	//Execute the cmd
- 133:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(CommandReg, cmd);
+ 128:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {   
+ 129:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		mfrc522_write(FIFODataReg, send_data[i]);    
+ 130:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
+ 131:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 132:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	//Execute the cmd
+ 133:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(CommandReg, cmd);
  360               	.LM36:
  361 0106 6D2D      		mov r22,r13
  362 0108 81E0      		ldi r24,lo8(1)
  363 010a 0E94 0000 		call mfrc522_write
- 134:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     if (cmd == Transceive_CMD)
+ 134:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     if (cmd == Transceive_CMD)
  365               	.LM37:
  366 010e 8CE0      		ldi r24,lo8(12)
  367 0110 D812      		cpse r13,r24
  368 0112 00C0      		rjmp .L12
- 135:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {    
- 136:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		n=mfrc522_read(BitFramingReg);
+ 135:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {    
+ 136:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		n=mfrc522_read(BitFramingReg);
  370               	.LM38:
  371 0114 8DE0      		ldi r24,lo8(13)
  372 0116 0E94 0000 		call mfrc522_read
- 137:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		mfrc522_write(BitFramingReg,n|0x80);  
+ 137:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		mfrc522_write(BitFramingReg,n|0x80);  
  374               	.LM39:
  375 011a 682F      		mov r22,r24
  376 011c 6068      		ori r22,lo8(-128)
  377 011e 8DE0      		ldi r24,lo8(13)
  378 0120 0E94 0000 		call mfrc522_write
  379               	.L12:
- 127:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {   
+ 127:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {   
  381               	.LM40:
  382 0124 40ED      		ldi r20,lo8(-48)
  383 0126 842E      		mov r8,r20
@@ -372,28 +372,28 @@
  385 012a 942E      		mov r9,r20
  386 012c A12C      		mov r10,__zero_reg__
  387 012e B12C      		mov r11,__zero_reg__
- 138:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}   
- 139:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     
- 140:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	//Waiting to receive data to complete
- 141:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	i = 2000;	//i according to the clock frequency adjustment, the operator M1 card maximum waiting ti
- 142:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     do 
- 143:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {
- 144:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		//CommIrqReg[7..0]
- 145:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		//Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
- 146:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         n = mfrc522_read(ComIrqReg);
- 147:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         i--;
- 148:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
- 149:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     while ((i!=0) && !(n&0x01) && !(n&waitIRq));
+ 138:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}   
+ 139:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     
+ 140:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	//Waiting to receive data to complete
+ 141:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	i = 2000;	//i according to the clock frequency adjustment, the operator M1 card maximum waiting ti
+ 142:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     do 
+ 143:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {
+ 144:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		//CommIrqReg[7..0]
+ 145:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		//Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
+ 146:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         n = mfrc522_read(ComIrqReg);
+ 147:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         i--;
+ 148:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
+ 149:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     while ((i!=0) && !(n&0x01) && !(n&waitIRq));
  389               	.LM41:
  390 0130 132D      		mov r17,r3
  391 0132 1160      		ori r17,lo8(1)
  392               	.L14:
- 146:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         i--;
+ 146:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         i--;
  394               	.LM42:
  395 0134 84E0      		ldi r24,lo8(4)
  396 0136 0E94 0000 		call mfrc522_read
  397 013a 082F      		mov r16,r24
- 147:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
+ 147:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
  399               	.LM43:
  400 013c E1E0      		ldi r30,1
  401 013e 8E1A      		sub r8,r30
@@ -407,79 +407,79 @@
  411 014a 8023      		and r24,r16
  412 014c 01F0      		breq .L14
  413               	.L13:
- 150:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 151:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	tmp=mfrc522_read(BitFramingReg);
+ 150:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 151:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	tmp=mfrc522_read(BitFramingReg);
  415               	.LM46:
  416 014e 8DE0      		ldi r24,lo8(13)
  417 0150 0E94 0000 		call mfrc522_read
- 152:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(BitFramingReg,tmp&(~0x80));
+ 152:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(BitFramingReg,tmp&(~0x80));
  419               	.LM47:
  420 0154 682F      		mov r22,r24
  421 0156 6F77      		andi r22,lo8(127)
  422 0158 8DE0      		ldi r24,lo8(13)
  423 015a 0E94 0000 		call mfrc522_write
- 153:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
- 154:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     if (i != 0)
+ 153:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
+ 154:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     if (i != 0)
  425               	.LM48:
  426 015e 8928      		or r8,r9
  427 0160 8A28      		or r8,r10
  428 0162 8B28      		or r8,r11
  429 0164 01F4      		brne .L15
  430               	.L17:
-  92:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t irqEn = 0x00;
+  92:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t irqEn = 0x00;
  432               	.LM49:
  433 0166 03E0      		ldi r16,lo8(3)
  434               	.L6:
- 155:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {    
- 156:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         if(!(mfrc522_read(ErrorReg) & 0x1B))	//BufferOvfl Collerr CRCErr ProtecolErr
- 157:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         {
- 158:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             status = CARD_FOUND;
- 159:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             if (n & irqEn & 0x01)
- 160:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             {   
- 161:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				status = CARD_NOT_FOUND;			//??   
- 162:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			}
- 163:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 164:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             if (cmd == Transceive_CMD)
- 165:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             {
- 166:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                	n = mfrc522_read(FIFOLevelReg);
- 167:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****               	lastBits = mfrc522_read(ControlReg) & 0x07;
- 168:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 if (lastBits)
- 169:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
- 170:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					*back_data_len = (n-1)*8 + lastBits;   
- 171:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
- 172:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 else
- 173:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
- 174:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					*back_data_len = n*8;   
- 175:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
- 176:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 177:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 if (n == 0)
- 178:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
- 179:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					n = 1;    
- 180:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
- 181:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 if (n > MAX_LEN)
- 182:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
- 183:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					n = MAX_LEN;   
- 184:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
- 185:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				
- 186:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				//Reading the received data in FIFO
- 187:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 for (i=0; i<n; i++)
- 188:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
- 189:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					back_data[i] = mfrc522_read(FIFODataReg);    
- 190:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
- 191:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             }
- 192:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         }
- 193:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         else
- 194:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         {   
- 195:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			status = ERROR;  
- 196:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
- 197:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         
- 198:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
- 199:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
- 200:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     //SetBitMask(ControlReg,0x80);           //timer stops
- 201:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     //mfrc522_write(cmdReg, PCD_IDLE); 
- 202:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 203:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     return status;
- 204:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
+ 155:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {    
+ 156:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         if(!(mfrc522_read(ErrorReg) & 0x1B))	//BufferOvfl Collerr CRCErr ProtecolErr
+ 157:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         {
+ 158:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             status = CARD_FOUND;
+ 159:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             if (n & irqEn & 0x01)
+ 160:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             {   
+ 161:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				status = CARD_NOT_FOUND;			//??   
+ 162:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			}
+ 163:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 164:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             if (cmd == Transceive_CMD)
+ 165:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             {
+ 166:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                	n = mfrc522_read(FIFOLevelReg);
+ 167:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****               	lastBits = mfrc522_read(ControlReg) & 0x07;
+ 168:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 if (lastBits)
+ 169:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 170:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					*back_data_len = (n-1)*8 + lastBits;   
+ 171:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 172:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 else
+ 173:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 174:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					*back_data_len = n*8;   
+ 175:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 176:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 177:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 if (n == 0)
+ 178:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 179:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					n = 1;    
+ 180:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 181:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 if (n > MAX_LEN)
+ 182:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 183:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					n = MAX_LEN;   
+ 184:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 185:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				
+ 186:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				//Reading the received data in FIFO
+ 187:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 for (i=0; i<n; i++)
+ 188:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 189:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 					back_data[i] = mfrc522_read(FIFODataReg);    
+ 190:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 191:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             }
+ 192:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         }
+ 193:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         else
+ 194:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         {   
+ 195:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			status = ERROR;  
+ 196:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
+ 197:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         
+ 198:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
+ 199:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
+ 200:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     //SetBitMask(ControlReg,0x80);           //timer stops
+ 201:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     //mfrc522_write(cmdReg, PCD_IDLE); 
+ 202:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 203:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     return status;
+ 204:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
  436               	.LM50:
  437 0168 802F      		mov r24,r16
  438               	/* epilogue start */
@@ -502,36 +502,36 @@
  455 018a 3F90      		pop r3
  456 018c 0895      		ret
  457               	.L8:
- 111:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
+ 111:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
  459               	.LM51:
  460 018e 70E3      		ldi r23,lo8(48)
  461 0190 372E      		mov r3,r23
- 110:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			waitIRq = 0x30;
+ 110:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			waitIRq = 0x30;
  463               	.LM52:
  464 0192 E7E7      		ldi r30,lo8(119)
  465 0194 CE2E      		mov r12,r30
- 112:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
+ 112:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
  467               	.LM53:
  468 0196 00C0      		rjmp .L9
  469               	.L25:
- 105:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
+ 105:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			break;
  471               	.LM54:
  472 0198 50E1      		ldi r21,lo8(16)
  473 019a 352E      		mov r3,r21
- 104:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			waitIRq = 0x10;
+ 104:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			waitIRq = 0x10;
  475               	.LM55:
  476 019c 62E1      		ldi r22,lo8(18)
  477 019e C62E      		mov r12,r22
  478 01a0 00C0      		rjmp .L9
  479               	.L11:
- 129:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
+ 129:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
  481               	.LM56:
  482 01a2 F801      		movw r30,r16
  483 01a4 6191      		ld r22,Z+
  484 01a6 8F01      		movw r16,r30
  485 01a8 89E0      		ldi r24,lo8(9)
  486 01aa 0E94 0000 		call mfrc522_write
- 127:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {   
+ 127:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     {   
  488               	.LM57:
  489 01ae FFEF      		ldi r31,-1
  490 01b0 4F1A      		sub r4,r31
@@ -540,34 +540,34 @@
  493 01b6 7F0A      		sbc r7,r31
  494 01b8 00C0      		rjmp .L10
  495               	.L15:
- 156:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         {
+ 156:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****         {
  497               	.LM58:
  498 01ba 86E0      		ldi r24,lo8(6)
  499 01bc 0E94 0000 		call mfrc522_read
  500 01c0 8B71      		andi r24,lo8(27)
  501 01c2 01F4      		brne .L17
- 159:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             {   
+ 159:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             {   
  503               	.LM59:
  504 01c4 FC2D      		mov r31,r12
  505 01c6 F170      		andi r31,lo8(1)
  506 01c8 CF2E      		mov r12,r31
  507 01ca C022      		and r12,r16
  508 01cc 01F0      		breq .L26
- 161:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			}
+ 161:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			}
  510               	.LM60:
  511 01ce 02E0      		ldi r16,lo8(2)
  512               	.L18:
- 164:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             {
+ 164:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             {
  514               	.LM61:
  515 01d0 8CE0      		ldi r24,lo8(12)
  516 01d2 D812      		cpse r13,r24
  517 01d4 00C0      		rjmp .L6
- 166:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****               	lastBits = mfrc522_read(ControlReg) & 0x07;
+ 166:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****               	lastBits = mfrc522_read(ControlReg) & 0x07;
  519               	.LM62:
  520 01d6 8AE0      		ldi r24,lo8(10)
  521 01d8 0E94 0000 		call mfrc522_read
  522 01dc 182F      		mov r17,r24
- 167:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 if (lastBits)
+ 167:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 if (lastBits)
  524               	.LM63:
  525 01de 8CE0      		ldi r24,lo8(12)
  526 01e0 0E94 0000 		call mfrc522_read
@@ -575,10 +575,10 @@
  528 01e6 2770      		andi r18,lo8(7)
  529 01e8 812F      		mov r24,r17
  530 01ea 90E0      		ldi r25,0
- 168:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 168:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
  532               	.LM64:
  533 01ec 01F0      		breq .L19
- 170:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 170:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
  535               	.LM65:
  536 01ee 0197      		sbiw r24,1
  537 01f0 33E0      		ldi r19,3
@@ -590,7 +590,7 @@
  543 01fa 820F      		add r24,r18
  544 01fc 911D      		adc r25,__zero_reg__
  545               	.L33:
- 174:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 174:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
  547               	.LM66:
  548 01fe 092E      		mov __tmp_reg__,r25
  549 0200 000C      		lsl r0
@@ -600,7 +600,7 @@
  553 0208 9983      		std Y+1,r25
  554 020a AA83      		std Y+2,r26
  555 020c BB83      		std Y+3,r27
- 177:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 177:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
  557               	.LM67:
  558 020e 1123      		tst r17
  559 0210 01F0      		breq .L27
@@ -609,7 +609,7 @@
  562 0216 10E1      		ldi r17,lo8(16)
  563               	.L21:
  564 0218 E701      		movw r28,r14
- 187:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 187:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
  566               	.LM68:
  567 021a 812C      		mov r8,__zero_reg__
  568 021c 912C      		mov r9,__zero_reg__
@@ -619,7 +619,7 @@
  572 0224 E12C      		mov r14,__zero_reg__
  573 0226 F12C      		mov r15,__zero_reg__
  574               	.L23:
- 187:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 187:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
  576               	.LM69:
  577 0228 8C14      		cp r8,r12
  578 022a 9D04      		cpc r9,r13
@@ -627,12 +627,12 @@
  580 022e BF04      		cpc r11,r15
  581 0230 00F0      		brlo .+2
  582 0232 00C0      		rjmp .L6
- 189:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 189:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
  584               	.LM70:
  585 0234 89E0      		ldi r24,lo8(9)
  586 0236 0E94 0000 		call mfrc522_read
  587 023a 8993      		st Y+,r24
- 187:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
+ 187:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****                 {   
  589               	.LM71:
  590 023c EFEF      		ldi r30,-1
  591 023e 8E1A      		sub r8,r30
@@ -641,12 +641,12 @@
  594 0244 BE0A      		sbc r11,r30
  595 0246 00C0      		rjmp .L23
  596               	.L26:
- 158:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             if (n & irqEn & 0x01)
+ 158:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****             if (n & irqEn & 0x01)
  598               	.LM72:
  599 0248 01E0      		ldi r16,lo8(1)
  600 024a 00C0      		rjmp .L18
  601               	.L19:
- 174:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 174:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
  603               	.LM73:
  604 024c 23E0      		ldi r18,3
  605               		1:
@@ -656,14 +656,14 @@
  609 0254 01F4      		brne 1b
  610 0256 00C0      		rjmp .L33
  611               	.L27:
- 179:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
+ 179:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 				}
  613               	.LM74:
  614 0258 11E0      		ldi r17,lo8(1)
  615 025a 00C0      		rjmp .L21
  623               	.Lscope5:
  627               	.global	mfrc522_request
  629               	mfrc522_request:
-  73:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t  status;  
+  73:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t  status;  
  631               	.LM75:
  632               	.LFBB6:
  633 025c EF92      		push r14
@@ -682,16 +682,16 @@
  646               	.L__stack_usage = 10
  647 0270 182F      		mov r17,r24
  648 0272 7B01      		movw r14,r22
-  77:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
+  77:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	
  650               	.LM76:
  651 0274 67E0      		ldi r22,lo8(7)
  652 0276 8DE0      		ldi r24,lo8(13)
  653 0278 0E94 0000 		call mfrc522_write
-  79:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	status = mfrc522_to_card(Transceive_CMD, tag_type, 1, tag_type, &backBits);
+  79:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	status = mfrc522_to_card(Transceive_CMD, tag_type, 1, tag_type, &backBits);
  655               	.LM77:
  656 027c F701      		movw r30,r14
  657 027e 1083      		st Z,r17
-  80:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  80:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
  659               	.LM78:
  660 0280 8E01      		movw r16,r28
  661 0282 0F5F      		subi r16,-1
@@ -701,11 +701,11 @@
  665 028a B701      		movw r22,r14
  666 028c 8CE0      		ldi r24,lo8(12)
  667 028e 0E94 0000 		call mfrc522_to_card
-  82:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{    
+  82:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{    
  669               	.LM79:
  670 0292 8130      		cpi r24,lo8(1)
  671 0294 01F4      		brne .L37
-  82:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{    
+  82:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{    
  673               	.LM80:
  674 0296 4981      		ldd r20,Y+1
  675 0298 5A81      		ldd r21,Y+2
@@ -718,7 +718,7 @@
  682 02a6 01F4      		brne .L37
  683               	.L34:
  684               	/* epilogue start */
-  88:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+  88:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
  686               	.LM81:
  687 02a8 0F90      		pop __tmp_reg__
  688 02aa 0F90      		pop __tmp_reg__
@@ -732,19 +732,19 @@
  696 02ba EF90      		pop r14
  697 02bc 0895      		ret
  698               	.L37:
-  84:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
+  84:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	}
  700               	.LM82:
  701 02be 83E0      		ldi r24,lo8(3)
-  87:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
+  87:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
  703               	.LM83:
  704 02c0 00C0      		rjmp .L34
  710               	.Lscope6:
  713               	.global	mfrc522_get_card_serial
  715               	mfrc522_get_card_serial:
- 205:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 206:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 207:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** uint8_t mfrc522_get_card_serial(uint8_t * serial_out)
- 208:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
+ 205:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 206:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 207:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** uint8_t mfrc522_get_card_serial(uint8_t * serial_out)
+ 208:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** {
  717               	.LM84:
  718               	.LFBB7:
  719 02c2 EF92      		push r14
@@ -762,27 +762,27 @@
  731               	/* stack size = 10 */
  732               	.L__stack_usage = 10
  733 02d6 7C01      		movw r14,r24
- 209:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t status;
- 210:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t i;
- 211:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t serNumCheck=0;
- 212:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint32_t unLen;
- 213:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     
- 214:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(BitFramingReg, 0x00);		//TxLastBists = BitFramingReg[2..0]
+ 209:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t status;
+ 210:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint8_t i;
+ 211:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	uint8_t serNumCheck=0;
+ 212:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     uint32_t unLen;
+ 213:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     
+ 214:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	mfrc522_write(BitFramingReg, 0x00);		//TxLastBists = BitFramingReg[2..0]
  735               	.LM85:
  736 02d8 60E0      		ldi r22,0
  737 02da 8DE0      		ldi r24,lo8(13)
  738 02dc 0E94 0000 		call mfrc522_write
- 215:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  
- 216:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     serial_out[0] = PICC_ANTICOLL;
+ 215:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****  
+ 216:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     serial_out[0] = PICC_ANTICOLL;
  740               	.LM86:
  741 02e0 83E9      		ldi r24,lo8(-109)
  742 02e2 F701      		movw r30,r14
  743 02e4 8083      		st Z,r24
- 217:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     serial_out[1] = 0x20;
+ 217:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     serial_out[1] = 0x20;
  745               	.LM87:
  746 02e6 80E2      		ldi r24,lo8(32)
  747 02e8 8183      		std Z+1,r24
- 218:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     status = mfrc522_to_card(Transceive_CMD, serial_out, 2, serial_out, &unLen);
+ 218:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     status = mfrc522_to_card(Transceive_CMD, serial_out, 2, serial_out, &unLen);
  749               	.LM88:
  750 02ea 8E01      		movw r16,r28
  751 02ec 0F5F      		subi r16,-1
@@ -792,8 +792,8 @@
  755 02f4 B701      		movw r22,r14
  756 02f6 8CE0      		ldi r24,lo8(12)
  757 02f8 0E94 0000 		call mfrc522_to_card
- 219:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
- 220:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     if (status == CARD_FOUND)
+ 219:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 
+ 220:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     if (status == CARD_FOUND)
  759               	.LM89:
  760 02fc 8130      		cpi r24,lo8(1)
  761 02fe 01F4      		brne .L38
@@ -803,35 +803,35 @@
  765 0306 3F4F      		sbci r19,-1
  766 0308 90E0      		ldi r25,0
  767               	.L40:
- 221:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{
- 222:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		//Check card serial number
- 223:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		for (i=0; i<4; i++)
- 224:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{   
- 225:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		 	serNumCheck ^= serial_out[i];
+ 221:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 	{
+ 222:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		//Check card serial number
+ 223:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		for (i=0; i<4; i++)
+ 224:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{   
+ 225:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		 	serNumCheck ^= serial_out[i];
  769               	.LM90:
  770 030a 4191      		ld r20,Z+
  771 030c 9427      		eor r25,r20
- 223:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{   
+ 223:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{   
  773               	.LM91:
  774 030e E217      		cp r30,r18
  775 0310 F307      		cpc r31,r19
  776 0312 01F4      		brne .L40
- 226:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
- 227:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		if (serNumCheck != serial_out[i])
+ 226:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
+ 227:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		if (serNumCheck != serial_out[i])
  778               	.LM92:
  779 0314 F701      		movw r30,r14
  780 0316 2481      		ldd r18,Z+4
  781 0318 9213      		cpse r25,r18
- 228:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{   
- 229:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			status = ERROR;    
+ 228:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		{   
+ 229:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 			status = ERROR;    
  783               	.LM93:
  784 031a 83E0      		ldi r24,lo8(3)
  785               	.L38:
  786               	/* epilogue start */
- 230:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
- 231:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
- 232:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     return status;
- 233:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
+ 230:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** 		}
+ 231:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     }
+ 232:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c ****     return status;
+ 233:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/mfrc522.c **** }
  788               	.LM94:
  789 031c 0F90      		pop __tmp_reg__
  790 031e 0F90      		pop __tmp_reg__
@@ -849,18 +849,18 @@
  809               		.ident	"GCC: (GNU) 6.2.0"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mfrc522.c
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:114    .text:0000000000000000 mfrc522_write
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:150    .text:000000000000001a mfrc522_read
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:182    .text:0000000000000030 mfrc522_reset
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:200    .text:0000000000000038 mfrc522_init
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:269    .text:0000000000000084 mfrc522_to_card
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:629    .text:000000000000025c mfrc522_request
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccY6wU03.s:715    .text:00000000000002c2 mfrc522_get_card_serial
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:114    .text:0000000000000000 mfrc522_write
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:150    .text:000000000000001a mfrc522_read
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:182    .text:0000000000000030 mfrc522_reset
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:200    .text:0000000000000038 mfrc522_init
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:269    .text:0000000000000084 mfrc522_to_card
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:629    .text:000000000000025c mfrc522_request
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7dEKC1.s:715    .text:00000000000002c2 mfrc522_get_card_serial
 
 UNDEFINED SYMBOLS
 spi_transmit

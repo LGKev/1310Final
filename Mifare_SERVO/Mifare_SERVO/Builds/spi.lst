@@ -8,44 +8,44 @@
    9               	.Ltext0:
  108               	.global	spi_init
  110               	spi_init:
-   1:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** /*
-   2:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * spi.c
-   3:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
-   4:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * Copyright 2013 Shimon <shimon@monistit.com>
-   5:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
-   6:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * This program is free software; you can redistribute it and/or modify
-   7:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * it under the terms of the GNU General Public License as published by
-   8:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * the Free Software Foundation; either version 2 of the License, or
-   9:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * (at your option) any later version.
-  10:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
-  11:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * This program is distributed in the hope that it will be useful,
-  12:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  13:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  14:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * GNU General Public License for more details.
-  15:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
-  16:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * You should have received a copy of the GNU General Public License
-  17:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * along with this program; if not, write to the Free Software
-  18:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-  19:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * MA 02110-1301, USA.
-  20:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
-  21:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
-  22:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c ****  */
-  23:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** #include <spi.h>
-  24:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** 
-  25:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** #if SPI_CONFIG_AS_MASTER
-  26:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** void spi_init()
-  27:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** {
+   1:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** /*
+   2:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * spi.c
+   3:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
+   4:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * Copyright 2013 Shimon <shimon@monistit.com>
+   5:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
+   6:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * This program is free software; you can redistribute it and/or modify
+   7:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * it under the terms of the GNU General Public License as published by
+   8:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * the Free Software Foundation; either version 2 of the License, or
+   9:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * (at your option) any later version.
+  10:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
+  11:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * This program is distributed in the hope that it will be useful,
+  12:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * GNU General Public License for more details.
+  15:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
+  16:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * You should have received a copy of the GNU General Public License
+  17:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * along with this program; if not, write to the Free Software
+  18:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  19:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * MA 02110-1301, USA.
+  20:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
+  21:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  * 
+  22:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c ****  */
+  23:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** #include <spi.h>
+  24:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** 
+  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** #if SPI_CONFIG_AS_MASTER
+  26:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** void spi_init()
+  27:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** {
  112               	.LM0:
  113               	.LFBB1:
  114               	/* prologue: function */
  115               	/* frame size = 0 */
  116               	/* stack size = 0 */
  117               	.L__stack_usage = 0
-  28:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** 	SPI_DDR = (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
+  28:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** 	SPI_DDR = (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
  119               	.LM1:
  120 0000 8CE2      		ldi r24,lo8(44)
  121 0002 84B9      		out 0x4,r24
-  29:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** 	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);//prescaler 16
+  29:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** 	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);//prescaler 16
  123               	.LM2:
  124 0004 81E5      		ldi r24,lo8(81)
  125 0006 8CBD      		out 0x2c,r24
@@ -53,31 +53,31 @@
  128               	.Lscope1:
  131               	.global	spi_transmit
  133               	spi_transmit:
-  30:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** }
-  31:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** 
-  32:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** 
-  33:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** uint8_t spi_transmit(uint8_t data)
-  34:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** {
+  30:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** }
+  31:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** 
+  32:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** 
+  33:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** uint8_t spi_transmit(uint8_t data)
+  34:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** {
  135               	.LM3:
  136               	.LFBB2:
  137               	/* prologue: function */
  138               	/* frame size = 0 */
  139               	/* stack size = 0 */
  140               	.L__stack_usage = 0
-  35:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** 	SPDR = data;
+  35:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** 	SPDR = data;
  142               	.LM4:
  143 000a 8EBD      		out 0x2e,r24
  144               	.L3:
-  36:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** 	while(!(SPSR & (1<<SPIF)));
+  36:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** 	while(!(SPSR & (1<<SPIF)));
  146               	.LM5:
  147 000c 0DB4      		in __tmp_reg__,0x2d
  148 000e 07FE      		sbrs __tmp_reg__,7
  149 0010 00C0      		rjmp .L3
-  37:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** 	
-  38:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** 	return SPDR;
+  37:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** 	
+  38:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** 	return SPDR;
  151               	.LM6:
  152 0012 8EB5      		in r24,0x2e
-  39:/Users/kevinKuwata1/Documents/xcode/Mifare_SERVO/Mifare_SERVO/spi.c **** }
+  39:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/spi.c **** }
  154               	.LM7:
  155 0014 0895      		ret
  157               	.Lscope2:
@@ -85,12 +85,12 @@
  160               		.ident	"GCC: (GNU) 6.2.0"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 spi.c
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccN6OdFX.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccN6OdFX.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccN6OdFX.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccN6OdFX.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccN6OdFX.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccN6OdFX.s:110    .text:0000000000000000 spi_init
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccN6OdFX.s:133    .text:000000000000000a spi_transmit
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:110    .text:0000000000000000 spi_init
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:133    .text:000000000000000a spi_transmit
 
 NO UNDEFINED SYMBOLS

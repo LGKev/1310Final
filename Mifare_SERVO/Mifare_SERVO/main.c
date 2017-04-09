@@ -34,6 +34,10 @@
 #include <mfrc522.h>
 #include <string.h>
 
+#define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift, 1st bit.
+#define ToggleBit(port, bit) (port ^= (1 << bit) // hopefully toggles the bit
+
+
 uint8_t SelfTestBuffer[64];
 
 int main(void)
@@ -60,7 +64,32 @@ int main(void)
      
      */
 
+    void initServo(void){
+            //make A5 output.
+            DDRC=BV(5);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
+            PORTC=BV(5);     // PORTC is initially LOW OFF the led initially
+        
+        //set to closed position
+        PORTC = (BV(5));
+        _delay_us(1000);
+        PORTC   ^=BV(5);
+        _delay_us(19000);
+    }
+    
     int open(void){
+        PORTC = (BV(5));
+        _delay_us(2000);
+        PORTC   ^=BV(5);
+        _delay_us(18000);
+        
+        _delay_ms(4000);
+        
+        
+        PORTC = (BV(5));
+        _delay_us(1000);
+        PORTC   ^=BV(5);
+        _delay_us(19000);
+        
         return 1;
     }
     
@@ -70,6 +99,8 @@ int main(void)
     
     
     /* === === === END SERVO SETUP === === === */
+    
+    initServo();
     
     uint8_t byte;
     uint8_t str[MAX_LEN];
@@ -174,6 +205,8 @@ int main(void)
                 LCDClear();
                 _delay_ms(500);
                 LCDWriteString("SUCCESS");
+                open();
+                validCard=5;
             }
             if(validCard == -1){
                 LCDClear();
