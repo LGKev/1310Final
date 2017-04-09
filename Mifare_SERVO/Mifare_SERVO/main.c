@@ -7,23 +7,11 @@
  * main.c
  *
  * Copyright 2013 Shimon <shimon@monistit.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
- *
- *
+
+ base code from Shimon to get the spi and rfid working. I added the servo support and implimented servo action on valid card read.
+ 
+ the AVR requires a .1uF capacitor on power and ground. Without it the avr would randomly restart. I have had no restarts since the installation of the capacitors
+ 
  */
 
 #include <avr/io.h>
@@ -188,10 +176,10 @@ int main(void)
                 // LCDHexDumpXY(byte*2,0,str[byte]);
                 //       LCDHexDumpXY(byte*2, 0, str[byte]);
                 LCDWriteIntXY(0,1,str[k], -1);
-                if(str[k] == card1[k])
+                if(str[k] == card1[k]) //this is where you are testing
                 {
                     LCDWriteIntXY(0,1,str[k], -1);
-                    LCDWriteString("MATCH");
+                    LCDWriteString("MATCH"); //jk i am testing 
                     _delay_ms(50);
                     LCDClear();
                     validCard = 1;
