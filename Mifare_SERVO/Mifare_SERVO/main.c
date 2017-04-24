@@ -29,9 +29,6 @@
 
 uint8_t SelfTestBuffer[64];
 
-int main(void)
-{
-
     /* === === ===    SERVO SETUP   === === === */
     /*
      pin PB1 using 16 bit timer
@@ -83,9 +80,12 @@ return 1;
 int close(void){
         return 1;
 }
+/* === === === END SERVO SETUP === === === */
 
 
-    /* === === === END SERVO SETUP === === === */
+
+int main(void)
+{
 
     initServo();
 
@@ -93,18 +93,14 @@ int close(void){
     uint8_t str[MAX_LEN];
     _delay_ms(50);
     LCDInit(LS_BLINK);
-    LCDWriteStringXY(2,0,"RFID Reader");
-    LCDWriteStringXY(5,1,VERSION_STR);
+    LCDWriteStringXY(2,0,"ECEN1310 Door Opener");
 
-    open(); //servo
-    close(); //servo
-    spi_init();
+    spi_init(); //start communication for rfid
     _delay_ms(1000);
     LCDClear();
 
     open();
     close();
-
 
     //init reader
     mfrc522_init();
