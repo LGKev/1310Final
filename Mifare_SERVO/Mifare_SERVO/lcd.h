@@ -1,24 +1,24 @@
-/*
+ /*
  * lcd.h
- * 
+ *
  * Copyright 2013 Shimon <shimon@monistit.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- * 
- * 
+ *
+ *
  */
 
 #include <avr/io.h>
@@ -38,10 +38,10 @@
 	LCD CONNECTIONS
 *************************************************/
 
-//USE THIS PIN LAYOUT schematic pdf is wrong. 
+//USE THIS PIN LAYOUT schematic pdf is wrong.
 
 #define LCD_DATA D			//Port PD0-PD3 are connected to D4-D7
-#define LCD_DATA_POS 0	
+#define LCD_DATA_POS 0
 
 #define LCD_E D 			//Enable/strobe signal
 #define LCD_E_POS	PD4		//Position of enable in above port
@@ -70,7 +70,7 @@ Uncomment Just one of them
 
 //************************************************
 
-	
+
 
 
 //************************************************
@@ -131,7 +131,3 @@ void LCDBusyLoop();
 
 /*_________________________________________________________________________________________*/
 #endif
-
-
-
-
