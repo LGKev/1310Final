@@ -50,34 +50,44 @@ uint8_t SelfTestBuffer[64];
 
      */
 
-void initServo(void){
+void buttonInit(){
+    
+}
+
+void buttonRead(){
+    //button is hardware debounced.
+    
+}
+
+void initServo(volatile uint8_t *port, int pin){
             //make A5 output.
-            DDRC=BV(5);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
-            PORTC=BV(5);     // PORTC is initially LOW OFF the led initially
+            DDRC=BV(pin);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
+            PORTC=BV(pin);     // PORTC is initially LOW OFF the led initially
 
         //set to closed position
-        PORTC = (BV(5));
+        PORTC = (BV(pin));
         _delay_us(1000);
-        PORTC   ^=BV(5);
+        PORTC   ^=BV(pin);
         _delay_us(19000);
 }
 
-int open(void){
-        PORTC = (BV(5));
+int open(volatile uint8_t *port, int pin){
+        *port = (BV(pin));
         _delay_us(2000);
-        PORTC   ^=BV(5);
+         *port   ^=BV(pin);
         _delay_us(18000);
 
         _delay_ms(4000);
 
-        PORTC = (BV(5));
+         *port = (BV(pin));
         _delay_us(1000);
-        PORTC   ^=BV(5);
+         *port   ^=BV(pin);
         _delay_us(19000);
 return 1;
     }
 
 int close(void){
+    //ToDo: need to update this
         return 1;
 }
 /* === === === END SERVO SETUP === === === */
@@ -87,7 +97,7 @@ int close(void){
 int main(void)
 {
 
-    initServo();
+    initServo(5, PORTC); //make servo an output at pin 5
 
     uint8_t byte;
     uint8_t str[MAX_LEN];
@@ -99,7 +109,7 @@ int main(void)
     _delay_ms(1000);
     LCDClear();
 
-    open();
+    open(PORTC, 5);
     close();
 
     //init reader
