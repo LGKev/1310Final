@@ -6,99 +6,97 @@
    6               	__zero_reg__ = 1
    8               		.text
    9               	.Ltext0:
- 110               	open.1831:
+ 112               	.global	initServo
+ 114               	initServo:
    1:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** /*
    2:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  correctly reading tags now.
    3:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  on 3/17 this was working.
-   4:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  
+   4:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
    5:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  I am modifying it now to see if i can get a servo to turn with a card read.
-   6:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  
+   6:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
    7:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * main.c
    8:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  *
    9:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * Copyright 2013 Shimon <shimon@monistit.com>
-  10:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  *
-  11:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * This program is free software; you can redistribute it and/or modify
-  12:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * it under the terms of the GNU General Public License as published by
-  13:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * the Free Software Foundation; either version 2 of the License, or
-  14:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * (at your option) any later version.
-  15:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  *
-  16:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * This program is distributed in the hope that it will be useful,
-  17:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  18:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  19:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * GNU General Public License for more details.
-  20:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  *
-  21:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * You should have received a copy of the GNU General Public License
-  22:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * along with this program; if not, write to the Free Software
-  23:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-  24:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  * MA 02110-1301, USA.
-  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  *
-  26:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  *
-  27:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  */
+  10:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  11:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  base code from Shimon to get the spi and rfid working. I added the servo support and implimented s
+  12:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  13:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  the AVR requires a .1uF capacitor on power and ground. Without it the avr would randomly restart. 
+  14:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  15:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****  */
+  16:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  17:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <avr/io.h>
+  18:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <util/delay.h>
+  19:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <lcd.h>
+  20:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <utils.h>
+  21:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <spi.h>
+  22:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <mfrc522.h>
+  23:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <string.h>
+  24:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift
+  26:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #define ToggleBit(port, bit) (port ^= (1 << bit) //  toggles the bit by negating
+  27:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
   28:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
-  29:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <avr/io.h>
-  30:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <util/delay.h>
-  31:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <lcd.h>
-  32:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <utils.h>
-  33:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <spi.h>
-  34:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <mfrc522.h>
-  35:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #include <string.h>
+  29:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  30:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** uint8_t SelfTestBuffer[64];
+  31:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  32:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     /* === === ===    SERVO SETUP   === === === */
+  33:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     /*
+  34:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      pin PB1 using 16 bit timer
+  35:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      Read servo example that I have in xcode.
   36:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
-  37:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift
-  38:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** #define ToggleBit(port, bit) (port ^= (1 << bit) // hopefully toggles the bit
+  37:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      to move the servo to max:
+  38:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
   39:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
-  40:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
-  41:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** uint8_t SelfTestBuffer[64];
+  40:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      OCR1A = ICR1 - 2000; //18000
+  41:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      _delay_ms(500);
   42:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
-  43:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** int main(void)
-  44:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** {
-  45:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
-  46:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     /* === === ===    SERVO SETUP   === === === */
-  47:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     /*
-  48:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      pin PB1 using 16 bit timer
-  49:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      Read servo example that I have in xcode.
-  50:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      
-  51:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      to move the servo to max:
+  43:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      to move servo to min
+  44:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      OCR1A = ICR1 - 1000; //1000 milisecond
+  45:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      _delay_ms(500);
+  46:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  47:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  48:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      cannot use timer 1 because its used for spi. so we have to use timer 2 or do all software
+  49:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  50:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  51:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      */
   52:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
-  53:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
-  54:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      OCR1A = ICR1 - 2000; //18000
-  55:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      _delay_ms(500);
-  56:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      
-  57:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      to move servo to min
-  58:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      OCR1A = ICR1 - 1000; //1000 milisecond
-  59:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      _delay_ms(500);
-  60:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
-  61:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      
-  62:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      cannot use timer 1 because its used for spi. so we have to use timer 2 or do all software
-  63:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      
-  64:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      
-  65:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****      */
+  53:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //void buttonInit(volatile uint8_t *port, int pin){
+  54:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //    
+  55:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //}
+  56:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  57:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //void buttonRead(){
+  58:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //    //button is hardware debounced.
+  59:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //    
+  60:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //}
+  61:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  62:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //RFID constants
+  63:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //holds id cards
+  64:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** uint8_t card1[16] = {174,68,45,91,156}; //only 5 elements!!!
+  65:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** int validCard = -2;
   66:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
-  67:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     void initServo(void){
-  68:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             //make A5 output.
-  69:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             DDRC=BV(5);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits 
-  70:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             PORTC=BV(5);     // PORTC is initially LOW OFF the led initially
-  71:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         
-  72:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         //set to closed position
-  73:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC = (BV(5));
-  74:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(1000);
-  75:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC   ^=BV(5);
-  76:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(19000);
-  77:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }
-  78:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
-  79:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     int open(void){
- 112               	.LM0:
- 113               	.LFBB1:
- 114               	/* prologue: function */
- 115               	/* frame size = 0 */
- 116               	/* stack size = 0 */
- 117               	.L__stack_usage = 0
-  80:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC = (BV(5));
- 119               	.LM1:
- 120 0000 80E2      		ldi r24,lo8(32)
- 121 0002 88B9      		out 0x8,r24
- 122               	.LBB80:
- 123               	.LBB81:
- 125               	.Ltext1:
+  67:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** void initServo(volatile uint8_t *port, volatile uint8_t *ddr, int pin){
+ 116               	.LM0:
+ 117               	.LFBB1:
+ 118               	/* prologue: function */
+ 119               	/* frame size = 0 */
+ 120               	/* stack size = 0 */
+ 121               	.L__stack_usage = 0
+  68:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //            //make A5 output.
+  69:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //            *ddr=BV(pin);      // PORTC declared as output 0xFF is all output 11111 so i have 8 b
+  70:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //            *port=BV(pin);     // PORTC is initially LOW OFF the led initially /
+  71:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     //to do make the register parameter work
+  72:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  73:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     DDRC = BV(5);
+ 123               	.LM1:
+ 124 0000 90E2      		ldi r25,lo8(32)
+ 125 0002 97B9      		out 0x7,r25
+  74:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         //set to closed position
+  75:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC = (BV(5));
+ 127               	.LM2:
+ 128 0004 98B9      		out 0x8,r25
+ 129               	.LBB78:
+ 130               	.LBB79:
+ 132               	.Ltext1:
    1:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
    2:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
    3:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
@@ -375,919 +373,989 @@
  274:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#endif
  275:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  276:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
- 127               	.LM2:
- 128 0004 EFE9      		ldi r30,lo8(3999)
- 129 0006 FFE0      		ldi r31,hi8(3999)
- 130 0008 3197      	1:	sbiw r30,1
- 131 000a 01F4      		brne 1b
- 132 000c 00C0      		rjmp .
- 133 000e 0000      		nop
- 134               	.LBE81:
- 135               	.LBE80:
- 137               	.Ltext2:
-  81:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(2000);
-  82:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC   ^=BV(5);
- 139               	.LM3:
- 140 0010 98B1      		in r25,0x8
- 141 0012 9827      		eor r25,r24
- 142 0014 98B9      		out 0x8,r25
- 143               	.LBB82:
- 144               	.LBB83:
- 146               	.Ltext3:
- 148               	.LM4:
- 149 0016 EFE9      		ldi r30,lo8(-29537)
- 150 0018 FCE8      		ldi r31,hi8(-29537)
- 151 001a 3197      	1:	sbiw r30,1
- 152 001c 01F4      		brne 1b
- 153 001e 00C0      		rjmp .
- 154 0020 0000      		nop
- 155               	.LBE83:
- 156               	.LBE82:
- 157               	.LBB84:
- 158               	.LBB85:
- 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 160               	.LM5:
- 161 0022 FFEF      		ldi r31,lo8(6399999)
- 162 0024 27EA      		ldi r18,hi8(6399999)
- 163 0026 31E6      		ldi r19,hlo8(6399999)
- 164 0028 F150      	1:	subi r31,1
- 165 002a 2040      		sbci r18,0
- 166 002c 3040      		sbci r19,0
- 167 002e 01F4      		brne 1b
- 168 0030 00C0      		rjmp .
- 169 0032 0000      		nop
- 170               	.LBE85:
- 171               	.LBE84:
+ 134               	.LM3:
+ 135 0006 EFEC      		ldi r30,lo8(1999)
+ 136 0008 F7E0      		ldi r31,hi8(1999)
+ 137 000a 3197      	1:	sbiw r30,1
+ 138 000c 01F4      		brne 1b
+ 139 000e 00C0      		rjmp .
+ 140 0010 0000      		nop
+ 141               	.LBE79:
+ 142               	.LBE78:
+ 144               	.Ltext2:
+  76:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(1000);
+  77:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC   ^=BV(5);
+ 146               	.LM4:
+ 147 0012 88B1      		in r24,0x8
+ 148 0014 8927      		eor r24,r25
+ 149 0016 88B9      		out 0x8,r24
+ 150               	.LBB80:
+ 151               	.LBB81:
+ 153               	.Ltext3:
+ 155               	.LM5:
+ 156 0018 8FE6      		ldi r24,lo8(-27537)
+ 157 001a 94E9      		ldi r25,hi8(-27537)
+ 158 001c 0197      	1:	sbiw r24,1
+ 159 001e 01F4      		brne 1b
+ 160 0020 00C0      		rjmp .
+ 161 0022 0000      		nop
+ 162 0024 0895      		ret
+ 163               	.LBE81:
+ 164               	.LBE80:
+ 166               	.Lscope1:
+ 169               	.global	open
+ 171               	open:
  173               	.Ltext4:
-  83:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(18000);
-  84:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         
-  85:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_ms(4000);
-  86:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         
-  87:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         
-  88:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC = (BV(5));
+  78:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(19000); //remember that total period is 2ms or 2k micros and you need to do it th
+  79:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** }
+  80:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+  81:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** int open(volatile uint8_t *port, int pin){
  175               	.LM6:
- 176 0034 88B9      		out 0x8,r24
- 177               	.LBB86:
- 178               	.LBB87:
- 180               	.Ltext5:
+ 176               	.LFBB2:
+ 177               	/* prologue: function */
+ 178               	/* frame size = 0 */
+ 179               	/* stack size = 0 */
+ 180               	.L__stack_usage = 0
+  82:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //        *port = (uint8_t)(BV(pin)); //need to change this code to work
+  83:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //        _delay_us(2000);
+  84:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //         *port   ^=BV(pin);
+  85:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //        _delay_us(18000);
+  86:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //
+  87:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //        _delay_ms(4000);
+  88:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //
+  89:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //         *port = (BV(pin));
+  90:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //        _delay_us(1000);
+  91:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //         *port   ^=BV(pin);
+  92:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** //        _delay_us(19000);
+  93:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
+  94:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     PORTC = (uint8_t)(BV(pin));
  182               	.LM7:
- 183 0036 EFEC      		ldi r30,lo8(1999)
- 184 0038 F7E0      		ldi r31,hi8(1999)
- 185 003a 3197      	1:	sbiw r30,1
- 186 003c 01F4      		brne 1b
- 187 003e 00C0      		rjmp .
- 188 0040 0000      		nop
- 189               	.LBE87:
- 190               	.LBE86:
- 192               	.Ltext6:
-  89:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(1000);
-  90:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC   ^=BV(5);
- 194               	.LM8:
- 195 0042 98B1      		in r25,0x8
- 196 0044 8927      		eor r24,r25
- 197 0046 88B9      		out 0x8,r24
- 198               	.LBB88:
- 199               	.LBB89:
- 201               	.Ltext7:
- 203               	.LM9:
- 204 0048 8FE6      		ldi r24,lo8(-27537)
- 205 004a 94E9      		ldi r25,hi8(-27537)
- 206 004c 0197      	1:	sbiw r24,1
- 207 004e 01F4      		brne 1b
- 208 0050 00C0      		rjmp .
- 209 0052 0000      		nop
- 210               	.LBE89:
- 211               	.LBE88:
- 213               	.Ltext8:
-  91:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(19000);
-  92:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         
-  93:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         return 1;
-  94:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }
- 215               	.LM10:
- 216 0054 81E0      		ldi r24,lo8(1)
- 217 0056 90E0      		ldi r25,0
- 218 0058 0895      		ret
- 220               	.Lscope1:
- 221               		.section	.rodata.str1.1,"aMS",@progbits,1
- 222               	.LC0:
- 223 0000 5246 4944 		.string	"RFID Reader"
- 223      2052 6561 
- 223      6465 7200 
- 224               	.LC1:
- 225 000c 312E 302E 		.string	"1.0.0"
- 225      3000 
- 226               	.LC2:
- 227 0012 4D49 4641 		.string	"MIFARE RC522v2"
- 227      5245 2052 
- 227      4335 3232 
- 227      7632 00
- 228               	.LC3:
- 229 0021 4465 7465 		.string	"Detected"
- 229      6374 6564 
- 229      00
- 230               	.LC4:
- 231 002a 4D49 4641 		.string	"MIFARE RC522v1"
- 231      5245 2052 
- 231      4335 3232 
- 231      7631 00
- 232               	.LC5:
- 233 0039 4E6F 2072 		.string	"No reader found"
- 233      6561 6465 
- 233      7220 666F 
- 233      756E 6400 
- 234               	.LC6:
- 235 0049 4572 726F 		.string	"Error"
- 235      7200 
- 236               	.LC7:
- 237 004f 424F 5554 		.string	"BOUT TO CHECK"
- 237      2054 4F20 
- 237      4348 4543 
- 237      4B00 
- 238               	.LC8:
- 239 005d 4D41 5443 		.string	"MATCH"
- 239      4800 
- 240               	.LC9:
- 241 0063 5355 4343 		.string	"SUCCESS"
- 241      4553 5300 
- 242               	.LC10:
- 243 006b 6E6F 7420 		.string	"not valid"
- 243      7661 6C69 
- 243      6400 
- 244               	.LC11:
- 245 0075 4348 4543 		.string	"CHECKED"
- 245      4B45 4400 
- 246               	.LC12:
- 247 007d 7072 6573 		.string	"present card"
- 247      656E 7420 
- 247      6361 7264 
- 247      00
- 248               		.section	.text.startup,"ax",@progbits
- 250               	.global	main
- 252               	main:
-  44:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 254               	.LM11:
- 255               	.LFBB2:
- 256 0000 CF93      		push r28
- 257 0002 DF93      		push r29
- 258 0004 CDB7      		in r28,__SP_L__
- 259 0006 DEB7      		in r29,__SP_H__
- 260 0008 A097      		sbiw r28,32
- 261 000a 0FB6      		in __tmp_reg__,__SREG__
- 262 000c F894      		cli
- 263 000e DEBF      		out __SP_H__,r29
- 264 0010 0FBE      		out __SREG__,__tmp_reg__
- 265 0012 CDBF      		out __SP_L__,r28
- 266               	/* prologue: function */
- 267               	/* frame size = 32 */
- 268               	/* stack size = 34 */
- 269               	.L__stack_usage = 34
- 270               	.LBB125:
- 271               	.LBB126:
-  69:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             PORTC=BV(5);     // PORTC is initially LOW OFF the led initially
- 273               	.LM12:
- 274 0014 80E2      		ldi r24,lo8(32)
- 275 0016 87B9      		out 0x7,r24
-  70:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         
- 277               	.LM13:
- 278 0018 88B9      		out 0x8,r24
-  73:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(1000);
- 280               	.LM14:
- 281 001a 88B9      		out 0x8,r24
- 282               	.LBB127:
- 283               	.LBB128:
- 285               	.Ltext9:
- 287               	.LM15:
- 288 001c EFEC      		ldi r30,lo8(1999)
- 289 001e F7E0      		ldi r31,hi8(1999)
- 290 0020 3197      	1:	sbiw r30,1
- 291 0022 01F4      		brne 1b
- 292 0024 00C0      		rjmp .
- 293 0026 0000      		nop
- 294               	.LBE128:
- 295               	.LBE127:
- 297               	.Ltext10:
-  75:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(19000);
- 299               	.LM16:
- 300 0028 98B1      		in r25,0x8
- 301 002a 8927      		eor r24,r25
- 302 002c 88B9      		out 0x8,r24
- 303               	.LBB129:
- 304               	.LBB130:
- 306               	.Ltext11:
- 308               	.LM17:
- 309 002e 8FE6      		ldi r24,lo8(-27537)
- 310 0030 94E9      		ldi r25,hi8(-27537)
- 311 0032 0197      	1:	sbiw r24,1
- 312 0034 01F4      		brne 1b
- 313 0036 00C0      		rjmp .
- 314 0038 0000      		nop
- 315               	.LBE130:
- 316               	.LBE129:
- 317               	.LBE126:
- 318               	.LBE125:
- 319               	.LBB131:
- 320               	.LBB132:
+ 183 0026 81E0      		ldi r24,lo8(1)
+ 184 0028 90E0      		ldi r25,0
+ 185 002a 00C0      		rjmp 2f
+ 186               		1:
+ 187 002c 880F      		lsl r24
+ 188               		2:
+ 189 002e 6A95      		dec r22
+ 190 0030 02F4      		brpl 1b
+ 191 0032 88B9      		out 0x8,r24
+ 192               	.LBB82:
+ 193               	.LBB83:
+ 195               	.Ltext5:
+ 197               	.LM8:
+ 198 0034 8FE9      		ldi r24,lo8(3999)
+ 199 0036 9FE0      		ldi r25,hi8(3999)
+ 200 0038 0197      	1:	sbiw r24,1
+ 201 003a 01F4      		brne 1b
+ 202 003c 00C0      		rjmp .
+ 203 003e 0000      		nop
+ 204               	.LBE83:
+ 205               	.LBE82:
+ 207               	.Ltext6:
+  95:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_us(2000);
+  96:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****    PORTC  ^=BV(5);
+ 209               	.LM9:
+ 210 0040 88B1      		in r24,0x8
+ 211 0042 90E2      		ldi r25,lo8(32)
+ 212 0044 8927      		eor r24,r25
+ 213 0046 88B9      		out 0x8,r24
+ 214               	.LBB84:
+ 215               	.LBB85:
+ 217               	.Ltext7:
+ 219               	.LM10:
+ 220 0048 EFE9      		ldi r30,lo8(-29537)
+ 221 004a FCE8      		ldi r31,hi8(-29537)
+ 222 004c 3197      	1:	sbiw r30,1
+ 223 004e 01F4      		brne 1b
+ 224 0050 00C0      		rjmp .
+ 225 0052 0000      		nop
+ 226               	.LBE85:
+ 227               	.LBE84:
+ 228               	.LBB86:
+ 229               	.LBB87:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 322               	.LM18:
- 323 003a 9FE7      		ldi r25,lo8(79999)
- 324 003c E8E3      		ldi r30,hi8(79999)
- 325 003e F1E0      		ldi r31,hlo8(79999)
- 326 0040 9150      	1:	subi r25,1
- 327 0042 E040      		sbci r30,0
- 328 0044 F040      		sbci r31,0
- 329 0046 01F4      		brne 1b
- 330 0048 00C0      		rjmp .
- 331 004a 0000      		nop
- 332               	.LBE132:
- 333               	.LBE131:
- 335               	.Ltext12:
-  95:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
-  96:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     int close(void){
-  97:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         return 1;
-  98:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }
-  99:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
+ 231               	.LM11:
+ 232 0054 FFEF      		ldi r31,lo8(6399999)
+ 233 0056 27EA      		ldi r18,hi8(6399999)
+ 234 0058 31E6      		ldi r19,hlo8(6399999)
+ 235 005a F150      	1:	subi r31,1
+ 236 005c 2040      		sbci r18,0
+ 237 005e 3040      		sbci r19,0
+ 238 0060 01F4      		brne 1b
+ 239 0062 00C0      		rjmp .
+ 240 0064 0000      		nop
+ 241               	.LBE87:
+ 242               	.LBE86:
+ 244               	.Ltext8:
+  97:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_us(18000);
+  98:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
+  99:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_ms(4000);
  100:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 101:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     /* === === === END SERVO SETUP === === === */
- 102:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 103:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     initServo();
- 104:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 105:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     uint8_t byte;
- 106:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     uint8_t str[MAX_LEN];
- 107:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_ms(50);
- 108:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDInit(LS_BLINK);
- 337               	.LM19:
- 338 004c 81E0      		ldi r24,lo8(1)
- 339 004e 0E94 0000 		call LCDInit
- 109:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDWriteStringXY(2,0,"RFID Reader");
- 341               	.LM20:
- 342 0052 60E0      		ldi r22,0
- 343 0054 82E0      		ldi r24,lo8(2)
- 344 0056 0E94 0000 		call LCDGotoXY
- 345 005a 80E0      		ldi r24,lo8(.LC0)
- 346 005c 90E0      		ldi r25,hi8(.LC0)
- 347 005e 0E94 0000 		call LCDWriteString
- 110:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDWriteStringXY(5,1,VERSION_STR);
- 349               	.LM21:
- 350 0062 61E0      		ldi r22,lo8(1)
- 351 0064 85E0      		ldi r24,lo8(5)
- 352 0066 0E94 0000 		call LCDGotoXY
- 353 006a 80E0      		ldi r24,lo8(.LC1)
- 354 006c 90E0      		ldi r25,hi8(.LC1)
- 355 006e 0E94 0000 		call LCDWriteString
- 111:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 112:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     open();
- 357               	.LM22:
- 358 0072 0E94 0000 		call open.1831
- 113:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     close();
- 114:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     spi_init();
- 360               	.LM23:
- 361 0076 0E94 0000 		call spi_init
- 362               	.LBB133:
- 363               	.LBB134:
- 365               	.Ltext13:
+ 101:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****    PORTC = (BV(5));
+ 246               	.LM12:
+ 247 0066 98B9      		out 0x8,r25
+ 248               	.LBB88:
+ 249               	.LBB89:
+ 251               	.Ltext9:
+ 253               	.LM13:
+ 254 0068 EFEC      		ldi r30,lo8(1999)
+ 255 006a F7E0      		ldi r31,hi8(1999)
+ 256 006c 3197      	1:	sbiw r30,1
+ 257 006e 01F4      		brne 1b
+ 258 0070 00C0      		rjmp .
+ 259 0072 0000      		nop
+ 260               	.LBE89:
+ 261               	.LBE88:
+ 263               	.Ltext10:
+ 102:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_us(1000);
+ 103:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****    PORTC   ^=BV(5);
+ 265               	.LM14:
+ 266 0074 88B1      		in r24,0x8
+ 267 0076 8927      		eor r24,r25
+ 268 0078 88B9      		out 0x8,r24
+ 269               	.LBB90:
+ 270               	.LBB91:
+ 272               	.Ltext11:
+ 274               	.LM15:
+ 275 007a 8FE6      		ldi r24,lo8(-27537)
+ 276 007c 94E9      		ldi r25,hi8(-27537)
+ 277 007e 0197      	1:	sbiw r24,1
+ 278 0080 01F4      		brne 1b
+ 279 0082 00C0      		rjmp .
+ 280 0084 0000      		nop
+ 281               	.LBE91:
+ 282               	.LBE90:
+ 284               	.Ltext12:
+ 104:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_us(19000);
+ 105:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** return 1;
+ 106:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }
+ 286               	.LM16:
+ 287 0086 81E0      		ldi r24,lo8(1)
+ 288 0088 90E0      		ldi r25,0
+ 289 008a 0895      		ret
+ 291               	.Lscope2:
+ 293               	.global	close
+ 295               	close:
+ 107:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 108:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** int close(void){
+ 297               	.LM17:
+ 298               	.LFBB3:
+ 299               	/* prologue: function */
+ 300               	/* frame size = 0 */
+ 301               	/* stack size = 0 */
+ 302               	.L__stack_usage = 0
+ 109:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     //ToDo: need to update this
+ 110:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         return 1;
+ 111:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** }
+ 304               	.LM18:
+ 305 008c 81E0      		ldi r24,lo8(1)
+ 306 008e 90E0      		ldi r25,0
+ 307 0090 0895      		ret
+ 309               	.Lscope3:
+ 310               		.section	.rodata.str1.1,"aMS",@progbits,1
+ 311               	.LC0:
+ 312 0000 4543 454E 		.string	"ECEN1310 Door Opener"
+ 312      3133 3130 
+ 312      2044 6F6F 
+ 312      7220 4F70 
+ 312      656E 6572 
+ 313               	.LC1:
+ 314 0015 4D49 4641 		.string	"MIFARE RC522v2"
+ 314      5245 2052 
+ 314      4335 3232 
+ 314      7632 00
+ 315               	.LC2:
+ 316 0024 4465 7465 		.string	"Detected"
+ 316      6374 6564 
+ 316      00
+ 317               	.LC3:
+ 318 002d 4D49 4641 		.string	"MIFARE RC522v1"
+ 318      5245 2052 
+ 318      4335 3232 
+ 318      7631 00
+ 319               	.LC4:
+ 320 003c 4E6F 2072 		.string	"No reader found"
+ 320      6561 6465 
+ 320      7220 666F 
+ 320      756E 6400 
+ 321               	.LC5:
+ 322 004c 4572 726F 		.string	"Error"
+ 322      7200 
+ 323               	.LC6:
+ 324 0052 424F 5554 		.string	"BOUT TO CHECK"
+ 324      2054 4F20 
+ 324      4348 4543 
+ 324      4B00 
+ 325               	.LC7:
+ 326 0060 4D41 5443 		.string	"MATCH"
+ 326      4800 
+ 327               	.LC8:
+ 328 0066 5355 4343 		.string	"SUCCESS"
+ 328      4553 5300 
+ 329               	.LC9:
+ 330 006e 6E6F 7420 		.string	"not valid"
+ 330      7661 6C69 
+ 330      6400 
+ 331               	.LC10:
+ 332 0078 4348 4543 		.string	"CHECKED"
+ 332      4B45 4400 
+ 333               	.LC11:
+ 334 0080 7072 6573 		.string	"present card"
+ 334      656E 7420 
+ 334      6361 7264 
+ 334      00
+ 335               		.section	.text.startup,"ax",@progbits
+ 337               	.global	main
+ 339               	main:
+ 112:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** /* === === === END SERVO SETUP === === === */
+ 113:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 114:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 115:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 116:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** int main(void)
+ 117:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** {
+ 341               	.LM19:
+ 342               	.LFBB4:
+ 343 0000 CF93      		push r28
+ 344 0002 DF93      		push r29
+ 345 0004 CDB7      		in r28,__SP_L__
+ 346 0006 DEB7      		in r29,__SP_H__
+ 347 0008 6097      		sbiw r28,16
+ 348 000a 0FB6      		in __tmp_reg__,__SREG__
+ 349 000c F894      		cli
+ 350 000e DEBF      		out __SP_H__,r29
+ 351 0010 0FBE      		out __SREG__,__tmp_reg__
+ 352 0012 CDBF      		out __SP_L__,r28
+ 353               	/* prologue: function */
+ 354               	/* frame size = 16 */
+ 355               	/* stack size = 18 */
+ 356               	.L__stack_usage = 18
+ 118:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 119:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     initServo(PORTC, DDRC, 5); //make servo an output at pin 5
+ 358               	.LM20:
+ 359 0014 67B1      		in r22,0x7
+ 360 0016 88B1      		in r24,0x8
+ 361 0018 70E0      		ldi r23,0
+ 362 001a 45E0      		ldi r20,lo8(5)
+ 363 001c 50E0      		ldi r21,0
+ 364 001e 90E0      		ldi r25,0
+ 365 0020 0E94 0000 		call initServo
+ 366               	.LBB92:
+ 367               	.LBB93:
+ 369               	.Ltext13:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 367               	.LM24:
- 368 007a 2FEF      		ldi r18,lo8(1599999)
- 369 007c 89E6      		ldi r24,hi8(1599999)
- 370 007e 98E1      		ldi r25,hlo8(1599999)
- 371 0080 2150      	1:	subi r18,1
- 372 0082 8040      		sbci r24,0
- 373 0084 9040      		sbci r25,0
- 374 0086 01F4      		brne 1b
- 375 0088 00C0      		rjmp .
- 376 008a 0000      		nop
- 377               	.LBE134:
- 378               	.LBE133:
- 380               	.Ltext14:
- 115:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_ms(1000);
- 116:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDClear();
- 382               	.LM25:
- 383 008c 60E0      		ldi r22,0
- 384 008e 81E0      		ldi r24,lo8(1)
- 385 0090 0E94 0000 		call LCDByte
- 117:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 118:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     open();
- 387               	.LM26:
- 388 0094 0E94 0000 		call open.1831
- 119:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     close();
- 120:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 121:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
- 122:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     //init reader
- 123:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     mfrc522_init();
- 390               	.LM27:
- 391 0098 0E94 0000 		call mfrc522_init
- 124:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 125:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     //check version of the reader
- 126:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     byte = mfrc522_read(VersionReg);
- 393               	.LM28:
- 394 009c 87E3      		ldi r24,lo8(55)
- 395 009e 0E94 0000 		call mfrc522_read
- 127:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     if(byte == 0x92)
- 397               	.LM29:
- 398 00a2 8239      		cpi r24,lo8(-110)
- 399 00a4 01F0      		breq .+2
- 400 00a6 00C0      		rjmp .L3
- 128:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
- 129:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(2,0,"MIFARE RC522v2");
- 402               	.LM30:
- 403 00a8 60E0      		ldi r22,0
- 404 00aa 82E0      		ldi r24,lo8(2)
- 405 00ac 0E94 0000 		call LCDGotoXY
- 406 00b0 80E0      		ldi r24,lo8(.LC2)
- 407 00b2 90E0      		ldi r25,hi8(.LC2)
- 408               	.L21:
- 130:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(4,1,"Detected");
- 131:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }else if(byte == 0x91 || byte==0x90)
- 132:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
- 133:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(2,0,"MIFARE RC522v1");
- 410               	.LM31:
- 411 00b4 0E94 0000 		call LCDWriteString
- 134:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(4,1,"Detected");
- 413               	.LM32:
- 414 00b8 61E0      		ldi r22,lo8(1)
- 415 00ba 84E0      		ldi r24,lo8(4)
- 416 00bc 0E94 0000 		call LCDGotoXY
- 417 00c0 80E0      		ldi r24,lo8(.LC3)
- 418 00c2 90E0      		ldi r25,hi8(.LC3)
- 419               	.L20:
- 135:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }else
- 136:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
- 137:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(0,0,"No reader found");
- 421               	.LM33:
- 422 00c4 0E94 0000 		call LCDWriteString
- 138:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }
- 139:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 140:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     byte = mfrc522_read(ComIEnReg);
- 424               	.LM34:
- 425 00c8 82E0      		ldi r24,lo8(2)
- 426 00ca 0E94 0000 		call mfrc522_read
- 141:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     mfrc522_write(ComIEnReg,byte|0x20);
- 428               	.LM35:
- 429 00ce 682F      		mov r22,r24
- 430 00d0 6062      		ori r22,lo8(32)
- 431 00d2 82E0      		ldi r24,lo8(2)
- 432 00d4 0E94 0000 		call mfrc522_write
- 142:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     byte = mfrc522_read(DivIEnReg);
- 434               	.LM36:
- 435 00d8 83E0      		ldi r24,lo8(3)
- 436 00da 0E94 0000 		call mfrc522_read
- 143:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     mfrc522_write(DivIEnReg,byte|0x80);
- 438               	.LM37:
- 439 00de 682F      		mov r22,r24
- 440 00e0 6068      		ori r22,lo8(-128)
- 441 00e2 83E0      		ldi r24,lo8(3)
- 442 00e4 0E94 0000 		call mfrc522_write
- 443               	.LBB135:
- 444               	.LBB136:
- 446               	.Ltext15:
+ 371               	.LM21:
+ 372 0024 2FE7      		ldi r18,lo8(79999)
+ 373 0026 88E3      		ldi r24,hi8(79999)
+ 374 0028 91E0      		ldi r25,hlo8(79999)
+ 375 002a 2150      	1:	subi r18,1
+ 376 002c 8040      		sbci r24,0
+ 377 002e 9040      		sbci r25,0
+ 378 0030 01F4      		brne 1b
+ 379 0032 00C0      		rjmp .
+ 380 0034 0000      		nop
+ 381               	.LBE93:
+ 382               	.LBE92:
+ 384               	.Ltext14:
+ 120:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 121:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     uint8_t byte;
+ 122:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     uint8_t str[MAX_LEN];
+ 123:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_ms(50);
+ 124:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDInit(LS_BLINK);
+ 386               	.LM22:
+ 387 0036 81E0      		ldi r24,lo8(1)
+ 388 0038 0E94 0000 		call LCDInit
+ 125:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDWriteStringXY(2,0,"ECEN1310 Door Opener");
+ 390               	.LM23:
+ 391 003c 60E0      		ldi r22,0
+ 392 003e 82E0      		ldi r24,lo8(2)
+ 393 0040 0E94 0000 		call LCDGotoXY
+ 394 0044 80E0      		ldi r24,lo8(.LC0)
+ 395 0046 90E0      		ldi r25,hi8(.LC0)
+ 396 0048 0E94 0000 		call LCDWriteString
+ 126:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 127:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     spi_init(); //start communication for rfid
+ 398               	.LM24:
+ 399 004c 0E94 0000 		call spi_init
+ 400               	.LBB94:
+ 401               	.LBB95:
+ 403               	.Ltext15:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 448               	.LM38:
- 449 00e8 EFEF      		ldi r30,lo8(2399999)
- 450 00ea FEE9      		ldi r31,hi8(2399999)
- 451 00ec 24E2      		ldi r18,hlo8(2399999)
- 452 00ee E150      	1:	subi r30,1
- 453 00f0 F040      		sbci r31,0
- 454 00f2 2040      		sbci r18,0
- 455 00f4 01F4      		brne 1b
- 456 00f6 00C0      		rjmp .
- 457 00f8 0000      		nop
- 458               	.LBE136:
- 459               	.LBE135:
- 461               	.Ltext16:
- 144:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 145:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_ms(1500);
- 146:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDClear();
- 463               	.LM39:
- 464 00fa 60E0      		ldi r22,0
- 465 00fc 81E0      		ldi r24,lo8(1)
- 466 00fe 0E94 0000 		call LCDByte
- 147:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 148:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     uint8_t card1[16] = {174,68,45,91,156}; //only 5 elements!!!
- 468               	.LM40:
- 469 0102 CE01      		movw r24,r28
- 470 0104 0196      		adiw r24,1
- 471 0106 6C01      		movw r12,r24
- 472 0108 80E1      		ldi r24,lo8(16)
- 473 010a F601      		movw r30,r12
- 474               		0:
- 475 010c 1192      		st Z+,__zero_reg__
- 476 010e 8A95      		dec r24
- 477 0110 01F4      		brne 0b
- 478 0112 8EEA      		ldi r24,lo8(-82)
- 479 0114 8983      		std Y+1,r24
- 480 0116 84E4      		ldi r24,lo8(68)
- 481 0118 8A83      		std Y+2,r24
- 482 011a 8DE2      		ldi r24,lo8(45)
- 483 011c 8B83      		std Y+3,r24
- 484 011e 8BE5      		ldi r24,lo8(91)
- 485 0120 8C83      		std Y+4,r24
- 486 0122 8CE9      		ldi r24,lo8(-100)
- 487 0124 8D83      		std Y+5,r24
- 488 0126 3E01      		movw r6,r28
- 489 0128 F6E1      		ldi r31,22
- 490 012a 6F0E      		add r6,r31
- 491 012c 711C      		adc r7,__zero_reg__
- 492 012e 4E01      		movw r8,r28
- 493 0130 29E1      		ldi r18,25
- 494 0132 820E      		add r8,r18
- 495 0134 911C      		adc r9,__zero_reg__
- 496               	.L15:
- 149:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     int validCard = -2;
- 150:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
- 151:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     while(1){
- 152:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         byte = mfrc522_request(PICC_REQALL,str);
- 498               	.LM41:
- 499 0136 BE01      		movw r22,r28
- 500 0138 6F5E      		subi r22,-17
- 501 013a 7F4F      		sbci r23,-1
- 502 013c 82E5      		ldi r24,lo8(82)
- 503 013e 0E94 0000 		call mfrc522_request
- 504 0142 182F      		mov r17,r24
- 153:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDHexDumpXY(0,0,byte);
- 506               	.LM42:
- 507 0144 482F      		mov r20,r24
- 508 0146 60E0      		ldi r22,0
- 509 0148 80E0      		ldi r24,0
- 510 014a 0E94 0000 		call LCDHexDumpXY
- 154:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         
- 155:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         if(byte == CARD_FOUND)
- 512               	.LM43:
- 513 014e 1130      		cpi r17,lo8(1)
- 514 0150 01F0      		breq .+2
- 515 0152 00C0      		rjmp .L6
- 516               	.LBB137:
- 156:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         {
- 157:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             byte = mfrc522_get_card_serial(str);
- 518               	.LM44:
- 519 0154 CE01      		movw r24,r28
- 520 0156 4196      		adiw r24,17
- 521 0158 0E94 0000 		call mfrc522_get_card_serial
- 158:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             if(byte == CARD_FOUND)
- 523               	.LM45:
- 524 015c 8130      		cpi r24,lo8(1)
- 525 015e 01F0      		breq .+2
- 526 0160 00C0      		rjmp .L7
- 527               	.LBB138:
- 528               	.LBB139:
- 530               	.Ltext17:
+ 405               	.LM25:
+ 406 0050 EFEF      		ldi r30,lo8(1599999)
+ 407 0052 F9E6      		ldi r31,hi8(1599999)
+ 408 0054 28E1      		ldi r18,hlo8(1599999)
+ 409 0056 E150      	1:	subi r30,1
+ 410 0058 F040      		sbci r31,0
+ 411 005a 2040      		sbci r18,0
+ 412 005c 01F4      		brne 1b
+ 413 005e 00C0      		rjmp .
+ 414 0060 0000      		nop
+ 415               	.LBE95:
+ 416               	.LBE94:
+ 418               	.Ltext16:
+ 128:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_ms(1000);
+ 129:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDClear();
+ 420               	.LM26:
+ 421 0062 60E0      		ldi r22,0
+ 422 0064 81E0      		ldi r24,lo8(1)
+ 423 0066 0E94 0000 		call LCDByte
+ 130:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 131:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     open(PORTC, 5);
+ 425               	.LM27:
+ 426 006a 88B1      		in r24,0x8
+ 427 006c 65E0      		ldi r22,lo8(5)
+ 428 006e 70E0      		ldi r23,0
+ 429 0070 90E0      		ldi r25,0
+ 430 0072 0E94 0000 		call open
+ 132:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     close();
+ 133:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 134:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     //init reader
+ 135:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     mfrc522_init();
+ 432               	.LM28:
+ 433 0076 0E94 0000 		call mfrc522_init
+ 136:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 137:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     //check version of the reader
+ 138:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     byte = mfrc522_read(VersionReg);
+ 435               	.LM29:
+ 436 007a 87E3      		ldi r24,lo8(55)
+ 437 007c 0E94 0000 		call mfrc522_read
+ 139:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     if(byte == 0x92)
+ 439               	.LM30:
+ 440 0080 8239      		cpi r24,lo8(-110)
+ 441 0082 01F0      		breq .+2
+ 442 0084 00C0      		rjmp .L5
+ 140:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
+ 141:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(2,0,"MIFARE RC522v2");
+ 444               	.LM31:
+ 445 0086 60E0      		ldi r22,0
+ 446 0088 82E0      		ldi r24,lo8(2)
+ 447 008a 0E94 0000 		call LCDGotoXY
+ 448 008e 80E0      		ldi r24,lo8(.LC1)
+ 449 0090 90E0      		ldi r25,hi8(.LC1)
+ 450               	.L23:
+ 142:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(4,1,"Detected");
+ 143:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }else if(byte == 0x91 || byte==0x90)
+ 144:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
+ 145:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(2,0,"MIFARE RC522v1");
+ 452               	.LM32:
+ 453 0092 0E94 0000 		call LCDWriteString
+ 146:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(4,1,"Detected");
+ 455               	.LM33:
+ 456 0096 61E0      		ldi r22,lo8(1)
+ 457 0098 84E0      		ldi r24,lo8(4)
+ 458 009a 0E94 0000 		call LCDGotoXY
+ 459 009e 80E0      		ldi r24,lo8(.LC2)
+ 460 00a0 90E0      		ldi r25,hi8(.LC2)
+ 461               	.L22:
+ 147:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }else
+ 148:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
+ 149:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(0,0,"No reader found");
+ 463               	.LM34:
+ 464 00a2 0E94 0000 		call LCDWriteString
+ 150:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }
+ 151:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 152:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     byte = mfrc522_read(ComIEnReg);
+ 466               	.LM35:
+ 467 00a6 82E0      		ldi r24,lo8(2)
+ 468 00a8 0E94 0000 		call mfrc522_read
+ 153:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     mfrc522_write(ComIEnReg,byte|0x20);
+ 470               	.LM36:
+ 471 00ac 682F      		mov r22,r24
+ 472 00ae 6062      		ori r22,lo8(32)
+ 473 00b0 82E0      		ldi r24,lo8(2)
+ 474 00b2 0E94 0000 		call mfrc522_write
+ 154:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     byte = mfrc522_read(DivIEnReg);
+ 476               	.LM37:
+ 477 00b6 83E0      		ldi r24,lo8(3)
+ 478 00b8 0E94 0000 		call mfrc522_read
+ 155:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     mfrc522_write(DivIEnReg,byte|0x80);
+ 480               	.LM38:
+ 481 00bc 682F      		mov r22,r24
+ 482 00be 6068      		ori r22,lo8(-128)
+ 483 00c0 83E0      		ldi r24,lo8(3)
+ 484 00c2 0E94 0000 		call mfrc522_write
+ 485               	.LBB96:
+ 486               	.LBB97:
+ 488               	.Ltext17:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 532               	.LM46:
- 533 0162 8FE5      		ldi r24,lo8(-5537)
- 534 0164 9AEE      		ldi r25,hi8(-5537)
- 535 0166 0197      	1:	sbiw r24,1
- 536 0168 01F4      		brne 1b
- 537 016a 00C0      		rjmp .
- 538 016c 0000      		nop
- 539               	.LBE139:
- 540               	.LBE138:
- 542               	.Ltext18:
- 159:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             {
- 160:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(30);
- 161:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDClear();
- 544               	.LM47:
- 545 016e 60E0      		ldi r22,0
- 546 0170 81E0      		ldi r24,lo8(1)
- 547 0172 0E94 0000 		call LCDByte
- 548 0176 8E01      		movw r16,r28
- 549 0178 0F5E      		subi r16,-17
- 550 017a 1F4F      		sbci r17,-1
- 551               	.L8:
- 162:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 
- 163:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 for(byte=0;byte<8;byte++)
- 164:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     // LCDHexDumpXY(byte*2,0,str[byte]);
- 165:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     //       LCDHexDumpXY(byte*2, 0, str[byte]);
- 166:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     LCDWriteInt(str[byte], -1);
- 553               	.LM48:
- 554 017c F801      		movw r30,r16
- 555 017e 8191      		ld r24,Z+
- 556 0180 8F01      		movw r16,r30
- 557 0182 6FEF      		ldi r22,lo8(-1)
- 558 0184 7FEF      		ldi r23,lo8(-1)
- 559 0186 90E0      		ldi r25,0
- 560 0188 0E94 0000 		call LCDWriteInt
- 163:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     // LCDHexDumpXY(byte*2,0,str[byte]);
- 562               	.LM49:
- 563 018c 0815      		cp r16,r8
- 564 018e 1905      		cpc r17,r9
- 565 0190 01F4      		brne .L8
- 566               	.L9:
- 167:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 
- 168:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
- 169:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             else
- 170:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             {
- 171:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteStringXY(0,1,"Error");
- 172:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
- 173:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             
- 174:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDWriteStringXY(0, 1, "BOUT TO CHECK");
- 568               	.LM50:
- 569 0192 61E0      		ldi r22,lo8(1)
- 570 0194 80E0      		ldi r24,0
- 571 0196 0E94 0000 		call LCDGotoXY
- 572 019a 80E0      		ldi r24,lo8(.LC7)
- 573 019c 90E0      		ldi r25,hi8(.LC7)
- 574 019e 0E94 0000 		call LCDWriteString
- 575               	.LBB140:
- 576               	.LBB141:
- 578               	.Ltext19:
+ 490               	.LM39:
+ 491 00c6 8FEF      		ldi r24,lo8(2399999)
+ 492 00c8 9EE9      		ldi r25,hi8(2399999)
+ 493 00ca E4E2      		ldi r30,hlo8(2399999)
+ 494 00cc 8150      	1:	subi r24,1
+ 495 00ce 9040      		sbci r25,0
+ 496 00d0 E040      		sbci r30,0
+ 497 00d2 01F4      		brne 1b
+ 498 00d4 00C0      		rjmp .
+ 499 00d6 0000      		nop
+ 500               	.LBE97:
+ 501               	.LBE96:
+ 503               	.Ltext18:
+ 156:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 157:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_ms(1500);
+ 158:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDClear();
+ 505               	.LM40:
+ 506 00d8 60E0      		ldi r22,0
+ 507 00da 81E0      		ldi r24,lo8(1)
+ 508 00dc 0E94 0000 		call LCDByte
+ 509 00e0 3E01      		movw r6,r28
+ 510 00e2 F6E0      		ldi r31,6
+ 511 00e4 6F0E      		add r6,r31
+ 512 00e6 711C      		adc r7,__zero_reg__
+ 513               	.LBB98:
+ 514               	.LBB99:
+ 159:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 160:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 161:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** while(1){
+ 162:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         byte = mfrc522_request(PICC_REQALL,str);
+ 163:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDHexDumpXY(0,0,byte);
+ 164:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 165:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         if(byte == CARD_FOUND)
+ 166:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         {
+ 167:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             byte = mfrc522_get_card_serial(str);
+ 168:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             if(byte == CARD_FOUND)
+ 169:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             {
+ 170:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(30);
+ 171:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDClear();
+ 172:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 173:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 for(byte=0;byte<8;byte++)
+ 174:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     // LCDHexDumpXY(byte*2,0,str[byte]);
+ 175:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     //       LCDHexDumpXY(byte*2, 0, str[byte]);
+ 176:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     LCDWriteInt(str[byte], -1);
+ 177:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 178:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
+ 179:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             else
+ 180:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             { //not a valid card found
+ 181:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteStringXY(0,1,"Error");
+ 182:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
+ 183:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 184:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDWriteStringXY(0, 1, "BOUT TO CHECK");
+ 185:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(1000);
+ 186:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDClear(); //test
+ 187:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             for(int i=0; i<5; i++){
+ 188:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(30);//test
+ 189:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 //LCDWriteStringXY(0,0,"i:  ");
+ 190:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 // LCDWriteIntXY(5,0, i,1);//test
+ 191:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteInt(str[i], -1);//test
+ 192:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 //   _delay_ms(1000);
+ 193:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
+ 194:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(100);//test
+ 195:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDClear();//test
+ 196:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 197:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             for(int k=0;k<5 ;k++){
+ 198:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 // LCDHexDumpXY(byte*2,0,str[byte]);
+ 199:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 //       LCDHexDumpXY(byte*2, 0, str[byte]);
+ 200:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteIntXY(0,1,str[k], -1);
+ 201:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 if(str[k] == card1[k]) //this is where you are testing
+ 202:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 {
+ 203:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     LCDWriteIntXY(0,1,str[k], -1);
+ 204:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     LCDWriteString("MATCH"); //jk i am testing
+ 205:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     _delay_ms(50);
+ 206:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     LCDClear();
+ 207:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     validCard = 1;
+ 516               	.LM41:
+ 517 00e8 AA24      		clr r10
+ 518 00ea A394      		inc r10
+ 519 00ec B12C      		mov r11,__zero_reg__
+ 520 00ee 4E01      		movw r8,r28
+ 521 00f0 29E0      		ldi r18,9
+ 522 00f2 820E      		add r8,r18
+ 523 00f4 911C      		adc r9,__zero_reg__
+ 524               	.L18:
+ 525               	.LBE99:
+ 526               	.LBE98:
+ 162:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDHexDumpXY(0,0,byte);
+ 528               	.LM42:
+ 529 00f6 BE01      		movw r22,r28
+ 530 00f8 6F5F      		subi r22,-1
+ 531 00fa 7F4F      		sbci r23,-1
+ 532 00fc 82E5      		ldi r24,lo8(82)
+ 533 00fe 0E94 0000 		call mfrc522_request
+ 534 0102 182F      		mov r17,r24
+ 163:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 536               	.LM43:
+ 537 0104 482F      		mov r20,r24
+ 538 0106 60E0      		ldi r22,0
+ 539 0108 80E0      		ldi r24,0
+ 540 010a 0E94 0000 		call LCDHexDumpXY
+ 165:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         {
+ 542               	.LM44:
+ 543 010e 1130      		cpi r17,lo8(1)
+ 544 0110 01F0      		breq .+2
+ 545 0112 00C0      		rjmp .L8
+ 546               	.LBB121:
+ 167:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             if(byte == CARD_FOUND)
+ 548               	.LM45:
+ 549 0114 CE01      		movw r24,r28
+ 550 0116 0196      		adiw r24,1
+ 551 0118 0E94 0000 		call mfrc522_get_card_serial
+ 168:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             {
+ 553               	.LM46:
+ 554 011c 8130      		cpi r24,lo8(1)
+ 555 011e 01F0      		breq .+2
+ 556 0120 00C0      		rjmp .L9
+ 557               	.LBB102:
+ 558               	.LBB103:
+ 560               	.Ltext19:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 580               	.LM51:
- 581 01a2 FFEF      		ldi r31,lo8(1599999)
- 582 01a4 29E6      		ldi r18,hi8(1599999)
- 583 01a6 88E1      		ldi r24,hlo8(1599999)
- 584 01a8 F150      	1:	subi r31,1
- 585 01aa 2040      		sbci r18,0
- 586 01ac 8040      		sbci r24,0
- 587 01ae 01F4      		brne 1b
- 588 01b0 00C0      		rjmp .
- 589 01b2 0000      		nop
- 590               	.LBE141:
- 591               	.LBE140:
- 593               	.Ltext20:
- 175:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(1000);
- 176:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDClear(); //test
- 595               	.LM52:
- 596 01b4 60E0      		ldi r22,0
- 597 01b6 81E0      		ldi r24,lo8(1)
- 598 01b8 0E94 0000 		call LCDByte
- 599 01bc 8E01      		movw r16,r28
- 600 01be 0F5E      		subi r16,-17
- 601 01c0 1F4F      		sbci r17,-1
- 602 01c2 7801      		movw r14,r16
- 603               	.L10:
- 604               	.LBB142:
- 605               	.LBB143:
- 606               	.LBB144:
+ 562               	.LM47:
+ 563 0122 8FE5      		ldi r24,lo8(-5537)
+ 564 0124 9AEE      		ldi r25,hi8(-5537)
+ 565 0126 0197      	1:	sbiw r24,1
+ 566 0128 01F4      		brne 1b
+ 567 012a 00C0      		rjmp .
+ 568 012c 0000      		nop
+ 569               	.LBE103:
+ 570               	.LBE102:
+ 572               	.Ltext20:
+ 171:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 574               	.LM48:
+ 575 012e 60E0      		ldi r22,0
+ 576 0130 81E0      		ldi r24,lo8(1)
+ 577 0132 0E94 0000 		call LCDByte
+ 578 0136 8E01      		movw r16,r28
+ 579 0138 0F5F      		subi r16,-1
+ 580 013a 1F4F      		sbci r17,-1
+ 581               	.L10:
+ 176:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 583               	.LM49:
+ 584 013c F801      		movw r30,r16
+ 585 013e 8191      		ld r24,Z+
+ 586 0140 8F01      		movw r16,r30
+ 587 0142 6FEF      		ldi r22,lo8(-1)
+ 588 0144 7FEF      		ldi r23,lo8(-1)
+ 589 0146 90E0      		ldi r25,0
+ 590 0148 0E94 0000 		call LCDWriteInt
+ 173:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     // LCDHexDumpXY(byte*2,0,str[byte]);
+ 592               	.LM50:
+ 593 014c 0815      		cp r16,r8
+ 594 014e 1905      		cpc r17,r9
+ 595 0150 01F4      		brne .L10
+ 596               	.L11:
+ 184:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(1000);
+ 598               	.LM51:
+ 599 0152 61E0      		ldi r22,lo8(1)
+ 600 0154 80E0      		ldi r24,0
+ 601 0156 0E94 0000 		call LCDGotoXY
+ 602 015a 80E0      		ldi r24,lo8(.LC6)
+ 603 015c 90E0      		ldi r25,hi8(.LC6)
+ 604 015e 0E94 0000 		call LCDWriteString
+ 605               	.LBB104:
+ 606               	.LBB105:
  608               	.Ltext21:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 610               	.LM53:
- 611 01c4 8FE5      		ldi r24,lo8(-5537)
- 612 01c6 9AEE      		ldi r25,hi8(-5537)
- 613 01c8 0197      	1:	sbiw r24,1
- 614 01ca 01F4      		brne 1b
- 615 01cc 00C0      		rjmp .
- 616 01ce 0000      		nop
- 617               	.LBE144:
- 618               	.LBE143:
- 620               	.Ltext22:
- 177:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             for(int i=0; i<5; i++){
- 178:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(30);//test
- 179:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 //LCDWriteStringXY(0,0,"i:  ");
- 180:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 // LCDWriteIntXY(5,0, i,1);//test
- 181:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteInt(str[i], -1);//test
- 622               	.LM54:
- 623 01d0 F701      		movw r30,r14
- 624 01d2 8191      		ld r24,Z+
- 625 01d4 7F01      		movw r14,r30
- 626 01d6 6FEF      		ldi r22,lo8(-1)
- 627 01d8 7FEF      		ldi r23,lo8(-1)
- 628 01da 90E0      		ldi r25,0
- 629 01dc 0E94 0000 		call LCDWriteInt
- 177:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             for(int i=0; i<5; i++){
- 631               	.LM55:
- 632 01e0 E614      		cp r14,r6
- 633 01e2 F704      		cpc r15,r7
- 634 01e4 01F4      		brne .L10
- 635               	.LBE142:
- 636               	.LBB145:
- 637               	.LBB146:
- 639               	.Ltext23:
+ 610               	.LM52:
+ 611 0162 FFEF      		ldi r31,lo8(1599999)
+ 612 0164 29E6      		ldi r18,hi8(1599999)
+ 613 0166 88E1      		ldi r24,hlo8(1599999)
+ 614 0168 F150      	1:	subi r31,1
+ 615 016a 2040      		sbci r18,0
+ 616 016c 8040      		sbci r24,0
+ 617 016e 01F4      		brne 1b
+ 618 0170 00C0      		rjmp .
+ 619 0172 0000      		nop
+ 620               	.LBE105:
+ 621               	.LBE104:
+ 623               	.Ltext22:
+ 186:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             for(int i=0; i<5; i++){
+ 625               	.LM53:
+ 626 0174 60E0      		ldi r22,0
+ 627 0176 81E0      		ldi r24,lo8(1)
+ 628 0178 0E94 0000 		call LCDByte
+ 629 017c 8E01      		movw r16,r28
+ 630 017e 0F5F      		subi r16,-1
+ 631 0180 1F4F      		sbci r17,-1
+ 632 0182 7801      		movw r14,r16
+ 633               	.L12:
+ 634               	.LBB106:
+ 635               	.LBB107:
+ 636               	.LBB108:
+ 638               	.Ltext23:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 641               	.LM56:
- 642 01e6 FFEF      		ldi r31,lo8(159999)
- 643 01e8 20E7      		ldi r18,hi8(159999)
- 644 01ea 82E0      		ldi r24,hlo8(159999)
- 645 01ec F150      	1:	subi r31,1
- 646 01ee 2040      		sbci r18,0
- 647 01f0 8040      		sbci r24,0
- 648 01f2 01F4      		brne 1b
- 649 01f4 00C0      		rjmp .
- 650 01f6 0000      		nop
- 651               	.LBE146:
- 652               	.LBE145:
- 654               	.Ltext24:
- 182:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 //   _delay_ms(1000);
- 183:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
- 184:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(100);//test
- 185:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDClear();//test
- 656               	.LM57:
- 657 01f8 60E0      		ldi r22,0
- 658 01fa 81E0      		ldi r24,lo8(1)
- 659 01fc 0E94 0000 		call LCDByte
- 660 0200 5601      		movw r10,r12
- 661               	.L12:
- 662               	.LBB147:
- 186:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             
- 187:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             for(int k=0;k<5 ;k++){
- 188:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 // LCDHexDumpXY(byte*2,0,str[byte]);
- 189:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 //       LCDHexDumpXY(byte*2, 0, str[byte]);
- 190:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteIntXY(0,1,str[k], -1);
- 664               	.LM58:
- 665 0202 61E0      		ldi r22,lo8(1)
- 666 0204 80E0      		ldi r24,0
- 667 0206 0E94 0000 		call LCDGotoXY
- 668 020a F801      		movw r30,r16
- 669 020c 8081      		ld r24,Z
- 670 020e 6FEF      		ldi r22,lo8(-1)
- 671 0210 7FEF      		ldi r23,lo8(-1)
- 672 0212 90E0      		ldi r25,0
- 673 0214 0E94 0000 		call LCDWriteInt
- 191:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 if(str[k] == card1[k])
- 675               	.LM59:
- 676 0218 F501      		movw r30,r10
- 677 021a 8191      		ld r24,Z+
- 678 021c 5F01      		movw r10,r30
- 679 021e F801      		movw r30,r16
- 680 0220 9081      		ld r25,Z
- 681 0222 9813      		cpse r25,r24
- 682 0224 00C0      		rjmp .L16
- 192:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 {
- 193:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     LCDWriteIntXY(0,1,str[k], -1);
- 684               	.LM60:
- 685 0226 61E0      		ldi r22,lo8(1)
- 686 0228 80E0      		ldi r24,0
- 687 022a 0E94 0000 		call LCDGotoXY
- 688 022e F801      		movw r30,r16
- 689 0230 8081      		ld r24,Z
- 690 0232 6FEF      		ldi r22,lo8(-1)
- 691 0234 7FEF      		ldi r23,lo8(-1)
- 692 0236 90E0      		ldi r25,0
- 693 0238 0E94 0000 		call LCDWriteInt
- 194:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     LCDWriteString("MATCH");
- 695               	.LM61:
- 696 023c 80E0      		ldi r24,lo8(.LC8)
- 697 023e 90E0      		ldi r25,hi8(.LC8)
- 698 0240 0E94 0000 		call LCDWriteString
- 699               	.LBB148:
- 700               	.LBB149:
- 702               	.Ltext25:
+ 640               	.LM54:
+ 641 0184 8FE5      		ldi r24,lo8(-5537)
+ 642 0186 9AEE      		ldi r25,hi8(-5537)
+ 643 0188 0197      	1:	sbiw r24,1
+ 644 018a 01F4      		brne 1b
+ 645 018c 00C0      		rjmp .
+ 646 018e 0000      		nop
+ 647               	.LBE108:
+ 648               	.LBE107:
+ 650               	.Ltext24:
+ 191:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 //   _delay_ms(1000);
+ 652               	.LM55:
+ 653 0190 F701      		movw r30,r14
+ 654 0192 8191      		ld r24,Z+
+ 655 0194 7F01      		movw r14,r30
+ 656 0196 6FEF      		ldi r22,lo8(-1)
+ 657 0198 7FEF      		ldi r23,lo8(-1)
+ 658 019a 90E0      		ldi r25,0
+ 659 019c 0E94 0000 		call LCDWriteInt
+ 187:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(30);//test
+ 661               	.LM56:
+ 662 01a0 E614      		cp r14,r6
+ 663 01a2 F704      		cpc r15,r7
+ 664 01a4 01F4      		brne .L12
+ 665               	.LBE106:
+ 666               	.LBB109:
+ 667               	.LBB110:
+ 669               	.Ltext25:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 704               	.LM62:
- 705 0244 FFE7      		ldi r31,lo8(79999)
- 706 0246 28E3      		ldi r18,hi8(79999)
- 707 0248 81E0      		ldi r24,hlo8(79999)
- 708 024a F150      	1:	subi r31,1
- 709 024c 2040      		sbci r18,0
- 710 024e 8040      		sbci r24,0
- 711 0250 01F4      		brne 1b
- 712 0252 00C0      		rjmp .
- 713 0254 0000      		nop
- 714               	.LBE149:
- 715               	.LBE148:
- 717               	.Ltext26:
- 195:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     _delay_ms(50);
- 196:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     LCDClear();
- 719               	.LM63:
- 720 0256 60E0      		ldi r22,0
- 721 0258 81E0      		ldi r24,lo8(1)
- 722 025a 0E94 0000 		call LCDByte
- 197:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     validCard = 1;
- 724               	.LM64:
- 725 025e 81E0      		ldi r24,lo8(1)
- 726 0260 90E0      		ldi r25,0
- 727               	.L11:
- 728 0262 0F5F      		subi r16,-1
- 729 0264 1F4F      		sbci r17,-1
- 187:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 // LCDHexDumpXY(byte*2,0,str[byte]);
- 731               	.LM65:
- 732 0266 E016      		cp r14,r16
- 733 0268 F106      		cpc r15,r17
- 734 026a 01F4      		brne .L12
- 735               	.LBE147:
- 198:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 }
- 199:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 else{
- 200:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     validCard = -1;
- 201:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 }
- 202:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 
- 203:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
- 204:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             if(validCard == 1){
- 737               	.LM66:
- 738 026c 8130      		cpi r24,1
- 739 026e 9105      		cpc r25,__zero_reg__
- 740 0270 01F0      		breq .+2
- 741 0272 00C0      		rjmp .L13
- 205:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDClear();
- 743               	.LM67:
- 744 0274 60E0      		ldi r22,0
- 745 0276 81E0      		ldi r24,lo8(1)
- 746 0278 0E94 0000 		call LCDByte
- 747               	.LBB150:
- 748               	.LBB151:
- 750               	.Ltext27:
+ 671               	.LM57:
+ 672 01a6 FFEF      		ldi r31,lo8(159999)
+ 673 01a8 20E7      		ldi r18,hi8(159999)
+ 674 01aa 82E0      		ldi r24,hlo8(159999)
+ 675 01ac F150      	1:	subi r31,1
+ 676 01ae 2040      		sbci r18,0
+ 677 01b0 8040      		sbci r24,0
+ 678 01b2 01F4      		brne 1b
+ 679 01b4 00C0      		rjmp .
+ 680 01b6 0000      		nop
+ 681               	.LBE110:
+ 682               	.LBE109:
+ 684               	.Ltext26:
+ 195:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 686               	.LM58:
+ 687 01b8 60E0      		ldi r22,0
+ 688 01ba 81E0      		ldi r24,lo8(1)
+ 689 01bc 0E94 0000 		call LCDByte
+ 690 01c0 80E0      		ldi r24,lo8(card1)
+ 691 01c2 C82E      		mov r12,r24
+ 692 01c4 80E0      		ldi r24,hi8(card1)
+ 693 01c6 D82E      		mov r13,r24
+ 694               	.L15:
+ 695               	.LBB111:
+ 200:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 if(str[k] == card1[k]) //this is where you are testing
+ 697               	.LM59:
+ 698 01c8 61E0      		ldi r22,lo8(1)
+ 699 01ca 80E0      		ldi r24,0
+ 700 01cc 0E94 0000 		call LCDGotoXY
+ 701 01d0 F801      		movw r30,r16
+ 702 01d2 8081      		ld r24,Z
+ 703 01d4 6FEF      		ldi r22,lo8(-1)
+ 704 01d6 7FEF      		ldi r23,lo8(-1)
+ 705 01d8 90E0      		ldi r25,0
+ 706 01da 0E94 0000 		call LCDWriteInt
+ 201:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 {
+ 708               	.LM60:
+ 709 01de F601      		movw r30,r12
+ 710 01e0 8191      		ld r24,Z+
+ 711 01e2 6F01      		movw r12,r30
+ 712 01e4 F801      		movw r30,r16
+ 713 01e6 9081      		ld r25,Z
+ 714 01e8 9813      		cpse r25,r24
+ 715 01ea 00C0      		rjmp .L13
+ 203:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     LCDWriteString("MATCH"); //jk i am testing
+ 717               	.LM61:
+ 718 01ec 61E0      		ldi r22,lo8(1)
+ 719 01ee 80E0      		ldi r24,0
+ 720 01f0 0E94 0000 		call LCDGotoXY
+ 721 01f4 F801      		movw r30,r16
+ 722 01f6 8081      		ld r24,Z
+ 723 01f8 6FEF      		ldi r22,lo8(-1)
+ 724 01fa 7FEF      		ldi r23,lo8(-1)
+ 725 01fc 90E0      		ldi r25,0
+ 726 01fe 0E94 0000 		call LCDWriteInt
+ 204:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     _delay_ms(50);
+ 728               	.LM62:
+ 729 0202 80E0      		ldi r24,lo8(.LC7)
+ 730 0204 90E0      		ldi r25,hi8(.LC7)
+ 731 0206 0E94 0000 		call LCDWriteString
+ 732               	.LBB100:
+ 733               	.LBB101:
+ 735               	.Ltext27:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 752               	.LM68:
- 753 027c 9FEF      		ldi r25,lo8(799999)
- 754 027e E4E3      		ldi r30,hi8(799999)
- 755 0280 FCE0      		ldi r31,hlo8(799999)
- 756 0282 9150      	1:	subi r25,1
- 757 0284 E040      		sbci r30,0
- 758 0286 F040      		sbci r31,0
- 759 0288 01F4      		brne 1b
- 760 028a 00C0      		rjmp .
- 761 028c 0000      		nop
- 762               	.LBE151:
- 763               	.LBE150:
- 765               	.Ltext28:
- 206:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(500);
- 207:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteString("SUCCESS");
- 767               	.LM69:
- 768 028e 80E0      		ldi r24,lo8(.LC9)
- 769 0290 90E0      		ldi r25,hi8(.LC9)
- 770 0292 0E94 0000 		call LCDWriteString
- 208:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 open();
- 772               	.LM70:
- 773 0296 0E94 0000 		call open.1831
- 774               	.L14:
- 775               	.LBB152:
- 776               	.LBB153:
- 778               	.Ltext29:
+ 737               	.LM63:
+ 738 020a FFE7      		ldi r31,lo8(79999)
+ 739 020c 28E3      		ldi r18,hi8(79999)
+ 740 020e 81E0      		ldi r24,hlo8(79999)
+ 741 0210 F150      	1:	subi r31,1
+ 742 0212 2040      		sbci r18,0
+ 743 0214 8040      		sbci r24,0
+ 744 0216 01F4      		brne 1b
+ 745 0218 00C0      		rjmp .
+ 746 021a 0000      		nop
+ 747               	.LBE101:
+ 748               	.LBE100:
+ 750               	.Ltext28:
+ 206:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     validCard = 1;
+ 752               	.LM64:
+ 753 021c 60E0      		ldi r22,0
+ 754 021e 81E0      		ldi r24,lo8(1)
+ 755 0220 0E94 0000 		call LCDByte
+ 757               	.LM65:
+ 758 0224 B092 0000 		sts validCard+1,r11
+ 759 0228 A092 0000 		sts validCard,r10
+ 760               	.L14:
+ 761 022c 0F5F      		subi r16,-1
+ 762 022e 1F4F      		sbci r17,-1
+ 197:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 // LCDHexDumpXY(byte*2,0,str[byte]);
+ 764               	.LM66:
+ 765 0230 0E15      		cp r16,r14
+ 766 0232 1F05      		cpc r17,r15
+ 767 0234 01F4      		brne .L15
+ 768               	.LBE111:
+ 208:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 }
+ 209:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 else{
+ 210:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     validCard = -1;
+ 211:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 }
+ 212:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 213:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             } //end of for loop checking if valid card
+ 214:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             if(validCard == 1){
+ 770               	.LM67:
+ 771 0236 8091 0000 		lds r24,validCard
+ 772 023a 9091 0000 		lds r25,validCard+1
+ 773 023e 0197      		sbiw r24,1
+ 774 0240 01F4      		brne .L16
+ 215:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDClear();
+ 776               	.LM68:
+ 777 0242 60E0      		ldi r22,0
+ 778 0244 81E0      		ldi r24,lo8(1)
+ 779 0246 0E94 0000 		call LCDByte
+ 780               	.LBB112:
+ 781               	.LBB113:
+ 783               	.Ltext29:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 780               	.LM71:
- 781 029a FFE7      		ldi r31,lo8(1199999)
- 782 029c 2FE4      		ldi r18,hi8(1199999)
- 783 029e 82E1      		ldi r24,hlo8(1199999)
- 784 02a0 F150      	1:	subi r31,1
- 785 02a2 2040      		sbci r18,0
- 786 02a4 8040      		sbci r24,0
- 787 02a6 01F4      		brne 1b
- 788 02a8 00C0      		rjmp .
- 789 02aa 0000      		nop
- 790               	.LBE153:
- 791               	.LBE152:
- 793               	.Ltext30:
- 209:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 validCard=5;
- 210:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
- 211:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             if(validCard == -1){
- 212:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDClear();
- 213:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(100);
- 214:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteString("not valid");
- 215:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 close();
- 216:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
- 217:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             
- 218:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(750);
- 219:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDClear();
- 795               	.LM72:
- 796 02ac 60E0      		ldi r22,0
- 797 02ae 81E0      		ldi r24,lo8(1)
- 798 02b0 0E94 0000 		call LCDByte
- 220:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDWriteString("CHECKED");
- 800               	.LM73:
- 801 02b4 80E0      		ldi r24,lo8(.LC11)
- 802 02b6 90E0      		ldi r25,hi8(.LC11)
- 803 02b8 0E94 0000 		call LCDWriteString
- 804               	.LBB154:
- 805               	.LBB155:
- 807               	.Ltext31:
+ 785               	.LM69:
+ 786 024a 9FEF      		ldi r25,lo8(799999)
+ 787 024c E4E3      		ldi r30,hi8(799999)
+ 788 024e FCE0      		ldi r31,hlo8(799999)
+ 789 0250 9150      	1:	subi r25,1
+ 790 0252 E040      		sbci r30,0
+ 791 0254 F040      		sbci r31,0
+ 792 0256 01F4      		brne 1b
+ 793 0258 00C0      		rjmp .
+ 794 025a 0000      		nop
+ 795               	.LBE113:
+ 796               	.LBE112:
+ 798               	.Ltext30:
+ 216:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(500);
+ 217:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteString("SUCCESS");
+ 800               	.LM70:
+ 801 025c 80E0      		ldi r24,lo8(.LC8)
+ 802 025e 90E0      		ldi r25,hi8(.LC8)
+ 803 0260 0E94 0000 		call LCDWriteString
+ 218:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 open(PORTC, 5);
+ 805               	.LM71:
+ 806 0264 88B1      		in r24,0x8
+ 807 0266 65E0      		ldi r22,lo8(5)
+ 808 0268 70E0      		ldi r23,0
+ 809 026a 90E0      		ldi r25,0
+ 810 026c 0E94 0000 		call open
+ 219:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 validCard=5;
+ 812               	.LM72:
+ 813 0270 85E0      		ldi r24,lo8(5)
+ 814 0272 90E0      		ldi r25,0
+ 815 0274 9093 0000 		sts validCard+1,r25
+ 816 0278 8093 0000 		sts validCard,r24
+ 817               	.L16:
+ 220:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             } //end if test worked
+ 221:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             if(validCard == -1){
+ 819               	.LM73:
+ 820 027c 8091 0000 		lds r24,validCard
+ 821 0280 9091 0000 		lds r25,validCard+1
+ 822 0284 0196      		adiw r24,1
+ 823 0286 01F4      		brne .L17
+ 222:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDClear();
+ 825               	.LM74:
+ 826 0288 60E0      		ldi r22,0
+ 827 028a 81E0      		ldi r24,lo8(1)
+ 828 028c 0E94 0000 		call LCDByte
+ 829               	.LBB114:
+ 830               	.LBB115:
+ 832               	.Ltext31:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 809               	.LM74:
- 810 02bc 9FE7      		ldi r25,lo8(399999)
- 811 02be EAE1      		ldi r30,hi8(399999)
- 812 02c0 F6E0      		ldi r31,hlo8(399999)
- 813 02c2 9150      	1:	subi r25,1
- 814 02c4 E040      		sbci r30,0
- 815 02c6 F040      		sbci r31,0
- 816 02c8 01F4      		brne 1b
- 817 02ca 00C0      		rjmp .
- 818 02cc 0000      		nop
- 819               	.LBE155:
- 820               	.LBE154:
- 822               	.Ltext32:
- 221:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(250);
- 222:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDClear();
- 824               	.LM75:
- 825 02ce 60E0      		ldi r22,0
- 826 02d0 81E0      		ldi r24,lo8(1)
- 827 02d2 0E94 0000 		call LCDByte
- 828               	.L6:
- 829               	.LBE137:
- 223:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         }
- 224:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         
- 225:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteString("present card");
- 831               	.LM76:
- 832 02d6 80E0      		ldi r24,lo8(.LC12)
- 833 02d8 90E0      		ldi r25,hi8(.LC12)
- 834 02da 0E94 0000 		call LCDWriteString
- 835               	.LBB159:
- 836               	.LBB160:
- 838               	.Ltext33:
+ 834               	.LM75:
+ 835 0290 8FEF      		ldi r24,lo8(159999)
+ 836 0292 90E7      		ldi r25,hi8(159999)
+ 837 0294 E2E0      		ldi r30,hlo8(159999)
+ 838 0296 8150      	1:	subi r24,1
+ 839 0298 9040      		sbci r25,0
+ 840 029a E040      		sbci r30,0
+ 841 029c 01F4      		brne 1b
+ 842 029e 00C0      		rjmp .
+ 843 02a0 0000      		nop
+ 844               	.LBE115:
+ 845               	.LBE114:
+ 847               	.Ltext32:
+ 223:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(100);
+ 224:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteString("not valid");
+ 849               	.LM76:
+ 850 02a2 80E0      		ldi r24,lo8(.LC9)
+ 851 02a4 90E0      		ldi r25,hi8(.LC9)
+ 852 02a6 0E94 0000 		call LCDWriteString
+ 853               	.L17:
+ 854               	.LBB116:
+ 855               	.LBB117:
+ 857               	.Ltext33:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 840               	.LM77:
- 841 02de 2FEF      		ldi r18,lo8(1599999)
- 842 02e0 89E6      		ldi r24,hi8(1599999)
- 843 02e2 98E1      		ldi r25,hlo8(1599999)
- 844 02e4 2150      	1:	subi r18,1
- 845 02e6 8040      		sbci r24,0
- 846 02e8 9040      		sbci r25,0
- 847 02ea 01F4      		brne 1b
- 848 02ec 00C0      		rjmp .
- 849 02ee 0000      		nop
- 850               	.LBE160:
- 851               	.LBE159:
- 853               	.Ltext34:
- 226:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_ms(1000);
- 227:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDClear();
- 855               	.LM78:
- 856 02f0 60E0      		ldi r22,0
- 857 02f2 81E0      		ldi r24,lo8(1)
- 858 02f4 0E94 0000 		call LCDByte
- 152:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDHexDumpXY(0,0,byte);
- 860               	.LM79:
- 861 02f8 00C0      		rjmp .L15
- 862               	.L3:
- 131:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
- 864               	.LM80:
- 865 02fa 8059      		subi r24,lo8(-(112))
- 133:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(4,1,"Detected");
- 867               	.LM81:
- 868 02fc 60E0      		ldi r22,0
- 131:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
- 870               	.LM82:
- 871 02fe 8230      		cpi r24,lo8(2)
- 872 0300 00F4      		brsh .L5
- 133:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(4,1,"Detected");
- 874               	.LM83:
- 875 0302 82E0      		ldi r24,lo8(2)
- 876 0304 0E94 0000 		call LCDGotoXY
- 877 0308 80E0      		ldi r24,lo8(.LC4)
- 878 030a 90E0      		ldi r25,hi8(.LC4)
- 879 030c 00C0      		rjmp .L21
- 880               	.L5:
- 137:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }
- 882               	.LM84:
- 883 030e 80E0      		ldi r24,0
- 884 0310 0E94 0000 		call LCDGotoXY
- 885 0314 80E0      		ldi r24,lo8(.LC5)
- 886 0316 90E0      		ldi r25,hi8(.LC5)
- 887 0318 00C0      		rjmp .L20
- 888               	.L7:
- 889               	.LBB161:
- 171:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
- 891               	.LM85:
- 892 031a 61E0      		ldi r22,lo8(1)
- 893 031c 80E0      		ldi r24,0
- 894 031e 0E94 0000 		call LCDGotoXY
- 895 0322 80E0      		ldi r24,lo8(.LC6)
- 896 0324 90E0      		ldi r25,hi8(.LC6)
- 897 0326 0E94 0000 		call LCDWriteString
- 898 032a 00C0      		rjmp .L9
- 899               	.L16:
- 900               	.LBB156:
- 200:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 }
- 902               	.LM86:
- 903 032c 8FEF      		ldi r24,lo8(-1)
- 904 032e 9FEF      		ldi r25,lo8(-1)
- 905 0330 00C0      		rjmp .L11
- 906               	.L13:
- 907               	.LBE156:
- 211:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDClear();
- 909               	.LM87:
- 910 0332 0196      		adiw r24,1
- 911 0334 01F0      		breq .+2
- 912 0336 00C0      		rjmp .L14
- 212:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(100);
- 914               	.LM88:
- 915 0338 60E0      		ldi r22,0
- 916 033a 81E0      		ldi r24,lo8(1)
- 917 033c 0E94 0000 		call LCDByte
- 918               	.LBB157:
- 919               	.LBB158:
- 921               	.Ltext35:
+ 859               	.LM77:
+ 860 02aa FFE7      		ldi r31,lo8(1199999)
+ 861 02ac 2FE4      		ldi r18,hi8(1199999)
+ 862 02ae 82E1      		ldi r24,hlo8(1199999)
+ 863 02b0 F150      	1:	subi r31,1
+ 864 02b2 2040      		sbci r18,0
+ 865 02b4 8040      		sbci r24,0
+ 866 02b6 01F4      		brne 1b
+ 867 02b8 00C0      		rjmp .
+ 868 02ba 0000      		nop
+ 869               	.LBE117:
+ 870               	.LBE116:
+ 872               	.Ltext34:
+ 225:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 close();
+ 226:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             } //end of loop for checking valid card
+ 227:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 228:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(750);
+ 229:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDClear();
+ 874               	.LM78:
+ 875 02bc 60E0      		ldi r22,0
+ 876 02be 81E0      		ldi r24,lo8(1)
+ 877 02c0 0E94 0000 		call LCDByte
+ 230:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDWriteString("CHECKED");
+ 879               	.LM79:
+ 880 02c4 80E0      		ldi r24,lo8(.LC10)
+ 881 02c6 90E0      		ldi r25,hi8(.LC10)
+ 882 02c8 0E94 0000 		call LCDWriteString
+ 883               	.LBB118:
+ 884               	.LBB119:
+ 886               	.Ltext35:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 923               	.LM89:
- 924 0340 8FEF      		ldi r24,lo8(159999)
- 925 0342 90E7      		ldi r25,hi8(159999)
- 926 0344 E2E0      		ldi r30,hlo8(159999)
- 927 0346 8150      	1:	subi r24,1
- 928 0348 9040      		sbci r25,0
- 929 034a E040      		sbci r30,0
- 930 034c 01F4      		brne 1b
- 931 034e 00C0      		rjmp .
- 932 0350 0000      		nop
- 933               	.LBE158:
- 934               	.LBE157:
- 936               	.Ltext36:
- 214:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 close();
- 938               	.LM90:
- 939 0352 80E0      		ldi r24,lo8(.LC10)
- 940 0354 90E0      		ldi r25,hi8(.LC10)
- 941 0356 0E94 0000 		call LCDWriteString
- 942 035a 00C0      		rjmp .L14
- 943               	.LBE161:
- 950               	.Lscope2:
- 951               		.comm	SelfTestBuffer,64,1
- 953               		.text
- 955               	.Letext0:
- 956               		.ident	"GCC: (GNU) 6.2.0"
- 957               	.global __do_copy_data
- 958               	.global __do_clear_bss
+ 888               	.LM80:
+ 889 02cc 9FE7      		ldi r25,lo8(399999)
+ 890 02ce EAE1      		ldi r30,hi8(399999)
+ 891 02d0 F6E0      		ldi r31,hlo8(399999)
+ 892 02d2 9150      	1:	subi r25,1
+ 893 02d4 E040      		sbci r30,0
+ 894 02d6 F040      		sbci r31,0
+ 895 02d8 01F4      		brne 1b
+ 896 02da 00C0      		rjmp .
+ 897 02dc 0000      		nop
+ 898               	.LBE119:
+ 899               	.LBE118:
+ 901               	.Ltext36:
+ 231:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(250);
+ 232:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDClear();
+ 903               	.LM81:
+ 904 02de 60E0      		ldi r22,0
+ 905 02e0 81E0      		ldi r24,lo8(1)
+ 906 02e2 0E94 0000 		call LCDByte
+ 907               	.L8:
+ 908               	.LBE121:
+ 233:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         } //end of valid card found
+ 234:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
+ 235:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteString("present card");
+ 910               	.LM82:
+ 911 02e6 80E0      		ldi r24,lo8(.LC11)
+ 912 02e8 90E0      		ldi r25,hi8(.LC11)
+ 913 02ea 0E94 0000 		call LCDWriteString
+ 914               	.LBB122:
+ 915               	.LBB123:
+ 917               	.Ltext37:
+ 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 919               	.LM83:
+ 920 02ee 2FEF      		ldi r18,lo8(1599999)
+ 921 02f0 89E6      		ldi r24,hi8(1599999)
+ 922 02f2 98E1      		ldi r25,hlo8(1599999)
+ 923 02f4 2150      	1:	subi r18,1
+ 924 02f6 8040      		sbci r24,0
+ 925 02f8 9040      		sbci r25,0
+ 926 02fa 01F4      		brne 1b
+ 927 02fc 00C0      		rjmp .
+ 928 02fe 0000      		nop
+ 929               	.LBE123:
+ 930               	.LBE122:
+ 932               	.Ltext38:
+ 236:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_ms(1000);
+ 237:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDClear();
+ 934               	.LM84:
+ 935 0300 60E0      		ldi r22,0
+ 936 0302 81E0      		ldi r24,lo8(1)
+ 937 0304 0E94 0000 		call LCDByte
+ 162:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDHexDumpXY(0,0,byte);
+ 939               	.LM85:
+ 940 0308 00C0      		rjmp .L18
+ 941               	.L5:
+ 143:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
+ 943               	.LM86:
+ 944 030a 8059      		subi r24,lo8(-(112))
+ 145:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(4,1,"Detected");
+ 946               	.LM87:
+ 947 030c 60E0      		ldi r22,0
+ 143:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     {
+ 949               	.LM88:
+ 950 030e 8230      		cpi r24,lo8(2)
+ 951 0310 00F4      		brsh .L7
+ 145:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteStringXY(4,1,"Detected");
+ 953               	.LM89:
+ 954 0312 82E0      		ldi r24,lo8(2)
+ 955 0314 0E94 0000 		call LCDGotoXY
+ 956 0318 80E0      		ldi r24,lo8(.LC3)
+ 957 031a 90E0      		ldi r25,hi8(.LC3)
+ 958 031c 00C0      		rjmp .L23
+ 959               	.L7:
+ 149:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }
+ 961               	.LM90:
+ 962 031e 80E0      		ldi r24,0
+ 963 0320 0E94 0000 		call LCDGotoXY
+ 964 0324 80E0      		ldi r24,lo8(.LC4)
+ 965 0326 90E0      		ldi r25,hi8(.LC4)
+ 966 0328 00C0      		rjmp .L22
+ 967               	.L9:
+ 968               	.LBB124:
+ 181:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
+ 970               	.LM91:
+ 971 032a 61E0      		ldi r22,lo8(1)
+ 972 032c 80E0      		ldi r24,0
+ 973 032e 0E94 0000 		call LCDGotoXY
+ 974 0332 80E0      		ldi r24,lo8(.LC5)
+ 975 0334 90E0      		ldi r25,hi8(.LC5)
+ 976 0336 0E94 0000 		call LCDWriteString
+ 977 033a 00C0      		rjmp .L11
+ 978               	.L13:
+ 979               	.LBB120:
+ 210:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 }
+ 981               	.LM92:
+ 982 033c 8FEF      		ldi r24,lo8(-1)
+ 983 033e 9FEF      		ldi r25,lo8(-1)
+ 984 0340 9093 0000 		sts validCard+1,r25
+ 985 0344 8093 0000 		sts validCard,r24
+ 986 0348 00C0      		rjmp .L14
+ 987               	.LBE120:
+ 988               	.LBE124:
+ 993               	.Lscope4:
+ 994               	.global	validCard
+ 995               		.data
+ 998               	validCard:
+ 999 0000 FEFF      		.word	-2
+ 1001               	.global	card1
+ 1004               	card1:
+ 1005 0002 AE        		.byte	-82
+ 1006 0003 44        		.byte	68
+ 1007 0004 2D        		.byte	45
+ 1008 0005 5B        		.byte	91
+ 1009 0006 9C        		.byte	-100
+ 1010 0007 0000 0000 		.zero	11
+ 1010      0000 0000 
+ 1010      0000 00
+ 1012               		.comm	SelfTestBuffer,64,1
+ 1014               		.text
+ 1016               	.Letext0:
+ 1017               		.ident	"GCC: (GNU) 6.2.0"
+ 1018               	.global __do_copy_data
+ 1019               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cceXaMGM.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cceXaMGM.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cceXaMGM.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cceXaMGM.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cceXaMGM.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cceXaMGM.s:110    .text:0000000000000000 open.1831
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cceXaMGM.s:252    .text.startup:0000000000000000 main
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:114    .text:0000000000000000 initServo
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:171    .text:0000000000000026 open
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:295    .text:000000000000008c close
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:339    .text.startup:0000000000000000 main
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:1004   .data:0000000000000002 card1
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccb9yFs5.s:998    .data:0000000000000000 validCard
                             *COM*:0000000000000040 SelfTestBuffer
 
 UNDEFINED SYMBOLS

@@ -50,39 +50,58 @@ uint8_t SelfTestBuffer[64];
 
      */
 
-void buttonInit(){
-    
-}
+//void buttonInit(volatile uint8_t *port, int pin){
+//    
+//}
 
-void buttonRead(){
-    //button is hardware debounced.
-    
-}
+//void buttonRead(){
+//    //button is hardware debounced.
+//    
+//}
 
-void initServo(volatile uint8_t *port, int pin){
-            //make A5 output.
-            DDRC=BV(pin);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
-            PORTC=BV(pin);     // PORTC is initially LOW OFF the led initially
+//RFID constants
+//holds id cards
+uint8_t card1[16] = {174,68,45,91,156}; //only 5 elements!!!
+int validCard = -2;
 
+void initServo(volatile uint8_t *port, volatile uint8_t *ddr, int pin){
+//            //make A5 output.
+//            *ddr=BV(pin);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
+//            *port=BV(pin);     // PORTC is initially LOW OFF the led initially /
+    //to do make the register parameter work
+
+    DDRC = BV(5);
         //set to closed position
-        PORTC = (BV(pin));
+        PORTC = (BV(5));
         _delay_us(1000);
-        PORTC   ^=BV(pin);
-        _delay_us(19000);
+        PORTC   ^=BV(5);
+        _delay_us(19000); //remember that total period is 2ms or 2k micros and you need to do it this way because of standard 50hz servo
 }
 
 int open(volatile uint8_t *port, int pin){
-        *port = (BV(pin));
-        _delay_us(2000);
-         *port   ^=BV(pin);
-        _delay_us(18000);
-
-        _delay_ms(4000);
-
-         *port = (BV(pin));
-        _delay_us(1000);
-         *port   ^=BV(pin);
-        _delay_us(19000);
+//        *port = (uint8_t)(BV(pin)); //need to change this code to work
+//        _delay_us(2000);
+//         *port   ^=BV(pin);
+//        _delay_us(18000);
+//
+//        _delay_ms(4000);
+//
+//         *port = (BV(pin));
+//        _delay_us(1000);
+//         *port   ^=BV(pin);
+//        _delay_us(19000);
+    
+    PORTC = (uint8_t)(BV(pin));
+    _delay_us(2000);
+   PORTC  ^=BV(5);
+    _delay_us(18000);
+    
+    _delay_ms(4000);
+    
+   PORTC = (BV(5));
+    _delay_us(1000);
+   PORTC   ^=BV(5);
+    _delay_us(19000);
 return 1;
     }
 
@@ -97,7 +116,7 @@ int close(void){
 int main(void)
 {
 
-    initServo(5, PORTC); //make servo an output at pin 5
+    initServo(PORTC, DDRC, 5); //make servo an output at pin 5
 
     uint8_t byte;
     uint8_t str[MAX_LEN];
@@ -196,7 +215,7 @@ while(1){
                 LCDClear();
                 _delay_ms(500);
                 LCDWriteString("SUCCESS");
-                open();
+                open(PORTC, 5);
                 validCard=5;
             } //end if test worked
             if(validCard == -1){

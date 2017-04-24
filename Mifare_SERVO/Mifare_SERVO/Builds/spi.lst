@@ -85,12 +85,12 @@
  160               		.ident	"GCC: (GNU) 6.2.0"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 spi.c
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:110    .text:0000000000000000 spi_init
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccTFNQ7h.s:133    .text:000000000000000a spi_transmit
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccJ5jQWZ.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccJ5jQWZ.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccJ5jQWZ.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccJ5jQWZ.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccJ5jQWZ.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccJ5jQWZ.s:110    .text:0000000000000000 spi_init
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccJ5jQWZ.s:133    .text:000000000000000a spi_transmit
 
 NO UNDEFINED SYMBOLS
