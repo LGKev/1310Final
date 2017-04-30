@@ -96,8 +96,8 @@
   77:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC = (BV(5));
  124               	.LM2:
  125 0004 98B9      		out 0x8,r25
- 126               	.LBB98:
- 127               	.LBB99:
+ 126               	.LBB94:
+ 127               	.LBB95:
  129               	.Ltext1:
    1:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
    2:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
@@ -382,8 +382,8 @@
  135 000c 01F4      		brne 1b
  136 000e 00C0      		rjmp .
  137 0010 0000      		nop
- 138               	.LBE99:
- 139               	.LBE98:
+ 138               	.LBE95:
+ 139               	.LBE94:
  141               	.Ltext2:
   78:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_us(1000);
   79:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         PORTC   ^=BV(5);
@@ -391,8 +391,8 @@
  144 0012 88B1      		in r24,0x8
  145 0014 8927      		eor r24,r25
  146 0016 88B9      		out 0x8,r24
- 147               	.LBB100:
- 148               	.LBB101:
+ 147               	.LBB96:
+ 148               	.LBB97:
  150               	.Ltext3:
  152               	.LM5:
  153 0018 8FE6      		ldi r24,lo8(-27537)
@@ -402,8 +402,8 @@
  157 0020 00C0      		rjmp .
  158 0022 0000      		nop
  159 0024 0895      		ret
- 160               	.LBE101:
- 161               	.LBE100:
+ 160               	.LBE97:
+ 161               	.LBE96:
  163               	.Lscope1:
  165               	.global	open
  167               	open:
@@ -434,8 +434,8 @@
  178               	.LM7:
  179 0026 80E2      		ldi r24,lo8(32)
  180 0028 88B9      		out 0x8,r24
- 181               	.LBB102:
- 182               	.LBB103:
+ 181               	.LBB98:
+ 182               	.LBB99:
  184               	.Ltext5:
  186               	.LM8:
  187 002a EFE9      		ldi r30,lo8(3999)
@@ -444,8 +444,8 @@
  190 0030 01F4      		brne 1b
  191 0032 00C0      		rjmp .
  192 0034 0000      		nop
- 193               	.LBE103:
- 194               	.LBE102:
+ 193               	.LBE99:
+ 194               	.LBE98:
  196               	.Ltext6:
   97:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_us(2000);
   98:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****    PORTC  ^=BV(5);
@@ -453,8 +453,8 @@
  199 0036 98B1      		in r25,0x8
  200 0038 9827      		eor r25,r24
  201 003a 98B9      		out 0x8,r25
- 202               	.LBB104:
- 203               	.LBB105:
+ 202               	.LBB100:
+ 203               	.LBB101:
  205               	.Ltext7:
  207               	.LM10:
  208 003c EFE9      		ldi r30,lo8(-29537)
@@ -463,10 +463,10 @@
  211 0042 01F4      		brne 1b
  212 0044 00C0      		rjmp .
  213 0046 0000      		nop
- 214               	.LBE105:
- 215               	.LBE104:
- 216               	.LBB106:
- 217               	.LBB107:
+ 214               	.LBE101:
+ 215               	.LBE100:
+ 216               	.LBB102:
+ 217               	.LBB103:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  219               	.LM11:
  220 0048 FFEF      		ldi r31,lo8(6399999)
@@ -478,8 +478,8 @@
  226 0054 01F4      		brne 1b
  227 0056 00C0      		rjmp .
  228 0058 0000      		nop
- 229               	.LBE107:
- 230               	.LBE106:
+ 229               	.LBE103:
+ 230               	.LBE102:
  232               	.Ltext8:
   99:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_us(18000);
  100:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     
@@ -488,8 +488,8 @@
  103:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****    PORTC = (BV(5));
  234               	.LM12:
  235 005a 88B9      		out 0x8,r24
- 236               	.LBB108:
- 237               	.LBB109:
+ 236               	.LBB104:
+ 237               	.LBB105:
  239               	.Ltext9:
  241               	.LM13:
  242 005c EFEC      		ldi r30,lo8(1999)
@@ -498,8 +498,8 @@
  245 0062 01F4      		brne 1b
  246 0064 00C0      		rjmp .
  247 0066 0000      		nop
- 248               	.LBE109:
- 249               	.LBE108:
+ 248               	.LBE105:
+ 249               	.LBE104:
  251               	.Ltext10:
  104:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_us(1000);
  105:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****    PORTC   ^=BV(5);
@@ -507,8 +507,8 @@
  254 0068 98B1      		in r25,0x8
  255 006a 8927      		eor r24,r25
  256 006c 88B9      		out 0x8,r24
- 257               	.LBB110:
- 258               	.LBB111:
+ 257               	.LBB106:
+ 258               	.LBB107:
  260               	.Ltext11:
  262               	.LM15:
  263 006e 8FE6      		ldi r24,lo8(-27537)
@@ -517,8 +517,8 @@
  266 0074 01F4      		brne 1b
  267 0076 00C0      		rjmp .
  268 0078 0000      		nop
- 269               	.LBE111:
- 270               	.LBE110:
+ 269               	.LBE107:
+ 270               	.LBE106:
  272               	.Ltext12:
  106:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_us(19000);
  107:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** return 1;
@@ -600,15 +600,15 @@
  342               	.LM24:
  343 0098 3399      		sbic 0x6,3
  344 009a 00C0      		rjmp .L7
- 345               	.LBB120:
- 346               	.LBB121:
+ 345               	.LBB116:
+ 346               	.LBB117:
  129:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDClear();
  348               	.LM25:
  349 009c 60E0      		ldi r22,0
  350 009e 81E0      		ldi r24,lo8(1)
  351 00a0 0E94 0000 		call LCDByte
- 352               	.LBB122:
- 353               	.LBB123:
+ 352               	.LBB118:
+ 353               	.LBB119:
  355               	.Ltext13:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  357               	.LM26:
@@ -621,8 +621,8 @@
  364 00b0 01F4      		brne 1b
  365 00b2 00C0      		rjmp .
  366 00b4 0000      		nop
- 367               	.LBE123:
- 368               	.LBE122:
+ 367               	.LBE119:
+ 368               	.LBE118:
  370               	.Ltext14:
  130:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_ms(40);
  131:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteString("button press");
@@ -633,8 +633,8 @@
  132:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         open();
  377               	.LM28:
  378 00be 0E94 0000 		call open
- 379               	.LBB124:
- 380               	.LBB125:
+ 379               	.LBB120:
+ 380               	.LBB121:
  382               	.Ltext15:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  384               	.LM29:
@@ -647,10 +647,10 @@
  391 00ce 01F4      		brne 1b
  392 00d0 00C0      		rjmp .
  393 00d2 0000      		nop
- 394               	.LBE125:
- 395               	.LBE124:
- 396               	.LBB126:
- 397               	.LBB127:
+ 394               	.LBE121:
+ 395               	.LBE120:
+ 396               	.LBB122:
+ 397               	.LBB123:
  398 00d4 2FEF      		ldi r18,lo8(1599999)
  399 00d6 89E6      		ldi r24,hi8(1599999)
  400 00d8 98E1      		ldi r25,hlo8(1599999)
@@ -660,8 +660,8 @@
  404 00e0 01F4      		brne 1b
  405 00e2 00C0      		rjmp .
  406 00e4 0000      		nop
- 407               	.LBE127:
- 408               	.LBE126:
+ 407               	.LBE123:
+ 408               	.LBE122:
  410               	.Ltext16:
  133:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_ms(500);
  134:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         close();
@@ -675,8 +675,8 @@
  417 00f0 90E0      		ldi r25,0
  418 00f2 0895      		ret
  419               	.L7:
- 420               	.LBE121:
- 421               	.LBE120:
+ 420               	.LBE117:
+ 421               	.LBE116:
  137:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         return 1;
  138:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     }
  139:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     return 0;
@@ -753,8 +753,8 @@
  476 001c 50E0      		ldi r21,0
  477 001e 90E0      		ldi r25,0
  478 0020 0E94 0000 		call initServo
- 479               	.LBB128:
- 480               	.LBB129:
+ 479               	.LBB124:
+ 480               	.LBB125:
  482               	.Ltext17:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  484               	.LM35:
@@ -767,8 +767,8 @@
  491 0030 01F4      		brne 1b
  492 0032 00C0      		rjmp .
  493 0034 0000      		nop
- 494               	.LBE129:
- 495               	.LBE128:
+ 494               	.LBE125:
+ 495               	.LBE124:
  497               	.Ltext18:
  147:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
  148:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     uint8_t byte;
@@ -790,8 +790,8 @@
  154:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     spi_init(); //start communication for rfid
  511               	.LM38:
  512 004c 0E94 0000 		call spi_init
- 513               	.LBB130:
- 514               	.LBB131:
+ 513               	.LBB126:
+ 514               	.LBB127:
  516               	.Ltext19:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  518               	.LM39:
@@ -804,8 +804,8 @@
  525 005c 01F4      		brne 1b
  526 005e 00C0      		rjmp .
  527 0060 0000      		nop
- 528               	.LBE131:
- 529               	.LBE130:
+ 528               	.LBE127:
+ 529               	.LBE126:
  531               	.Ltext20:
  155:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_ms(1000);
  156:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     LCDClear();
@@ -844,8 +844,8 @@
  560 008a 6068      		ori r22,lo8(-128)
  561 008c 83E0      		ldi r24,lo8(3)
  562 008e 0E94 0000 		call mfrc522_write
- 563               	.LBB132:
- 564               	.LBB133:
+ 563               	.LBB128:
+ 564               	.LBB129:
  566               	.Ltext21:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  568               	.LM47:
@@ -858,8 +858,8 @@
  575 009e 01F4      		brne 1b
  576 00a0 00C0      		rjmp .
  577 00a2 0000      		nop
- 578               	.LBE133:
- 579               	.LBE132:
+ 578               	.LBE129:
+ 579               	.LBE128:
  581               	.Ltext22:
  168:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
  169:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****     _delay_ms(1500);
@@ -872,7 +872,7 @@
  588 00ae F6E0      		ldi r31,6
  589 00b0 4F0E      		add r4,r31
  590 00b2 511C      		adc r5,__zero_reg__
- 591               	.LBB134:
+ 591               	.LBB130:
  171:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
  172:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
  173:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** while(1){
@@ -939,7 +939,7 @@
  594 00b4 95E0      		ldi r25,lo8(5)
  595 00b6 692E      		mov r6,r25
  596 00b8 712C      		mov r7,__zero_reg__
- 597               	.LBB135:
+ 597               	.LBB131:
  220:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 }
  599               	.LM50:
  600 00ba AA24      		clr r10
@@ -950,8 +950,8 @@
  605 00c4 820E      		add r8,r18
  606 00c6 911C      		adc r9,__zero_reg__
  607               	.L19:
- 608               	.LBE135:
- 609               	.LBE134:
+ 608               	.LBE131:
+ 609               	.LBE130:
  174:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDHexDumpXY(0,0,byte);
  611               	.LM51:
  612 00c8 BE01      		movw r22,r28
@@ -974,7 +974,7 @@
  629 00e4 1130      		cpi r17,lo8(1)
  630 00e6 01F0      		breq .+2
  631 00e8 00C0      		rjmp .L9
- 632               	.LBB157:
+ 632               	.LBB153:
  180:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             if(byte == CARD_FOUND)
  634               	.LM55:
  635 00ea CE01      		movw r24,r28
@@ -985,8 +985,8 @@
  640 00f2 8130      		cpi r24,lo8(1)
  641 00f4 01F0      		breq .+2
  642 00f6 00C0      		rjmp .L10
- 643               	.LBB138:
- 644               	.LBB139:
+ 643               	.LBB134:
+ 644               	.LBB135:
  646               	.Ltext23:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  648               	.LM57:
@@ -996,8 +996,8 @@
  652 00fe 01F4      		brne 1b
  653 0100 00C0      		rjmp .
  654 0102 0000      		nop
- 655               	.LBE139:
- 656               	.LBE138:
+ 655               	.LBE135:
+ 656               	.LBE134:
  658               	.Ltext24:
  184:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
  660               	.LM58:
@@ -1031,8 +1031,8 @@
  688 0130 80E0      		ldi r24,lo8(.LC3)
  689 0132 90E0      		ldi r25,hi8(.LC3)
  690 0134 0E94 0000 		call LCDWriteString
- 691               	.LBB140:
- 692               	.LBB141:
+ 691               	.LBB136:
+ 692               	.LBB137:
  694               	.Ltext25:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  696               	.LM62:
@@ -1045,8 +1045,8 @@
  703 0144 01F4      		brne 1b
  704 0146 00C0      		rjmp .
  705 0148 0000      		nop
- 706               	.LBE141:
- 707               	.LBE140:
+ 706               	.LBE137:
+ 707               	.LBE136:
  709               	.Ltext26:
  199:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             for(int i=0; i<5; i++){
  711               	.LM63:
@@ -1058,9 +1058,9 @@
  717 0156 1F4F      		sbci r17,-1
  718 0158 7801      		movw r14,r16
  719               	.L13:
- 720               	.LBB142:
- 721               	.LBB143:
- 722               	.LBB144:
+ 720               	.LBB138:
+ 721               	.LBB139:
+ 722               	.LBB140:
  724               	.Ltext27:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  726               	.LM64:
@@ -1070,8 +1070,8 @@
  730 0160 01F4      		brne 1b
  731 0162 00C0      		rjmp .
  732 0164 0000      		nop
- 733               	.LBE144:
- 734               	.LBE143:
+ 733               	.LBE140:
+ 734               	.LBE139:
  736               	.Ltext28:
  204:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 //   _delay_ms(1000);
  738               	.LM65:
@@ -1087,9 +1087,9 @@
  748 0176 E414      		cp r14,r4
  749 0178 F504      		cpc r15,r5
  750 017a 01F4      		brne .L13
- 751               	.LBE142:
- 752               	.LBB145:
- 753               	.LBB146:
+ 751               	.LBE138:
+ 752               	.LBB141:
+ 753               	.LBB142:
  755               	.Ltext29:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  757               	.LM67:
@@ -1102,8 +1102,8 @@
  764 0188 01F4      		brne 1b
  765 018a 00C0      		rjmp .
  766 018c 0000      		nop
- 767               	.LBE146:
- 768               	.LBE145:
+ 767               	.LBE142:
+ 768               	.LBE141:
  770               	.Ltext30:
  208:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
  772               	.LM68:
@@ -1115,7 +1115,7 @@
  778 019a 80E0      		ldi r24,hi8(card1)
  779 019c D82E      		mov r13,r24
  780               	.L16:
- 781               	.LBB147:
+ 781               	.LBB143:
  213:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 if(str[k] == card1[k]) //this is where you are testing
  783               	.LM69:
  784 019e 61E0      		ldi r22,lo8(1)
@@ -1152,8 +1152,8 @@
  815 01d8 80E0      		ldi r24,lo8(.LC4)
  816 01da 90E0      		ldi r25,hi8(.LC4)
  817 01dc 0E94 0000 		call LCDWriteString
- 818               	.LBB136:
- 819               	.LBB137:
+ 818               	.LBB132:
+ 819               	.LBB133:
  821               	.Ltext31:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  823               	.LM73:
@@ -1166,8 +1166,8 @@
  830 01ec 01F4      		brne 1b
  831 01ee 00C0      		rjmp .
  832 01f0 0000      		nop
- 833               	.LBE137:
- 834               	.LBE136:
+ 833               	.LBE133:
+ 834               	.LBE132:
  836               	.Ltext32:
  219:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                     validCard = 1;
  838               	.LM74:
@@ -1186,7 +1186,7 @@
  851 0206 0E15      		cp r16,r14
  852 0208 1F05      		cpc r17,r15
  853 020a 01F4      		brne .L16
- 854               	.LBE147:
+ 854               	.LBE143:
  227:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDClear();
  856               	.LM77:
  857 020c 8091 0000 		lds r24,validCard
@@ -1198,8 +1198,8 @@
  863 0218 60E0      		ldi r22,0
  864 021a 81E0      		ldi r24,lo8(1)
  865 021c 0E94 0000 		call LCDByte
- 866               	.LBB148:
- 867               	.LBB149:
+ 866               	.LBB144:
+ 867               	.LBB145:
  869               	.Ltext33:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  871               	.LM79:
@@ -1212,8 +1212,8 @@
  878 022c 01F4      		brne 1b
  879 022e 00C0      		rjmp .
  880 0230 0000      		nop
- 881               	.LBE149:
- 882               	.LBE148:
+ 881               	.LBE145:
+ 882               	.LBE144:
  884               	.Ltext34:
  230:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 open();
  886               	.LM80:
@@ -1239,8 +1239,8 @@
  906 0252 60E0      		ldi r22,0
  907 0254 81E0      		ldi r24,lo8(1)
  908 0256 0E94 0000 		call LCDByte
- 909               	.LBB150:
- 910               	.LBB151:
+ 909               	.LBB146:
+ 910               	.LBB147:
  912               	.Ltext35:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  914               	.LM85:
@@ -1253,8 +1253,8 @@
  921 0266 01F4      		brne 1b
  922 0268 00C0      		rjmp .
  923 026a 0000      		nop
- 924               	.LBE151:
- 925               	.LBE150:
+ 924               	.LBE147:
+ 925               	.LBE146:
  927               	.Ltext36:
  236:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 _delay_ms(100);
  237:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 LCDWriteString("not valid");
@@ -1263,8 +1263,8 @@
  931 026e 90E0      		ldi r25,hi8(.LC6)
  932 0270 0E94 0000 		call LCDWriteString
  933               	.L18:
- 934               	.LBB152:
- 935               	.LBB153:
+ 934               	.LBB148:
+ 935               	.LBB149:
  937               	.Ltext37:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  939               	.LM87:
@@ -1277,8 +1277,8 @@
  946 0280 01F4      		brne 1b
  947 0282 00C0      		rjmp .
  948 0284 0000      		nop
- 949               	.LBE153:
- 950               	.LBE152:
+ 949               	.LBE149:
+ 950               	.LBE148:
  952               	.Ltext38:
  238:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 close();
  239:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             } //end of loop for checking valid card
@@ -1294,8 +1294,8 @@
  960 028e 80E0      		ldi r24,lo8(.LC7)
  961 0290 90E0      		ldi r25,hi8(.LC7)
  962 0292 0E94 0000 		call LCDWriteString
- 963               	.LBB154:
- 964               	.LBB155:
+ 963               	.LBB150:
+ 964               	.LBB151:
  966               	.Ltext39:
  187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
  968               	.LM90:
@@ -1308,8 +1308,8 @@
  975 02a2 01F4      		brne 1b
  976 02a4 00C0      		rjmp .
  977 02a6 0000      		nop
- 978               	.LBE155:
- 979               	.LBE154:
+ 978               	.LBE151:
+ 979               	.LBE150:
  981               	.Ltext40:
  244:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             _delay_ms(250);
  245:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             LCDClear();
@@ -1318,7 +1318,7 @@
  985 02aa 81E0      		ldi r24,lo8(1)
  986 02ac 0E94 0000 		call LCDByte
  987               	.L9:
- 988               	.LBE157:
+ 988               	.LBE153:
  246:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         } //end of valid card found
  247:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c **** 
  248:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDWriteString("present card");
@@ -1326,90 +1326,67 @@
  991 02b0 80E0      		ldi r24,lo8(.LC8)
  992 02b2 90E0      		ldi r25,hi8(.LC8)
  993 02b4 0E94 0000 		call LCDWriteString
- 994               	.LBB158:
- 995               	.LBB159:
- 997               	.Ltext41:
- 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
- 999               	.LM93:
- 1000 02b8 2FEF      		ldi r18,lo8(1599999)
- 1001 02ba 89E6      		ldi r24,hi8(1599999)
- 1002 02bc 98E1      		ldi r25,hlo8(1599999)
- 1003 02be 2150      	1:	subi r18,1
- 1004 02c0 8040      		sbci r24,0
- 1005 02c2 9040      		sbci r25,0
- 1006 02c4 01F4      		brne 1b
- 1007 02c6 00C0      		rjmp .
- 1008 02c8 0000      		nop
- 1009               	.LBE159:
- 1010               	.LBE158:
- 1012               	.Ltext42:
- 249:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         _delay_ms(1000);
- 250:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDClear();
- 1014               	.LM94:
- 1015 02ca 60E0      		ldi r22,0
- 1016 02cc 81E0      		ldi r24,lo8(1)
- 1017 02ce 0E94 0000 		call LCDByte
  174:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****         LCDHexDumpXY(0,0,byte);
- 1019               	.LM95:
- 1020 02d2 00C0      		rjmp .L19
- 1021               	.L10:
- 1022               	.LBB160:
+ 995               	.LM93:
+ 996 02b8 00C0      		rjmp .L19
+ 997               	.L10:
+ 998               	.LBB154:
  194:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****             }
- 1024               	.LM96:
- 1025 02d4 61E0      		ldi r22,lo8(1)
- 1026 02d6 80E0      		ldi r24,0
- 1027 02d8 0E94 0000 		call LCDGotoXY
- 1028 02dc 80E0      		ldi r24,lo8(.LC2)
- 1029 02de 90E0      		ldi r25,hi8(.LC2)
- 1030 02e0 0E94 0000 		call LCDWriteString
- 1031 02e4 00C0      		rjmp .L12
- 1032               	.L14:
- 1033               	.LBB156:
+ 1000               	.LM94:
+ 1001 02ba 61E0      		ldi r22,lo8(1)
+ 1002 02bc 80E0      		ldi r24,0
+ 1003 02be 0E94 0000 		call LCDGotoXY
+ 1004 02c2 80E0      		ldi r24,lo8(.LC2)
+ 1005 02c4 90E0      		ldi r25,hi8(.LC2)
+ 1006 02c6 0E94 0000 		call LCDWriteString
+ 1007 02ca 00C0      		rjmp .L12
+ 1008               	.L14:
+ 1009               	.LBB152:
  223:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/main.c ****                 }
- 1035               	.LM97:
- 1036 02e6 8FEF      		ldi r24,lo8(-1)
- 1037 02e8 9FEF      		ldi r25,lo8(-1)
- 1038 02ea 9093 0000 		sts validCard+1,r25
- 1039 02ee 8093 0000 		sts validCard,r24
- 1040 02f2 00C0      		rjmp .L15
- 1041               	.LBE156:
- 1042               	.LBE160:
- 1047               	.Lscope6:
- 1048               	.global	validCard
- 1049               		.data
- 1052               	validCard:
- 1053 0000 FEFF      		.word	-2
- 1055               	.global	card1
- 1058               	card1:
- 1059 0002 AE        		.byte	-82
- 1060 0003 44        		.byte	68
- 1061 0004 2D        		.byte	45
- 1062 0005 5B        		.byte	91
- 1063 0006 9C        		.byte	-100
- 1064 0007 0000 0000 		.zero	11
- 1064      0000 0000 
- 1064      0000 00
- 1066               		.comm	SelfTestBuffer,64,1
- 1068               		.text
- 1070               	.Letext0:
- 1071               		.ident	"GCC: (GNU) 6.2.0"
- 1072               	.global __do_copy_data
- 1073               	.global __do_clear_bss
+ 1011               	.LM95:
+ 1012 02cc 8FEF      		ldi r24,lo8(-1)
+ 1013 02ce 9FEF      		ldi r25,lo8(-1)
+ 1014 02d0 9093 0000 		sts validCard+1,r25
+ 1015 02d4 8093 0000 		sts validCard,r24
+ 1016 02d8 00C0      		rjmp .L15
+ 1017               	.LBE152:
+ 1018               	.LBE154:
+ 1023               	.Lscope6:
+ 1024               	.global	validCard
+ 1025               		.data
+ 1028               	validCard:
+ 1029 0000 FEFF      		.word	-2
+ 1031               	.global	card1
+ 1034               	card1:
+ 1035 0002 AE        		.byte	-82
+ 1036 0003 44        		.byte	68
+ 1037 0004 2D        		.byte	45
+ 1038 0005 5B        		.byte	91
+ 1039 0006 9C        		.byte	-100
+ 1040 0007 0000 0000 		.zero	11
+ 1040      0000 0000 
+ 1040      0000 00
+ 1042               		.comm	SelfTestBuffer,64,1
+ 1044               		.text
+ 1046               	.Letext0:
+ 1047               		.ident	"GCC: (GNU) 6.2.0"
+ 1048               	.global __do_copy_data
+ 1049               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:111    .text:0000000000000000 initServo
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:167    .text:0000000000000026 open
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:283    .text:0000000000000080 close
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:301    .text:0000000000000086 initButton
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:333    .text:0000000000000098 buttonRead
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:452    .text.startup:0000000000000000 main
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:1058   .data:0000000000000002 card1
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc0433XO.s:1052   .data:0000000000000000 validCard
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:111    .text:0000000000000000 initServo
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:167    .text:0000000000000026 open
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:283    .text:0000000000000080 close
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:301    .text:0000000000000086 initButton
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:333    .text:0000000000000098 buttonRead
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:452    .text.startup:0000000000000000 main
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:1034   .data:0000000000000002 card1
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc6MSeiC.s:1028   .data:0000000000000000 validCard
                             *COM*:0000000000000040 SelfTestBuffer
 
 UNDEFINED SYMBOLS

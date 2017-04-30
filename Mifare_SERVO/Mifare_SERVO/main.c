@@ -246,7 +246,7 @@ while(1){
         } //end of valid card found
 
         LCDWriteString("present card");
-        _delay_ms(1000);
-        LCDClear();
+  //      _delay_ms(200);
+    //    LCDClear();
     }
 } //end of main
