@@ -3,27 +3,27 @@ Builds/main.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         000000a0  00800100  00000a4c  00000ae0  2**0
+  0 .data         000000ac  00800100  00000aae  00000b42  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000a4c  00000000  00000000  00000094  2**1
+  1 .text         00000aae  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000040  008001a0  008001a0  00000b80  2**0
+  2 .bss          00000040  008001ac  008001ac  00000bee  2**0
                   ALLOC
-  3 .stab         000026d0  00000000  00000000  00000b80  2**2
+  3 .stab         000027c0  00000000  00000000  00000bf0  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      000012c7  00000000  00000000  00003250  2**0
+  4 .stabstr      000012ec  00000000  00000000  000033b0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .comment      00000011  00000000  00000000  00004517  2**0
+  5 .comment      00000011  00000000  00000000  0000469c  2**0
                   CONTENTS, READONLY
-  6 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00004528  2**2
+  6 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000046b0  2**2
                   CONTENTS, READONLY
-  7 .debug_info   000005f4  00000000  00000000  00004568  2**0
+  7 .debug_info   000005f4  00000000  00000000  000046f0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 000005a2  00000000  00000000  00004b5c  2**0
+  8 .debug_abbrev 000005a2  00000000  00000000  00004ce4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   0000001d  00000000  00000000  000050fe  2**0
+  9 .debug_line   0000001d  00000000  00000000  00005286  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000208  00000000  00000000  0000511b  2**0
+ 10 .debug_str    00000208  00000000  00000000  000052a3  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -68,18 +68,18 @@ Disassembly of section .text:
   74:	11 e0       	ldi	r17, 0x01	; 1
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ec e4       	ldi	r30, 0x4C	; 76
+  7a:	ee ea       	ldi	r30, 0xAE	; 174
   7c:	fa e0       	ldi	r31, 0x0A	; 10
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
   82:	0d 92       	st	X+, r0
-  84:	a0 3a       	cpi	r26, 0xA0	; 160
+  84:	ac 3a       	cpi	r26, 0xAC	; 172
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
 
 0000008a <__do_clear_bss>:
   8a:	21 e0       	ldi	r18, 0x01	; 1
-  8c:	a0 ea       	ldi	r26, 0xA0	; 160
+  8c:	ac ea       	ldi	r26, 0xAC	; 172
   8e:	b1 e0       	ldi	r27, 0x01	; 1
   90:	01 c0       	rjmp	.+2      	; 0x94 <.do_clear_bss_start>
 
@@ -87,11 +87,11 @@ Disassembly of section .text:
   92:	1d 92       	st	X+, r1
 
 00000094 <.do_clear_bss_start>:
-  94:	a0 3e       	cpi	r26, 0xE0	; 224
+  94:	ac 3e       	cpi	r26, 0xEC	; 236
   96:	b2 07       	cpc	r27, r18
   98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
-  9a:	0e 94 5e 03 	call	0x6bc	; 0x6bc <main>
-  9e:	0c 94 24 05 	jmp	0xa48	; 0xa48 <_exit>
+  9a:	0e 94 8d 03 	call	0x71a	; 0x71a <main>
+  9e:	0c 94 55 05 	jmp	0xaaa	; 0xaaa <_exit>
 
 000000a2 <__bad_interrupt>:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -598,7 +598,7 @@ void LCDWriteInt(int val,unsigned int field_length)
 	{
 	str[i]=val%10;
  268:	b8 01       	movw	r22, r16
- 26a:	0e 94 fc 04 	call	0x9f8	; 0x9f8 <__divmodhi4>
+ 26a:	0e 94 2d 05 	call	0xa5a	; 0xa5a <__divmodhi4>
  26e:	82 93       	st	-Z, r24
 	val=val/10;
  270:	cb 01       	movw	r24, r22
@@ -852,1325 +852,1395 @@ int close(void){
  370:	90 e0       	ldi	r25, 0x00	; 0
  372:	08 95       	ret
 
-00000374 <mfrc522_write>:
-		mfrc522_write(TxControlReg,byte|0x03);
-	}
-}
+00000374 <initButton>:
 
-void mfrc522_write(uint8_t reg, uint8_t data)
-{
- 374:	cf 93       	push	r28
- 376:	c6 2f       	mov	r28, r22
-	ENABLE_CHIP();
- 378:	2a 98       	cbi	0x05, 2	; 5
-	spi_transmit((reg<<1)&0x7E);
- 37a:	88 0f       	add	r24, r24
- 37c:	8e 77       	andi	r24, 0x7E	; 126
- 37e:	0e 94 58 03 	call	0x6b0	; 0x6b0 <spi_transmit>
-	spi_transmit(data);
- 382:	8c 2f       	mov	r24, r28
- 384:	0e 94 58 03 	call	0x6b0	; 0x6b0 <spi_transmit>
-	DISABLE_CHIP();
- 388:	2a 9a       	sbi	0x05, 2	; 5
-}
- 38a:	cf 91       	pop	r28
- 38c:	08 95       	ret
 
-0000038e <mfrc522_read>:
-
-uint8_t mfrc522_read(uint8_t reg)
-{
-	uint8_t data;	
-	ENABLE_CHIP();
- 38e:	2a 98       	cbi	0x05, 2	; 5
-	spi_transmit(((reg<<1)&0x7E)|0x80);
- 390:	88 0f       	add	r24, r24
- 392:	8e 77       	andi	r24, 0x7E	; 126
- 394:	80 68       	ori	r24, 0x80	; 128
- 396:	0e 94 58 03 	call	0x6b0	; 0x6b0 <spi_transmit>
-	data = spi_transmit(0x00);
- 39a:	80 e0       	ldi	r24, 0x00	; 0
- 39c:	0e 94 58 03 	call	0x6b0	; 0x6b0 <spi_transmit>
-	DISABLE_CHIP();
- 3a0:	2a 9a       	sbi	0x05, 2	; 5
-	return data;
-}
- 3a2:	08 95       	ret
-
-000003a4 <mfrc522_reset>:
-
-void mfrc522_reset()
-{
-	mfrc522_write(CommandReg,SoftReset_CMD);
- 3a4:	6f e0       	ldi	r22, 0x0F	; 15
- 3a6:	81 e0       	ldi	r24, 0x01	; 1
- 3a8:	0c 94 ba 01 	jmp	0x374	; 0x374 <mfrc522_write>
-
-000003ac <mfrc522_init>:
-#endif
-
-void mfrc522_init()
-{
-	uint8_t byte;
-	mfrc522_reset();
- 3ac:	0e 94 d2 01 	call	0x3a4	; 0x3a4 <mfrc522_reset>
-	
-	mfrc522_write(TModeReg, 0x8D);
- 3b0:	6d e8       	ldi	r22, 0x8D	; 141
- 3b2:	8a e2       	ldi	r24, 0x2A	; 42
- 3b4:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-    mfrc522_write(TPrescalerReg, 0x3E);
- 3b8:	6e e3       	ldi	r22, 0x3E	; 62
- 3ba:	8b e2       	ldi	r24, 0x2B	; 43
- 3bc:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-    mfrc522_write(TReloadReg_1, 30);   
- 3c0:	6e e1       	ldi	r22, 0x1E	; 30
- 3c2:	8c e2       	ldi	r24, 0x2C	; 44
- 3c4:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-    mfrc522_write(TReloadReg_2, 0);	
- 3c8:	60 e0       	ldi	r22, 0x00	; 0
- 3ca:	8d e2       	ldi	r24, 0x2D	; 45
- 3cc:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-	mfrc522_write(TxASKReg, 0x40);	
- 3d0:	60 e4       	ldi	r22, 0x40	; 64
- 3d2:	85 e1       	ldi	r24, 0x15	; 21
- 3d4:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-	mfrc522_write(ModeReg, 0x3D);
- 3d8:	6d e3       	ldi	r22, 0x3D	; 61
- 3da:	81 e1       	ldi	r24, 0x11	; 17
- 3dc:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-	
-	byte = mfrc522_read(TxControlReg);
- 3e0:	84 e1       	ldi	r24, 0x14	; 20
- 3e2:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
-	if(!(byte&0x03))
- 3e6:	98 2f       	mov	r25, r24
- 3e8:	93 70       	andi	r25, 0x03	; 3
- 3ea:	29 f4       	brne	.+10     	; 0x3f6 <mfrc522_init+0x4a>
-	{
-		mfrc522_write(TxControlReg,byte|0x03);
- 3ec:	68 2f       	mov	r22, r24
- 3ee:	63 60       	ori	r22, 0x03	; 3
- 3f0:	84 e1       	ldi	r24, 0x14	; 20
- 3f2:	0c 94 ba 01 	jmp	0x374	; 0x374 <mfrc522_write>
- 3f6:	08 95       	ret
-
-000003f8 <mfrc522_to_card>:
-   
-	return status;
-}
-
-uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len)
-{
- 3f8:	3f 92       	push	r3
- 3fa:	4f 92       	push	r4
- 3fc:	5f 92       	push	r5
- 3fe:	6f 92       	push	r6
- 400:	7f 92       	push	r7
- 402:	8f 92       	push	r8
- 404:	9f 92       	push	r9
- 406:	af 92       	push	r10
- 408:	bf 92       	push	r11
- 40a:	cf 92       	push	r12
- 40c:	df 92       	push	r13
- 40e:	ef 92       	push	r14
- 410:	ff 92       	push	r15
- 412:	0f 93       	push	r16
- 414:	1f 93       	push	r17
- 416:	cf 93       	push	r28
- 418:	df 93       	push	r29
- 41a:	d8 2e       	mov	r13, r24
- 41c:	5b 01       	movw	r10, r22
- 41e:	84 2e       	mov	r8, r20
- 420:	79 01       	movw	r14, r18
- 422:	e8 01       	movw	r28, r16
-    uint8_t lastBits;
-    uint8_t n;
-    uint8_t	tmp;
-    uint32_t i;
-
-    switch (cmd)
- 424:	8c e0       	ldi	r24, 0x0C	; 12
- 426:	d8 16       	cp	r13, r24
- 428:	09 f4       	brne	.+2      	; 0x42c <mfrc522_to_card+0x34>
- 42a:	6b c0       	rjmp	.+214    	; 0x502 <mfrc522_to_card+0x10a>
- 42c:	ee e0       	ldi	r30, 0x0E	; 14
- 42e:	de 16       	cp	r13, r30
- 430:	09 f4       	brne	.+2      	; 0x434 <mfrc522_to_card+0x3c>
- 432:	6c c0       	rjmp	.+216    	; 0x50c <mfrc522_to_card+0x114>
-
-uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len)
-{
-	uint8_t status = ERROR;
-    uint8_t irqEn = 0x00;
-    uint8_t waitIRq = 0x00;
- 434:	31 2c       	mov	r3, r1
-}
-
-uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len)
-{
-	uint8_t status = ERROR;
-    uint8_t irqEn = 0x00;
- 436:	c1 2c       	mov	r12, r1
-		default:
-			break;
-    }
-   
-    //mfrc522_write(ComIEnReg, irqEn|0x80);	//Interrupt request
-    n=mfrc522_read(ComIrqReg);
- 438:	84 e0       	ldi	r24, 0x04	; 4
- 43a:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
-    mfrc522_write(ComIrqReg,n&(~0x80));//clear all interrupt bits
- 43e:	68 2f       	mov	r22, r24
- 440:	6f 77       	andi	r22, 0x7F	; 127
- 442:	84 e0       	ldi	r24, 0x04	; 4
- 444:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-    n=mfrc522_read(FIFOLevelReg);
- 448:	8a e0       	ldi	r24, 0x0A	; 10
- 44a:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
-    mfrc522_write(FIFOLevelReg,n|0x80);//flush FIFO data
- 44e:	68 2f       	mov	r22, r24
- 450:	60 68       	ori	r22, 0x80	; 128
- 452:	8a e0       	ldi	r24, 0x0A	; 10
- 454:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
+void initButton(){
+   // uint8_t button = 3;
+    //uint8_t ledB = 2;
+    DDRC ^= BV(button); //set as input
+ 374:	97 b1       	in	r25, 0x07	; 7
+ 376:	28 e0       	ldi	r18, 0x08	; 8
+ 378:	92 27       	eor	r25, r18
+ 37a:	97 b9       	out	0x07, r25	; 7
+    DDRC |= BV(ledB); //set output
+ 37c:	3a 9a       	sbi	0x07, 2	; 7
     
-	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
- 458:	60 e0       	ldi	r22, 0x00	; 0
- 45a:	81 e0       	ldi	r24, 0x01	; 1
- 45c:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
- 460:	85 01       	movw	r16, r10
+    PORTC ^= BV(button); // set low
+ 37e:	88 b1       	in	r24, 0x08	; 8
+ 380:	82 27       	eor	r24, r18
+ 382:	88 b9       	out	0x08, r24	; 8
+ 384:	08 95       	ret
 
-	//Writing data to the FIFO
-    for (i=0; i<send_data_len; i++)
- 462:	41 2c       	mov	r4, r1
- 464:	51 2c       	mov	r5, r1
- 466:	32 01       	movw	r6, r4
- 468:	91 2c       	mov	r9, r1
- 46a:	a1 2c       	mov	r10, r1
- 46c:	b1 2c       	mov	r11, r1
- 46e:	48 14       	cp	r4, r8
- 470:	59 04       	cpc	r5, r9
- 472:	6a 04       	cpc	r6, r10
- 474:	7b 04       	cpc	r7, r11
- 476:	08 f4       	brcc	.+2      	; 0x47a <mfrc522_to_card+0x82>
- 478:	4e c0       	rjmp	.+156    	; 0x516 <mfrc522_to_card+0x11e>
-    {   
-		mfrc522_write(FIFODataReg, send_data[i]);    
-	}
-
-	//Execute the cmd
-	mfrc522_write(CommandReg, cmd);
- 47a:	6d 2d       	mov	r22, r13
- 47c:	81 e0       	ldi	r24, 0x01	; 1
- 47e:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-    if (cmd == Transceive_CMD)
- 482:	8c e0       	ldi	r24, 0x0C	; 12
- 484:	d8 12       	cpse	r13, r24
- 486:	08 c0       	rjmp	.+16     	; 0x498 <mfrc522_to_card+0xa0>
-    {    
-		n=mfrc522_read(BitFramingReg);
- 488:	8d e0       	ldi	r24, 0x0D	; 13
- 48a:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
-		mfrc522_write(BitFramingReg,n|0x80);  
- 48e:	68 2f       	mov	r22, r24
- 490:	60 68       	ori	r22, 0x80	; 128
- 492:	8d e0       	ldi	r24, 0x0D	; 13
- 494:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-    mfrc522_write(FIFOLevelReg,n|0x80);//flush FIFO data
+00000386 <buttonRead>:
     
-	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
-
-	//Writing data to the FIFO
-    for (i=0; i<send_data_len; i++)
- 498:	40 ed       	ldi	r20, 0xD0	; 208
- 49a:	84 2e       	mov	r8, r20
- 49c:	47 e0       	ldi	r20, 0x07	; 7
- 49e:	94 2e       	mov	r9, r20
- 4a0:	a1 2c       	mov	r10, r1
- 4a2:	b1 2c       	mov	r11, r1
-		//CommIrqReg[7..0]
-		//Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
-        n = mfrc522_read(ComIrqReg);
-        i--;
-    }
-    while ((i!=0) && !(n&0x01) && !(n&waitIRq));
- 4a4:	13 2d       	mov	r17, r3
- 4a6:	11 60       	ori	r17, 0x01	; 1
-	i = 2000;	//i according to the clock frequency adjustment, the operator M1 card maximum waiting time 25ms???
-    do 
-    {
-		//CommIrqReg[7..0]
-		//Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
-        n = mfrc522_read(ComIrqReg);
- 4a8:	84 e0       	ldi	r24, 0x04	; 4
- 4aa:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
- 4ae:	08 2f       	mov	r16, r24
-        i--;
- 4b0:	e1 e0       	ldi	r30, 0x01	; 1
- 4b2:	8e 1a       	sub	r8, r30
- 4b4:	91 08       	sbc	r9, r1
- 4b6:	a1 08       	sbc	r10, r1
- 4b8:	b1 08       	sbc	r11, r1
-    }
-    while ((i!=0) && !(n&0x01) && !(n&waitIRq));
- 4ba:	19 f0       	breq	.+6      	; 0x4c2 <mfrc522_to_card+0xca>
- 4bc:	81 2f       	mov	r24, r17
- 4be:	80 23       	and	r24, r16
- 4c0:	99 f3       	breq	.-26     	; 0x4a8 <mfrc522_to_card+0xb0>
-
-	tmp=mfrc522_read(BitFramingReg);
- 4c2:	8d e0       	ldi	r24, 0x0D	; 13
- 4c4:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
-	mfrc522_write(BitFramingReg,tmp&(~0x80));
- 4c8:	68 2f       	mov	r22, r24
- 4ca:	6f 77       	andi	r22, 0x7F	; 127
- 4cc:	8d e0       	ldi	r24, 0x0D	; 13
- 4ce:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-	
-    if (i != 0)
- 4d2:	89 28       	or	r8, r9
- 4d4:	8a 28       	or	r8, r10
- 4d6:	8b 28       	or	r8, r11
- 4d8:	51 f5       	brne	.+84     	; 0x52e <mfrc522_to_card+0x136>
-	return status;
 }
 
-uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len)
-{
-	uint8_t status = ERROR;
- 4da:	03 e0       	ldi	r16, 0x03	; 3
-	
-    //SetBitMask(ControlReg,0x80);           //timer stops
-    //mfrc522_write(cmdReg, PCD_IDLE); 
-
-    return status;
-}
- 4dc:	80 2f       	mov	r24, r16
- 4de:	df 91       	pop	r29
- 4e0:	cf 91       	pop	r28
- 4e2:	1f 91       	pop	r17
- 4e4:	0f 91       	pop	r16
- 4e6:	ff 90       	pop	r15
- 4e8:	ef 90       	pop	r14
- 4ea:	df 90       	pop	r13
- 4ec:	cf 90       	pop	r12
- 4ee:	bf 90       	pop	r11
- 4f0:	af 90       	pop	r10
- 4f2:	9f 90       	pop	r9
- 4f4:	8f 90       	pop	r8
- 4f6:	7f 90       	pop	r7
- 4f8:	6f 90       	pop	r6
- 4fa:	5f 90       	pop	r5
- 4fc:	4f 90       	pop	r4
- 4fe:	3f 90       	pop	r3
- 500:	08 95       	ret
-			break;
-		}
-		case Transceive_CMD:	//Transmit FIFO data
-		{
-			irqEn = 0x77;
-			waitIRq = 0x30;
- 502:	70 e3       	ldi	r23, 0x30	; 48
- 504:	37 2e       	mov	r3, r23
-			waitIRq = 0x10;
-			break;
-		}
-		case Transceive_CMD:	//Transmit FIFO data
-		{
-			irqEn = 0x77;
- 506:	e7 e7       	ldi	r30, 0x77	; 119
- 508:	ce 2e       	mov	r12, r30
-			waitIRq = 0x30;
-			break;
- 50a:	96 cf       	rjmp	.-212    	; 0x438 <mfrc522_to_card+0x40>
-    switch (cmd)
-    {
-        case MFAuthent_CMD:		//Certification cards close
-		{
-			irqEn = 0x12;
-			waitIRq = 0x10;
- 50c:	50 e1       	ldi	r21, 0x10	; 16
- 50e:	35 2e       	mov	r3, r21
-
-    switch (cmd)
-    {
-        case MFAuthent_CMD:		//Certification cards close
-		{
-			irqEn = 0x12;
- 510:	62 e1       	ldi	r22, 0x12	; 18
- 512:	c6 2e       	mov	r12, r22
- 514:	91 cf       	rjmp	.-222    	; 0x438 <mfrc522_to_card+0x40>
-	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
-
-	//Writing data to the FIFO
-    for (i=0; i<send_data_len; i++)
-    {   
-		mfrc522_write(FIFODataReg, send_data[i]);    
- 516:	f8 01       	movw	r30, r16
- 518:	61 91       	ld	r22, Z+
- 51a:	8f 01       	movw	r16, r30
- 51c:	89 e0       	ldi	r24, 0x09	; 9
- 51e:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-    mfrc522_write(FIFOLevelReg,n|0x80);//flush FIFO data
-    
-	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
-
-	//Writing data to the FIFO
-    for (i=0; i<send_data_len; i++)
- 522:	ff ef       	ldi	r31, 0xFF	; 255
- 524:	4f 1a       	sub	r4, r31
- 526:	5f 0a       	sbc	r5, r31
- 528:	6f 0a       	sbc	r6, r31
- 52a:	7f 0a       	sbc	r7, r31
- 52c:	a0 cf       	rjmp	.-192    	; 0x46e <mfrc522_to_card+0x76>
-	tmp=mfrc522_read(BitFramingReg);
-	mfrc522_write(BitFramingReg,tmp&(~0x80));
-	
-    if (i != 0)
-    {    
-        if(!(mfrc522_read(ErrorReg) & 0x1B))	//BufferOvfl Collerr CRCErr ProtecolErr
- 52e:	86 e0       	ldi	r24, 0x06	; 6
- 530:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
- 534:	8b 71       	andi	r24, 0x1B	; 27
- 536:	89 f6       	brne	.-94     	; 0x4da <mfrc522_to_card+0xe2>
-        {
-            status = CARD_FOUND;
-            if (n & irqEn & 0x01)
- 538:	fc 2d       	mov	r31, r12
- 53a:	f1 70       	andi	r31, 0x01	; 1
- 53c:	cf 2e       	mov	r12, r31
- 53e:	c0 22       	and	r12, r16
- 540:	e9 f1       	breq	.+122    	; 0x5bc <mfrc522_to_card+0x1c4>
-            {   
-				status = CARD_NOT_FOUND;			//??   
- 542:	02 e0       	ldi	r16, 0x02	; 2
-			}
-
-            if (cmd == Transceive_CMD)
- 544:	8c e0       	ldi	r24, 0x0C	; 12
- 546:	d8 12       	cpse	r13, r24
- 548:	c9 cf       	rjmp	.-110    	; 0x4dc <mfrc522_to_card+0xe4>
-            {
-               	n = mfrc522_read(FIFOLevelReg);
- 54a:	8a e0       	ldi	r24, 0x0A	; 10
- 54c:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
- 550:	18 2f       	mov	r17, r24
-              	lastBits = mfrc522_read(ControlReg) & 0x07;
- 552:	8c e0       	ldi	r24, 0x0C	; 12
- 554:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
- 558:	28 2f       	mov	r18, r24
- 55a:	27 70       	andi	r18, 0x07	; 7
- 55c:	81 2f       	mov	r24, r17
- 55e:	90 e0       	ldi	r25, 0x00	; 0
-                if (lastBits)
- 560:	79 f1       	breq	.+94     	; 0x5c0 <mfrc522_to_card+0x1c8>
-                {   
-					*back_data_len = (n-1)*8 + lastBits;   
- 562:	01 97       	sbiw	r24, 0x01	; 1
- 564:	33 e0       	ldi	r19, 0x03	; 3
- 566:	88 0f       	add	r24, r24
- 568:	99 1f       	adc	r25, r25
- 56a:	3a 95       	dec	r19
- 56c:	e1 f7       	brne	.-8      	; 0x566 <mfrc522_to_card+0x16e>
- 56e:	82 0f       	add	r24, r18
- 570:	91 1d       	adc	r25, r1
-				}
-                else
-                {   
-					*back_data_len = n*8;   
- 572:	09 2e       	mov	r0, r25
- 574:	00 0c       	add	r0, r0
- 576:	aa 0b       	sbc	r26, r26
- 578:	bb 0b       	sbc	r27, r27
- 57a:	88 83       	st	Y, r24
- 57c:	99 83       	std	Y+1, r25	; 0x01
- 57e:	aa 83       	std	Y+2, r26	; 0x02
- 580:	bb 83       	std	Y+3, r27	; 0x03
-				}
-
-                if (n == 0)
- 582:	11 23       	and	r17, r17
- 584:	19 f1       	breq	.+70     	; 0x5cc <mfrc522_to_card+0x1d4>
- 586:	11 31       	cpi	r17, 0x11	; 17
- 588:	08 f0       	brcs	.+2      	; 0x58c <mfrc522_to_card+0x194>
- 58a:	10 e1       	ldi	r17, 0x10	; 16
- 58c:	e7 01       	movw	r28, r14
-                {   
-					n = MAX_LEN;   
-				}
-				
-				//Reading the received data in FIFO
-                for (i=0; i<n; i++)
- 58e:	81 2c       	mov	r8, r1
- 590:	91 2c       	mov	r9, r1
- 592:	54 01       	movw	r10, r8
- 594:	c1 2e       	mov	r12, r17
- 596:	d1 2c       	mov	r13, r1
- 598:	e1 2c       	mov	r14, r1
- 59a:	f1 2c       	mov	r15, r1
- 59c:	8c 14       	cp	r8, r12
- 59e:	9d 04       	cpc	r9, r13
- 5a0:	ae 04       	cpc	r10, r14
- 5a2:	bf 04       	cpc	r11, r15
- 5a4:	08 f0       	brcs	.+2      	; 0x5a8 <mfrc522_to_card+0x1b0>
- 5a6:	9a cf       	rjmp	.-204    	; 0x4dc <mfrc522_to_card+0xe4>
-                {   
-					back_data[i] = mfrc522_read(FIFODataReg);    
- 5a8:	89 e0       	ldi	r24, 0x09	; 9
- 5aa:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
- 5ae:	89 93       	st	Y+, r24
-                {   
-					n = MAX_LEN;   
-				}
-				
-				//Reading the received data in FIFO
-                for (i=0; i<n; i++)
- 5b0:	ef ef       	ldi	r30, 0xFF	; 255
- 5b2:	8e 1a       	sub	r8, r30
- 5b4:	9e 0a       	sbc	r9, r30
- 5b6:	ae 0a       	sbc	r10, r30
- 5b8:	be 0a       	sbc	r11, r30
- 5ba:	f0 cf       	rjmp	.-32     	; 0x59c <mfrc522_to_card+0x1a4>
-	
-    if (i != 0)
-    {    
-        if(!(mfrc522_read(ErrorReg) & 0x1B))	//BufferOvfl Collerr CRCErr ProtecolErr
-        {
-            status = CARD_FOUND;
- 5bc:	01 e0       	ldi	r16, 0x01	; 1
- 5be:	c2 cf       	rjmp	.-124    	; 0x544 <mfrc522_to_card+0x14c>
-                {   
-					*back_data_len = (n-1)*8 + lastBits;   
-				}
-                else
-                {   
-					*back_data_len = n*8;   
- 5c0:	23 e0       	ldi	r18, 0x03	; 3
- 5c2:	88 0f       	add	r24, r24
- 5c4:	99 1f       	adc	r25, r25
- 5c6:	2a 95       	dec	r18
- 5c8:	e1 f7       	brne	.-8      	; 0x5c2 <mfrc522_to_card+0x1ca>
- 5ca:	d3 cf       	rjmp	.-90     	; 0x572 <mfrc522_to_card+0x17a>
-				}
-
-                if (n == 0)
-                {   
-					n = 1;    
- 5cc:	11 e0       	ldi	r17, 0x01	; 1
- 5ce:	de cf       	rjmp	.-68     	; 0x58c <mfrc522_to_card+0x194>
-
-000005d0 <mfrc522_request>:
-{
-	mfrc522_write(CommandReg,SoftReset_CMD);
-}
-
-uint8_t	mfrc522_request(uint8_t req_mode, uint8_t * tag_type)
-{
- 5d0:	ef 92       	push	r14
- 5d2:	ff 92       	push	r15
- 5d4:	0f 93       	push	r16
- 5d6:	1f 93       	push	r17
- 5d8:	cf 93       	push	r28
- 5da:	df 93       	push	r29
- 5dc:	00 d0       	rcall	.+0      	; 0x5de <mfrc522_request+0xe>
- 5de:	00 d0       	rcall	.+0      	; 0x5e0 <mfrc522_request+0x10>
- 5e0:	cd b7       	in	r28, 0x3d	; 61
- 5e2:	de b7       	in	r29, 0x3e	; 62
- 5e4:	18 2f       	mov	r17, r24
- 5e6:	7b 01       	movw	r14, r22
-	uint8_t  status;  
-	uint32_t backBits;//The received data bits
-
-	mfrc522_write(BitFramingReg, 0x07);//TxLastBists = BitFramingReg[2..0]	???
- 5e8:	67 e0       	ldi	r22, 0x07	; 7
- 5ea:	8d e0       	ldi	r24, 0x0D	; 13
- 5ec:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
-	
-	tag_type[0] = req_mode;
- 5f0:	f7 01       	movw	r30, r14
- 5f2:	10 83       	st	Z, r17
-	status = mfrc522_to_card(Transceive_CMD, tag_type, 1, tag_type, &backBits);
- 5f4:	8e 01       	movw	r16, r28
- 5f6:	0f 5f       	subi	r16, 0xFF	; 255
- 5f8:	1f 4f       	sbci	r17, 0xFF	; 255
- 5fa:	97 01       	movw	r18, r14
- 5fc:	41 e0       	ldi	r20, 0x01	; 1
- 5fe:	b7 01       	movw	r22, r14
- 600:	8c e0       	ldi	r24, 0x0C	; 12
- 602:	0e 94 fc 01 	call	0x3f8	; 0x3f8 <mfrc522_to_card>
-
-	if ((status != CARD_FOUND) || (backBits != 0x10))
- 606:	81 30       	cpi	r24, 0x01	; 1
- 608:	a1 f4       	brne	.+40     	; 0x632 <mfrc522_request+0x62>
- 60a:	49 81       	ldd	r20, Y+1	; 0x01
- 60c:	5a 81       	ldd	r21, Y+2	; 0x02
- 60e:	6b 81       	ldd	r22, Y+3	; 0x03
- 610:	7c 81       	ldd	r23, Y+4	; 0x04
- 612:	40 31       	cpi	r20, 0x10	; 16
- 614:	51 05       	cpc	r21, r1
- 616:	61 05       	cpc	r22, r1
- 618:	71 05       	cpc	r23, r1
- 61a:	59 f4       	brne	.+22     	; 0x632 <mfrc522_request+0x62>
-	{    
-		status = ERROR;
-	}
-   
-	return status;
-}
- 61c:	0f 90       	pop	r0
- 61e:	0f 90       	pop	r0
- 620:	0f 90       	pop	r0
- 622:	0f 90       	pop	r0
- 624:	df 91       	pop	r29
- 626:	cf 91       	pop	r28
- 628:	1f 91       	pop	r17
- 62a:	0f 91       	pop	r16
- 62c:	ff 90       	pop	r15
- 62e:	ef 90       	pop	r14
- 630:	08 95       	ret
-	tag_type[0] = req_mode;
-	status = mfrc522_to_card(Transceive_CMD, tag_type, 1, tag_type, &backBits);
-
-	if ((status != CARD_FOUND) || (backBits != 0x10))
-	{    
-		status = ERROR;
- 632:	83 e0       	ldi	r24, 0x03	; 3
-	}
-   
-	return status;
- 634:	f3 cf       	rjmp	.-26     	; 0x61c <mfrc522_request+0x4c>
-
-00000636 <mfrc522_get_card_serial>:
-    return status;
-}
-
-
-uint8_t mfrc522_get_card_serial(uint8_t * serial_out)
-{
- 636:	ef 92       	push	r14
- 638:	ff 92       	push	r15
- 63a:	0f 93       	push	r16
- 63c:	1f 93       	push	r17
- 63e:	cf 93       	push	r28
- 640:	df 93       	push	r29
- 642:	00 d0       	rcall	.+0      	; 0x644 <mfrc522_get_card_serial+0xe>
- 644:	00 d0       	rcall	.+0      	; 0x646 <mfrc522_get_card_serial+0x10>
- 646:	cd b7       	in	r28, 0x3d	; 61
- 648:	de b7       	in	r29, 0x3e	; 62
- 64a:	7c 01       	movw	r14, r24
-	uint8_t status;
-    uint8_t i;
-	uint8_t serNumCheck=0;
-    uint32_t unLen;
-    
-	mfrc522_write(BitFramingReg, 0x00);		//TxLastBists = BitFramingReg[2..0]
- 64c:	60 e0       	ldi	r22, 0x00	; 0
- 64e:	8d e0       	ldi	r24, 0x0D	; 13
- 650:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
- 
-    serial_out[0] = PICC_ANTICOLL;
- 654:	83 e9       	ldi	r24, 0x93	; 147
- 656:	f7 01       	movw	r30, r14
- 658:	80 83       	st	Z, r24
-    serial_out[1] = 0x20;
- 65a:	80 e2       	ldi	r24, 0x20	; 32
- 65c:	81 83       	std	Z+1, r24	; 0x01
-    status = mfrc522_to_card(Transceive_CMD, serial_out, 2, serial_out, &unLen);
- 65e:	8e 01       	movw	r16, r28
- 660:	0f 5f       	subi	r16, 0xFF	; 255
- 662:	1f 4f       	sbci	r17, 0xFF	; 255
- 664:	97 01       	movw	r18, r14
- 666:	42 e0       	ldi	r20, 0x02	; 2
- 668:	b7 01       	movw	r22, r14
- 66a:	8c e0       	ldi	r24, 0x0C	; 12
- 66c:	0e 94 fc 01 	call	0x3f8	; 0x3f8 <mfrc522_to_card>
-
-    if (status == CARD_FOUND)
- 670:	81 30       	cpi	r24, 0x01	; 1
- 672:	71 f4       	brne	.+28     	; 0x690 <mfrc522_get_card_serial+0x5a>
- 674:	f7 01       	movw	r30, r14
- 676:	97 01       	movw	r18, r14
- 678:	2c 5f       	subi	r18, 0xFC	; 252
- 67a:	3f 4f       	sbci	r19, 0xFF	; 255
- 67c:	90 e0       	ldi	r25, 0x00	; 0
-	{
-		//Check card serial number
-		for (i=0; i<4; i++)
-		{   
-		 	serNumCheck ^= serial_out[i];
- 67e:	41 91       	ld	r20, Z+
- 680:	94 27       	eor	r25, r20
-    status = mfrc522_to_card(Transceive_CMD, serial_out, 2, serial_out, &unLen);
-
-    if (status == CARD_FOUND)
-	{
-		//Check card serial number
-		for (i=0; i<4; i++)
- 682:	e2 17       	cp	r30, r18
- 684:	f3 07       	cpc	r31, r19
- 686:	d9 f7       	brne	.-10     	; 0x67e <mfrc522_get_card_serial+0x48>
-		{   
-		 	serNumCheck ^= serial_out[i];
-		}
-		if (serNumCheck != serial_out[i])
- 688:	f7 01       	movw	r30, r14
- 68a:	24 81       	ldd	r18, Z+4	; 0x04
- 68c:	92 13       	cpse	r25, r18
-		{   
-			status = ERROR;    
- 68e:	83 e0       	ldi	r24, 0x03	; 3
-		}
-    }
-    return status;
-}
- 690:	0f 90       	pop	r0
- 692:	0f 90       	pop	r0
- 694:	0f 90       	pop	r0
- 696:	0f 90       	pop	r0
- 698:	df 91       	pop	r29
- 69a:	cf 91       	pop	r28
- 69c:	1f 91       	pop	r17
- 69e:	0f 91       	pop	r16
- 6a0:	ff 90       	pop	r15
- 6a2:	ef 90       	pop	r14
- 6a4:	08 95       	ret
-
-000006a6 <spi_init>:
-#include <spi.h>
-
-#if SPI_CONFIG_AS_MASTER
-void spi_init()
-{
-	SPI_DDR = (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
- 6a6:	8c e2       	ldi	r24, 0x2C	; 44
- 6a8:	84 b9       	out	0x04, r24	; 4
-	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);//prescaler 16
- 6aa:	81 e5       	ldi	r24, 0x51	; 81
- 6ac:	8c bd       	out	0x2c, r24	; 44
- 6ae:	08 95       	ret
-
-000006b0 <spi_transmit>:
- 6b0:	8e bd       	out	0x2e, r24	; 46
- 6b2:	0d b4       	in	r0, 0x2d	; 45
- 6b4:	07 fe       	sbrs	r0, 7
- 6b6:	fd cf       	rjmp	.-6      	; 0x6b2 <spi_transmit+0x2>
- 6b8:	8e b5       	in	r24, 0x2e	; 46
- 6ba:	08 95       	ret
-
-000006bc <main>:
-/* === === === END SERVO SETUP === === === */
-
-
-
-int main(void)
-{
- 6bc:	cf 93       	push	r28
- 6be:	df 93       	push	r29
- 6c0:	cd b7       	in	r28, 0x3d	; 61
- 6c2:	de b7       	in	r29, 0x3e	; 62
- 6c4:	60 97       	sbiw	r28, 0x10	; 16
- 6c6:	0f b6       	in	r0, 0x3f	; 63
- 6c8:	f8 94       	cli
- 6ca:	de bf       	out	0x3e, r29	; 62
- 6cc:	0f be       	out	0x3f, r0	; 63
- 6ce:	cd bf       	out	0x3d, r28	; 61
-
-    initServo(PORTC, DDRC, 5); //make servo an output at pin 5
- 6d0:	67 b1       	in	r22, 0x07	; 7
- 6d2:	88 b1       	in	r24, 0x08	; 8
- 6d4:	70 e0       	ldi	r23, 0x00	; 0
- 6d6:	45 e0       	ldi	r20, 0x05	; 5
- 6d8:	50 e0       	ldi	r21, 0x00	; 0
- 6da:	90 e0       	ldi	r25, 0x00	; 0
- 6dc:	0e 94 77 01 	call	0x2ee	; 0x2ee <initServo>
+int buttonRead(){
+    if(bit_is_clear(PINC, button)){
+ 386:	33 99       	sbic	0x06, 3	; 6
+ 388:	21 c0       	rjmp	.+66     	; 0x3cc <buttonRead+0x46>
+        LCDClear();
+ 38a:	60 e0       	ldi	r22, 0x00	; 0
+ 38c:	81 e0       	ldi	r24, 0x01	; 1
+ 38e:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 6e0:	2f e7       	ldi	r18, 0x7F	; 127
- 6e2:	88 e3       	ldi	r24, 0x38	; 56
- 6e4:	91 e0       	ldi	r25, 0x01	; 1
- 6e6:	21 50       	subi	r18, 0x01	; 1
- 6e8:	80 40       	sbci	r24, 0x00	; 0
- 6ea:	90 40       	sbci	r25, 0x00	; 0
- 6ec:	e1 f7       	brne	.-8      	; 0x6e6 <main+0x2a>
- 6ee:	00 c0       	rjmp	.+0      	; 0x6f0 <main+0x34>
- 6f0:	00 00       	nop
+ 392:	2f ef       	ldi	r18, 0xFF	; 255
+ 394:	89 ef       	ldi	r24, 0xF9	; 249
+ 396:	90 e0       	ldi	r25, 0x00	; 0
+ 398:	21 50       	subi	r18, 0x01	; 1
+ 39a:	80 40       	sbci	r24, 0x00	; 0
+ 39c:	90 40       	sbci	r25, 0x00	; 0
+ 39e:	e1 f7       	brne	.-8      	; 0x398 <buttonRead+0x12>
+ 3a0:	00 c0       	rjmp	.+0      	; 0x3a2 <buttonRead+0x1c>
+ 3a2:	00 00       	nop
+        _delay_ms(40);
+        LCDWriteString("button press");
+ 3a4:	82 e1       	ldi	r24, 0x12	; 18
+ 3a6:	91 e0       	ldi	r25, 0x01	; 1
+ 3a8:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 3ac:	2f ef       	ldi	r18, 0xFF	; 255
+ 3ae:	89 e6       	ldi	r24, 0x69	; 105
+ 3b0:	98 e1       	ldi	r25, 0x18	; 24
+ 3b2:	21 50       	subi	r18, 0x01	; 1
+ 3b4:	80 40       	sbci	r24, 0x00	; 0
+ 3b6:	90 40       	sbci	r25, 0x00	; 0
+ 3b8:	e1 f7       	brne	.-8      	; 0x3b2 <buttonRead+0x2c>
+ 3ba:	00 c0       	rjmp	.+0      	; 0x3bc <buttonRead+0x36>
+ 3bc:	00 00       	nop
+        _delay_ms(1000);
+        LCDClear();
+ 3be:	60 e0       	ldi	r22, 0x00	; 0
+ 3c0:	81 e0       	ldi	r24, 0x01	; 1
+ 3c2:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 3c6:	81 e0       	ldi	r24, 0x01	; 1
+ 3c8:	90 e0       	ldi	r25, 0x00	; 0
+ 3ca:	08 95       	ret
+        return 1;
+    }
+    return 0;
+ 3cc:	80 e0       	ldi	r24, 0x00	; 0
+ 3ce:	90 e0       	ldi	r25, 0x00	; 0
+}
+ 3d0:	08 95       	ret
+
+000003d2 <mfrc522_write>:
+		mfrc522_write(TxControlReg,byte|0x03);
+	}
+}
+
+void mfrc522_write(uint8_t reg, uint8_t data)
+{
+ 3d2:	cf 93       	push	r28
+ 3d4:	c6 2f       	mov	r28, r22
+	ENABLE_CHIP();
+ 3d6:	2a 98       	cbi	0x05, 2	; 5
+	spi_transmit((reg<<1)&0x7E);
+ 3d8:	88 0f       	add	r24, r24
+ 3da:	8e 77       	andi	r24, 0x7E	; 126
+ 3dc:	0e 94 87 03 	call	0x70e	; 0x70e <spi_transmit>
+	spi_transmit(data);
+ 3e0:	8c 2f       	mov	r24, r28
+ 3e2:	0e 94 87 03 	call	0x70e	; 0x70e <spi_transmit>
+	DISABLE_CHIP();
+ 3e6:	2a 9a       	sbi	0x05, 2	; 5
+}
+ 3e8:	cf 91       	pop	r28
+ 3ea:	08 95       	ret
+
+000003ec <mfrc522_read>:
+
+uint8_t mfrc522_read(uint8_t reg)
+{
+	uint8_t data;	
+	ENABLE_CHIP();
+ 3ec:	2a 98       	cbi	0x05, 2	; 5
+	spi_transmit(((reg<<1)&0x7E)|0x80);
+ 3ee:	88 0f       	add	r24, r24
+ 3f0:	8e 77       	andi	r24, 0x7E	; 126
+ 3f2:	80 68       	ori	r24, 0x80	; 128
+ 3f4:	0e 94 87 03 	call	0x70e	; 0x70e <spi_transmit>
+	data = spi_transmit(0x00);
+ 3f8:	80 e0       	ldi	r24, 0x00	; 0
+ 3fa:	0e 94 87 03 	call	0x70e	; 0x70e <spi_transmit>
+	DISABLE_CHIP();
+ 3fe:	2a 9a       	sbi	0x05, 2	; 5
+	return data;
+}
+ 400:	08 95       	ret
+
+00000402 <mfrc522_reset>:
+
+void mfrc522_reset()
+{
+	mfrc522_write(CommandReg,SoftReset_CMD);
+ 402:	6f e0       	ldi	r22, 0x0F	; 15
+ 404:	81 e0       	ldi	r24, 0x01	; 1
+ 406:	0c 94 e9 01 	jmp	0x3d2	; 0x3d2 <mfrc522_write>
+
+0000040a <mfrc522_init>:
+#endif
+
+void mfrc522_init()
+{
+	uint8_t byte;
+	mfrc522_reset();
+ 40a:	0e 94 01 02 	call	0x402	; 0x402 <mfrc522_reset>
+	
+	mfrc522_write(TModeReg, 0x8D);
+ 40e:	6d e8       	ldi	r22, 0x8D	; 141
+ 410:	8a e2       	ldi	r24, 0x2A	; 42
+ 412:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+    mfrc522_write(TPrescalerReg, 0x3E);
+ 416:	6e e3       	ldi	r22, 0x3E	; 62
+ 418:	8b e2       	ldi	r24, 0x2B	; 43
+ 41a:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+    mfrc522_write(TReloadReg_1, 30);   
+ 41e:	6e e1       	ldi	r22, 0x1E	; 30
+ 420:	8c e2       	ldi	r24, 0x2C	; 44
+ 422:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+    mfrc522_write(TReloadReg_2, 0);	
+ 426:	60 e0       	ldi	r22, 0x00	; 0
+ 428:	8d e2       	ldi	r24, 0x2D	; 45
+ 42a:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+	mfrc522_write(TxASKReg, 0x40);	
+ 42e:	60 e4       	ldi	r22, 0x40	; 64
+ 430:	85 e1       	ldi	r24, 0x15	; 21
+ 432:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+	mfrc522_write(ModeReg, 0x3D);
+ 436:	6d e3       	ldi	r22, 0x3D	; 61
+ 438:	81 e1       	ldi	r24, 0x11	; 17
+ 43a:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+	
+	byte = mfrc522_read(TxControlReg);
+ 43e:	84 e1       	ldi	r24, 0x14	; 20
+ 440:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+	if(!(byte&0x03))
+ 444:	98 2f       	mov	r25, r24
+ 446:	93 70       	andi	r25, 0x03	; 3
+ 448:	29 f4       	brne	.+10     	; 0x454 <mfrc522_init+0x4a>
+	{
+		mfrc522_write(TxControlReg,byte|0x03);
+ 44a:	68 2f       	mov	r22, r24
+ 44c:	63 60       	ori	r22, 0x03	; 3
+ 44e:	84 e1       	ldi	r24, 0x14	; 20
+ 450:	0c 94 e9 01 	jmp	0x3d2	; 0x3d2 <mfrc522_write>
+ 454:	08 95       	ret
+
+00000456 <mfrc522_to_card>:
+   
+	return status;
+}
+
+uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len)
+{
+ 456:	3f 92       	push	r3
+ 458:	4f 92       	push	r4
+ 45a:	5f 92       	push	r5
+ 45c:	6f 92       	push	r6
+ 45e:	7f 92       	push	r7
+ 460:	8f 92       	push	r8
+ 462:	9f 92       	push	r9
+ 464:	af 92       	push	r10
+ 466:	bf 92       	push	r11
+ 468:	cf 92       	push	r12
+ 46a:	df 92       	push	r13
+ 46c:	ef 92       	push	r14
+ 46e:	ff 92       	push	r15
+ 470:	0f 93       	push	r16
+ 472:	1f 93       	push	r17
+ 474:	cf 93       	push	r28
+ 476:	df 93       	push	r29
+ 478:	d8 2e       	mov	r13, r24
+ 47a:	5b 01       	movw	r10, r22
+ 47c:	84 2e       	mov	r8, r20
+ 47e:	79 01       	movw	r14, r18
+ 480:	e8 01       	movw	r28, r16
+    uint8_t lastBits;
+    uint8_t n;
+    uint8_t	tmp;
+    uint32_t i;
+
+    switch (cmd)
+ 482:	8c e0       	ldi	r24, 0x0C	; 12
+ 484:	d8 16       	cp	r13, r24
+ 486:	09 f4       	brne	.+2      	; 0x48a <mfrc522_to_card+0x34>
+ 488:	6b c0       	rjmp	.+214    	; 0x560 <mfrc522_to_card+0x10a>
+ 48a:	ee e0       	ldi	r30, 0x0E	; 14
+ 48c:	de 16       	cp	r13, r30
+ 48e:	09 f4       	brne	.+2      	; 0x492 <mfrc522_to_card+0x3c>
+ 490:	6c c0       	rjmp	.+216    	; 0x56a <mfrc522_to_card+0x114>
+
+uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len)
+{
+	uint8_t status = ERROR;
+    uint8_t irqEn = 0x00;
+    uint8_t waitIRq = 0x00;
+ 492:	31 2c       	mov	r3, r1
+}
+
+uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len)
+{
+	uint8_t status = ERROR;
+    uint8_t irqEn = 0x00;
+ 494:	c1 2c       	mov	r12, r1
+		default:
+			break;
+    }
+   
+    //mfrc522_write(ComIEnReg, irqEn|0x80);	//Interrupt request
+    n=mfrc522_read(ComIrqReg);
+ 496:	84 e0       	ldi	r24, 0x04	; 4
+ 498:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+    mfrc522_write(ComIrqReg,n&(~0x80));//clear all interrupt bits
+ 49c:	68 2f       	mov	r22, r24
+ 49e:	6f 77       	andi	r22, 0x7F	; 127
+ 4a0:	84 e0       	ldi	r24, 0x04	; 4
+ 4a2:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+    n=mfrc522_read(FIFOLevelReg);
+ 4a6:	8a e0       	ldi	r24, 0x0A	; 10
+ 4a8:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+    mfrc522_write(FIFOLevelReg,n|0x80);//flush FIFO data
+ 4ac:	68 2f       	mov	r22, r24
+ 4ae:	60 68       	ori	r22, 0x80	; 128
+ 4b0:	8a e0       	ldi	r24, 0x0A	; 10
+ 4b2:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+    
+	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
+ 4b6:	60 e0       	ldi	r22, 0x00	; 0
+ 4b8:	81 e0       	ldi	r24, 0x01	; 1
+ 4ba:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+ 4be:	85 01       	movw	r16, r10
+
+	//Writing data to the FIFO
+    for (i=0; i<send_data_len; i++)
+ 4c0:	41 2c       	mov	r4, r1
+ 4c2:	51 2c       	mov	r5, r1
+ 4c4:	32 01       	movw	r6, r4
+ 4c6:	91 2c       	mov	r9, r1
+ 4c8:	a1 2c       	mov	r10, r1
+ 4ca:	b1 2c       	mov	r11, r1
+ 4cc:	48 14       	cp	r4, r8
+ 4ce:	59 04       	cpc	r5, r9
+ 4d0:	6a 04       	cpc	r6, r10
+ 4d2:	7b 04       	cpc	r7, r11
+ 4d4:	08 f4       	brcc	.+2      	; 0x4d8 <mfrc522_to_card+0x82>
+ 4d6:	4e c0       	rjmp	.+156    	; 0x574 <mfrc522_to_card+0x11e>
+    {   
+		mfrc522_write(FIFODataReg, send_data[i]);    
+	}
+
+	//Execute the cmd
+	mfrc522_write(CommandReg, cmd);
+ 4d8:	6d 2d       	mov	r22, r13
+ 4da:	81 e0       	ldi	r24, 0x01	; 1
+ 4dc:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+    if (cmd == Transceive_CMD)
+ 4e0:	8c e0       	ldi	r24, 0x0C	; 12
+ 4e2:	d8 12       	cpse	r13, r24
+ 4e4:	08 c0       	rjmp	.+16     	; 0x4f6 <mfrc522_to_card+0xa0>
+    {    
+		n=mfrc522_read(BitFramingReg);
+ 4e6:	8d e0       	ldi	r24, 0x0D	; 13
+ 4e8:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+		mfrc522_write(BitFramingReg,n|0x80);  
+ 4ec:	68 2f       	mov	r22, r24
+ 4ee:	60 68       	ori	r22, 0x80	; 128
+ 4f0:	8d e0       	ldi	r24, 0x0D	; 13
+ 4f2:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+    mfrc522_write(FIFOLevelReg,n|0x80);//flush FIFO data
+    
+	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
+
+	//Writing data to the FIFO
+    for (i=0; i<send_data_len; i++)
+ 4f6:	40 ed       	ldi	r20, 0xD0	; 208
+ 4f8:	84 2e       	mov	r8, r20
+ 4fa:	47 e0       	ldi	r20, 0x07	; 7
+ 4fc:	94 2e       	mov	r9, r20
+ 4fe:	a1 2c       	mov	r10, r1
+ 500:	b1 2c       	mov	r11, r1
+		//CommIrqReg[7..0]
+		//Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
+        n = mfrc522_read(ComIrqReg);
+        i--;
+    }
+    while ((i!=0) && !(n&0x01) && !(n&waitIRq));
+ 502:	13 2d       	mov	r17, r3
+ 504:	11 60       	ori	r17, 0x01	; 1
+	i = 2000;	//i according to the clock frequency adjustment, the operator M1 card maximum waiting time 25ms???
+    do 
+    {
+		//CommIrqReg[7..0]
+		//Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
+        n = mfrc522_read(ComIrqReg);
+ 506:	84 e0       	ldi	r24, 0x04	; 4
+ 508:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+ 50c:	08 2f       	mov	r16, r24
+        i--;
+ 50e:	e1 e0       	ldi	r30, 0x01	; 1
+ 510:	8e 1a       	sub	r8, r30
+ 512:	91 08       	sbc	r9, r1
+ 514:	a1 08       	sbc	r10, r1
+ 516:	b1 08       	sbc	r11, r1
+    }
+    while ((i!=0) && !(n&0x01) && !(n&waitIRq));
+ 518:	19 f0       	breq	.+6      	; 0x520 <mfrc522_to_card+0xca>
+ 51a:	81 2f       	mov	r24, r17
+ 51c:	80 23       	and	r24, r16
+ 51e:	99 f3       	breq	.-26     	; 0x506 <mfrc522_to_card+0xb0>
+
+	tmp=mfrc522_read(BitFramingReg);
+ 520:	8d e0       	ldi	r24, 0x0D	; 13
+ 522:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+	mfrc522_write(BitFramingReg,tmp&(~0x80));
+ 526:	68 2f       	mov	r22, r24
+ 528:	6f 77       	andi	r22, 0x7F	; 127
+ 52a:	8d e0       	ldi	r24, 0x0D	; 13
+ 52c:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+	
+    if (i != 0)
+ 530:	89 28       	or	r8, r9
+ 532:	8a 28       	or	r8, r10
+ 534:	8b 28       	or	r8, r11
+ 536:	51 f5       	brne	.+84     	; 0x58c <mfrc522_to_card+0x136>
+	return status;
+}
+
+uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len)
+{
+	uint8_t status = ERROR;
+ 538:	03 e0       	ldi	r16, 0x03	; 3
+	
+    //SetBitMask(ControlReg,0x80);           //timer stops
+    //mfrc522_write(cmdReg, PCD_IDLE); 
+
+    return status;
+}
+ 53a:	80 2f       	mov	r24, r16
+ 53c:	df 91       	pop	r29
+ 53e:	cf 91       	pop	r28
+ 540:	1f 91       	pop	r17
+ 542:	0f 91       	pop	r16
+ 544:	ff 90       	pop	r15
+ 546:	ef 90       	pop	r14
+ 548:	df 90       	pop	r13
+ 54a:	cf 90       	pop	r12
+ 54c:	bf 90       	pop	r11
+ 54e:	af 90       	pop	r10
+ 550:	9f 90       	pop	r9
+ 552:	8f 90       	pop	r8
+ 554:	7f 90       	pop	r7
+ 556:	6f 90       	pop	r6
+ 558:	5f 90       	pop	r5
+ 55a:	4f 90       	pop	r4
+ 55c:	3f 90       	pop	r3
+ 55e:	08 95       	ret
+			break;
+		}
+		case Transceive_CMD:	//Transmit FIFO data
+		{
+			irqEn = 0x77;
+			waitIRq = 0x30;
+ 560:	70 e3       	ldi	r23, 0x30	; 48
+ 562:	37 2e       	mov	r3, r23
+			waitIRq = 0x10;
+			break;
+		}
+		case Transceive_CMD:	//Transmit FIFO data
+		{
+			irqEn = 0x77;
+ 564:	e7 e7       	ldi	r30, 0x77	; 119
+ 566:	ce 2e       	mov	r12, r30
+			waitIRq = 0x30;
+			break;
+ 568:	96 cf       	rjmp	.-212    	; 0x496 <mfrc522_to_card+0x40>
+    switch (cmd)
+    {
+        case MFAuthent_CMD:		//Certification cards close
+		{
+			irqEn = 0x12;
+			waitIRq = 0x10;
+ 56a:	50 e1       	ldi	r21, 0x10	; 16
+ 56c:	35 2e       	mov	r3, r21
+
+    switch (cmd)
+    {
+        case MFAuthent_CMD:		//Certification cards close
+		{
+			irqEn = 0x12;
+ 56e:	62 e1       	ldi	r22, 0x12	; 18
+ 570:	c6 2e       	mov	r12, r22
+ 572:	91 cf       	rjmp	.-222    	; 0x496 <mfrc522_to_card+0x40>
+	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
+
+	//Writing data to the FIFO
+    for (i=0; i<send_data_len; i++)
+    {   
+		mfrc522_write(FIFODataReg, send_data[i]);    
+ 574:	f8 01       	movw	r30, r16
+ 576:	61 91       	ld	r22, Z+
+ 578:	8f 01       	movw	r16, r30
+ 57a:	89 e0       	ldi	r24, 0x09	; 9
+ 57c:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+    mfrc522_write(FIFOLevelReg,n|0x80);//flush FIFO data
+    
+	mfrc522_write(CommandReg, Idle_CMD);	//NO action; Cancel the current cmd???
+
+	//Writing data to the FIFO
+    for (i=0; i<send_data_len; i++)
+ 580:	ff ef       	ldi	r31, 0xFF	; 255
+ 582:	4f 1a       	sub	r4, r31
+ 584:	5f 0a       	sbc	r5, r31
+ 586:	6f 0a       	sbc	r6, r31
+ 588:	7f 0a       	sbc	r7, r31
+ 58a:	a0 cf       	rjmp	.-192    	; 0x4cc <mfrc522_to_card+0x76>
+	tmp=mfrc522_read(BitFramingReg);
+	mfrc522_write(BitFramingReg,tmp&(~0x80));
+	
+    if (i != 0)
+    {    
+        if(!(mfrc522_read(ErrorReg) & 0x1B))	//BufferOvfl Collerr CRCErr ProtecolErr
+ 58c:	86 e0       	ldi	r24, 0x06	; 6
+ 58e:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+ 592:	8b 71       	andi	r24, 0x1B	; 27
+ 594:	89 f6       	brne	.-94     	; 0x538 <mfrc522_to_card+0xe2>
+        {
+            status = CARD_FOUND;
+            if (n & irqEn & 0x01)
+ 596:	fc 2d       	mov	r31, r12
+ 598:	f1 70       	andi	r31, 0x01	; 1
+ 59a:	cf 2e       	mov	r12, r31
+ 59c:	c0 22       	and	r12, r16
+ 59e:	e9 f1       	breq	.+122    	; 0x61a <mfrc522_to_card+0x1c4>
+            {   
+				status = CARD_NOT_FOUND;			//??   
+ 5a0:	02 e0       	ldi	r16, 0x02	; 2
+			}
+
+            if (cmd == Transceive_CMD)
+ 5a2:	8c e0       	ldi	r24, 0x0C	; 12
+ 5a4:	d8 12       	cpse	r13, r24
+ 5a6:	c9 cf       	rjmp	.-110    	; 0x53a <mfrc522_to_card+0xe4>
+            {
+               	n = mfrc522_read(FIFOLevelReg);
+ 5a8:	8a e0       	ldi	r24, 0x0A	; 10
+ 5aa:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+ 5ae:	18 2f       	mov	r17, r24
+              	lastBits = mfrc522_read(ControlReg) & 0x07;
+ 5b0:	8c e0       	ldi	r24, 0x0C	; 12
+ 5b2:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+ 5b6:	28 2f       	mov	r18, r24
+ 5b8:	27 70       	andi	r18, 0x07	; 7
+ 5ba:	81 2f       	mov	r24, r17
+ 5bc:	90 e0       	ldi	r25, 0x00	; 0
+                if (lastBits)
+ 5be:	79 f1       	breq	.+94     	; 0x61e <mfrc522_to_card+0x1c8>
+                {   
+					*back_data_len = (n-1)*8 + lastBits;   
+ 5c0:	01 97       	sbiw	r24, 0x01	; 1
+ 5c2:	33 e0       	ldi	r19, 0x03	; 3
+ 5c4:	88 0f       	add	r24, r24
+ 5c6:	99 1f       	adc	r25, r25
+ 5c8:	3a 95       	dec	r19
+ 5ca:	e1 f7       	brne	.-8      	; 0x5c4 <mfrc522_to_card+0x16e>
+ 5cc:	82 0f       	add	r24, r18
+ 5ce:	91 1d       	adc	r25, r1
+				}
+                else
+                {   
+					*back_data_len = n*8;   
+ 5d0:	09 2e       	mov	r0, r25
+ 5d2:	00 0c       	add	r0, r0
+ 5d4:	aa 0b       	sbc	r26, r26
+ 5d6:	bb 0b       	sbc	r27, r27
+ 5d8:	88 83       	st	Y, r24
+ 5da:	99 83       	std	Y+1, r25	; 0x01
+ 5dc:	aa 83       	std	Y+2, r26	; 0x02
+ 5de:	bb 83       	std	Y+3, r27	; 0x03
+				}
+
+                if (n == 0)
+ 5e0:	11 23       	and	r17, r17
+ 5e2:	19 f1       	breq	.+70     	; 0x62a <mfrc522_to_card+0x1d4>
+ 5e4:	11 31       	cpi	r17, 0x11	; 17
+ 5e6:	08 f0       	brcs	.+2      	; 0x5ea <mfrc522_to_card+0x194>
+ 5e8:	10 e1       	ldi	r17, 0x10	; 16
+ 5ea:	e7 01       	movw	r28, r14
+                {   
+					n = MAX_LEN;   
+				}
+				
+				//Reading the received data in FIFO
+                for (i=0; i<n; i++)
+ 5ec:	81 2c       	mov	r8, r1
+ 5ee:	91 2c       	mov	r9, r1
+ 5f0:	54 01       	movw	r10, r8
+ 5f2:	c1 2e       	mov	r12, r17
+ 5f4:	d1 2c       	mov	r13, r1
+ 5f6:	e1 2c       	mov	r14, r1
+ 5f8:	f1 2c       	mov	r15, r1
+ 5fa:	8c 14       	cp	r8, r12
+ 5fc:	9d 04       	cpc	r9, r13
+ 5fe:	ae 04       	cpc	r10, r14
+ 600:	bf 04       	cpc	r11, r15
+ 602:	08 f0       	brcs	.+2      	; 0x606 <mfrc522_to_card+0x1b0>
+ 604:	9a cf       	rjmp	.-204    	; 0x53a <mfrc522_to_card+0xe4>
+                {   
+					back_data[i] = mfrc522_read(FIFODataReg);    
+ 606:	89 e0       	ldi	r24, 0x09	; 9
+ 608:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
+ 60c:	89 93       	st	Y+, r24
+                {   
+					n = MAX_LEN;   
+				}
+				
+				//Reading the received data in FIFO
+                for (i=0; i<n; i++)
+ 60e:	ef ef       	ldi	r30, 0xFF	; 255
+ 610:	8e 1a       	sub	r8, r30
+ 612:	9e 0a       	sbc	r9, r30
+ 614:	ae 0a       	sbc	r10, r30
+ 616:	be 0a       	sbc	r11, r30
+ 618:	f0 cf       	rjmp	.-32     	; 0x5fa <mfrc522_to_card+0x1a4>
+	
+    if (i != 0)
+    {    
+        if(!(mfrc522_read(ErrorReg) & 0x1B))	//BufferOvfl Collerr CRCErr ProtecolErr
+        {
+            status = CARD_FOUND;
+ 61a:	01 e0       	ldi	r16, 0x01	; 1
+ 61c:	c2 cf       	rjmp	.-124    	; 0x5a2 <mfrc522_to_card+0x14c>
+                {   
+					*back_data_len = (n-1)*8 + lastBits;   
+				}
+                else
+                {   
+					*back_data_len = n*8;   
+ 61e:	23 e0       	ldi	r18, 0x03	; 3
+ 620:	88 0f       	add	r24, r24
+ 622:	99 1f       	adc	r25, r25
+ 624:	2a 95       	dec	r18
+ 626:	e1 f7       	brne	.-8      	; 0x620 <mfrc522_to_card+0x1ca>
+ 628:	d3 cf       	rjmp	.-90     	; 0x5d0 <mfrc522_to_card+0x17a>
+				}
+
+                if (n == 0)
+                {   
+					n = 1;    
+ 62a:	11 e0       	ldi	r17, 0x01	; 1
+ 62c:	de cf       	rjmp	.-68     	; 0x5ea <mfrc522_to_card+0x194>
+
+0000062e <mfrc522_request>:
+{
+	mfrc522_write(CommandReg,SoftReset_CMD);
+}
+
+uint8_t	mfrc522_request(uint8_t req_mode, uint8_t * tag_type)
+{
+ 62e:	ef 92       	push	r14
+ 630:	ff 92       	push	r15
+ 632:	0f 93       	push	r16
+ 634:	1f 93       	push	r17
+ 636:	cf 93       	push	r28
+ 638:	df 93       	push	r29
+ 63a:	00 d0       	rcall	.+0      	; 0x63c <mfrc522_request+0xe>
+ 63c:	00 d0       	rcall	.+0      	; 0x63e <mfrc522_request+0x10>
+ 63e:	cd b7       	in	r28, 0x3d	; 61
+ 640:	de b7       	in	r29, 0x3e	; 62
+ 642:	18 2f       	mov	r17, r24
+ 644:	7b 01       	movw	r14, r22
+	uint8_t  status;  
+	uint32_t backBits;//The received data bits
+
+	mfrc522_write(BitFramingReg, 0x07);//TxLastBists = BitFramingReg[2..0]	???
+ 646:	67 e0       	ldi	r22, 0x07	; 7
+ 648:	8d e0       	ldi	r24, 0x0D	; 13
+ 64a:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+	
+	tag_type[0] = req_mode;
+ 64e:	f7 01       	movw	r30, r14
+ 650:	10 83       	st	Z, r17
+	status = mfrc522_to_card(Transceive_CMD, tag_type, 1, tag_type, &backBits);
+ 652:	8e 01       	movw	r16, r28
+ 654:	0f 5f       	subi	r16, 0xFF	; 255
+ 656:	1f 4f       	sbci	r17, 0xFF	; 255
+ 658:	97 01       	movw	r18, r14
+ 65a:	41 e0       	ldi	r20, 0x01	; 1
+ 65c:	b7 01       	movw	r22, r14
+ 65e:	8c e0       	ldi	r24, 0x0C	; 12
+ 660:	0e 94 2b 02 	call	0x456	; 0x456 <mfrc522_to_card>
+
+	if ((status != CARD_FOUND) || (backBits != 0x10))
+ 664:	81 30       	cpi	r24, 0x01	; 1
+ 666:	a1 f4       	brne	.+40     	; 0x690 <mfrc522_request+0x62>
+ 668:	49 81       	ldd	r20, Y+1	; 0x01
+ 66a:	5a 81       	ldd	r21, Y+2	; 0x02
+ 66c:	6b 81       	ldd	r22, Y+3	; 0x03
+ 66e:	7c 81       	ldd	r23, Y+4	; 0x04
+ 670:	40 31       	cpi	r20, 0x10	; 16
+ 672:	51 05       	cpc	r21, r1
+ 674:	61 05       	cpc	r22, r1
+ 676:	71 05       	cpc	r23, r1
+ 678:	59 f4       	brne	.+22     	; 0x690 <mfrc522_request+0x62>
+	{    
+		status = ERROR;
+	}
+   
+	return status;
+}
+ 67a:	0f 90       	pop	r0
+ 67c:	0f 90       	pop	r0
+ 67e:	0f 90       	pop	r0
+ 680:	0f 90       	pop	r0
+ 682:	df 91       	pop	r29
+ 684:	cf 91       	pop	r28
+ 686:	1f 91       	pop	r17
+ 688:	0f 91       	pop	r16
+ 68a:	ff 90       	pop	r15
+ 68c:	ef 90       	pop	r14
+ 68e:	08 95       	ret
+	tag_type[0] = req_mode;
+	status = mfrc522_to_card(Transceive_CMD, tag_type, 1, tag_type, &backBits);
+
+	if ((status != CARD_FOUND) || (backBits != 0x10))
+	{    
+		status = ERROR;
+ 690:	83 e0       	ldi	r24, 0x03	; 3
+	}
+   
+	return status;
+ 692:	f3 cf       	rjmp	.-26     	; 0x67a <mfrc522_request+0x4c>
+
+00000694 <mfrc522_get_card_serial>:
+    return status;
+}
+
+
+uint8_t mfrc522_get_card_serial(uint8_t * serial_out)
+{
+ 694:	ef 92       	push	r14
+ 696:	ff 92       	push	r15
+ 698:	0f 93       	push	r16
+ 69a:	1f 93       	push	r17
+ 69c:	cf 93       	push	r28
+ 69e:	df 93       	push	r29
+ 6a0:	00 d0       	rcall	.+0      	; 0x6a2 <mfrc522_get_card_serial+0xe>
+ 6a2:	00 d0       	rcall	.+0      	; 0x6a4 <mfrc522_get_card_serial+0x10>
+ 6a4:	cd b7       	in	r28, 0x3d	; 61
+ 6a6:	de b7       	in	r29, 0x3e	; 62
+ 6a8:	7c 01       	movw	r14, r24
+	uint8_t status;
+    uint8_t i;
+	uint8_t serNumCheck=0;
+    uint32_t unLen;
+    
+	mfrc522_write(BitFramingReg, 0x00);		//TxLastBists = BitFramingReg[2..0]
+ 6aa:	60 e0       	ldi	r22, 0x00	; 0
+ 6ac:	8d e0       	ldi	r24, 0x0D	; 13
+ 6ae:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+ 
+    serial_out[0] = PICC_ANTICOLL;
+ 6b2:	83 e9       	ldi	r24, 0x93	; 147
+ 6b4:	f7 01       	movw	r30, r14
+ 6b6:	80 83       	st	Z, r24
+    serial_out[1] = 0x20;
+ 6b8:	80 e2       	ldi	r24, 0x20	; 32
+ 6ba:	81 83       	std	Z+1, r24	; 0x01
+    status = mfrc522_to_card(Transceive_CMD, serial_out, 2, serial_out, &unLen);
+ 6bc:	8e 01       	movw	r16, r28
+ 6be:	0f 5f       	subi	r16, 0xFF	; 255
+ 6c0:	1f 4f       	sbci	r17, 0xFF	; 255
+ 6c2:	97 01       	movw	r18, r14
+ 6c4:	42 e0       	ldi	r20, 0x02	; 2
+ 6c6:	b7 01       	movw	r22, r14
+ 6c8:	8c e0       	ldi	r24, 0x0C	; 12
+ 6ca:	0e 94 2b 02 	call	0x456	; 0x456 <mfrc522_to_card>
+
+    if (status == CARD_FOUND)
+ 6ce:	81 30       	cpi	r24, 0x01	; 1
+ 6d0:	71 f4       	brne	.+28     	; 0x6ee <mfrc522_get_card_serial+0x5a>
+ 6d2:	f7 01       	movw	r30, r14
+ 6d4:	97 01       	movw	r18, r14
+ 6d6:	2c 5f       	subi	r18, 0xFC	; 252
+ 6d8:	3f 4f       	sbci	r19, 0xFF	; 255
+ 6da:	90 e0       	ldi	r25, 0x00	; 0
+	{
+		//Check card serial number
+		for (i=0; i<4; i++)
+		{   
+		 	serNumCheck ^= serial_out[i];
+ 6dc:	41 91       	ld	r20, Z+
+ 6de:	94 27       	eor	r25, r20
+    status = mfrc522_to_card(Transceive_CMD, serial_out, 2, serial_out, &unLen);
+
+    if (status == CARD_FOUND)
+	{
+		//Check card serial number
+		for (i=0; i<4; i++)
+ 6e0:	e2 17       	cp	r30, r18
+ 6e2:	f3 07       	cpc	r31, r19
+ 6e4:	d9 f7       	brne	.-10     	; 0x6dc <mfrc522_get_card_serial+0x48>
+		{   
+		 	serNumCheck ^= serial_out[i];
+		}
+		if (serNumCheck != serial_out[i])
+ 6e6:	f7 01       	movw	r30, r14
+ 6e8:	24 81       	ldd	r18, Z+4	; 0x04
+ 6ea:	92 13       	cpse	r25, r18
+		{   
+			status = ERROR;    
+ 6ec:	83 e0       	ldi	r24, 0x03	; 3
+		}
+    }
+    return status;
+}
+ 6ee:	0f 90       	pop	r0
+ 6f0:	0f 90       	pop	r0
+ 6f2:	0f 90       	pop	r0
+ 6f4:	0f 90       	pop	r0
+ 6f6:	df 91       	pop	r29
+ 6f8:	cf 91       	pop	r28
+ 6fa:	1f 91       	pop	r17
+ 6fc:	0f 91       	pop	r16
+ 6fe:	ff 90       	pop	r15
+ 700:	ef 90       	pop	r14
+ 702:	08 95       	ret
+
+00000704 <spi_init>:
+#include <spi.h>
+
+#if SPI_CONFIG_AS_MASTER
+void spi_init()
+{
+	SPI_DDR = (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
+ 704:	8c e2       	ldi	r24, 0x2C	; 44
+ 706:	84 b9       	out	0x04, r24	; 4
+	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);//prescaler 16
+ 708:	81 e5       	ldi	r24, 0x51	; 81
+ 70a:	8c bd       	out	0x2c, r24	; 44
+ 70c:	08 95       	ret
+
+0000070e <spi_transmit>:
+ 70e:	8e bd       	out	0x2e, r24	; 46
+ 710:	0d b4       	in	r0, 0x2d	; 45
+ 712:	07 fe       	sbrs	r0, 7
+ 714:	fd cf       	rjmp	.-6      	; 0x710 <spi_transmit+0x2>
+ 716:	8e b5       	in	r24, 0x2e	; 46
+ 718:	08 95       	ret
+
+0000071a <main>:
+
+
+int main(void)
+{
+ 71a:	cf 93       	push	r28
+ 71c:	df 93       	push	r29
+ 71e:	cd b7       	in	r28, 0x3d	; 61
+ 720:	de b7       	in	r29, 0x3e	; 62
+ 722:	60 97       	sbiw	r28, 0x10	; 16
+ 724:	0f b6       	in	r0, 0x3f	; 63
+ 726:	f8 94       	cli
+ 728:	de bf       	out	0x3e, r29	; 62
+ 72a:	0f be       	out	0x3f, r0	; 63
+ 72c:	cd bf       	out	0x3d, r28	; 61
+
+    initServo(PORTC, DDRC, 5); //make servo an output at pin 5
+ 72e:	67 b1       	in	r22, 0x07	; 7
+ 730:	88 b1       	in	r24, 0x08	; 8
+ 732:	70 e0       	ldi	r23, 0x00	; 0
+ 734:	45 e0       	ldi	r20, 0x05	; 5
+ 736:	50 e0       	ldi	r21, 0x00	; 0
+ 738:	90 e0       	ldi	r25, 0x00	; 0
+ 73a:	0e 94 77 01 	call	0x2ee	; 0x2ee <initServo>
+ 73e:	2f e7       	ldi	r18, 0x7F	; 127
+ 740:	88 e3       	ldi	r24, 0x38	; 56
+ 742:	91 e0       	ldi	r25, 0x01	; 1
+ 744:	21 50       	subi	r18, 0x01	; 1
+ 746:	80 40       	sbci	r24, 0x00	; 0
+ 748:	90 40       	sbci	r25, 0x00	; 0
+ 74a:	e1 f7       	brne	.-8      	; 0x744 <main+0x2a>
+ 74c:	00 c0       	rjmp	.+0      	; 0x74e <main+0x34>
+ 74e:	00 00       	nop
 
     uint8_t byte;
     uint8_t str[MAX_LEN];
     _delay_ms(50);
     LCDInit(LS_BLINK);
- 6f2:	81 e0       	ldi	r24, 0x01	; 1
- 6f4:	0e 94 a3 00 	call	0x146	; 0x146 <LCDInit>
+ 750:	81 e0       	ldi	r24, 0x01	; 1
+ 752:	0e 94 a3 00 	call	0x146	; 0x146 <LCDInit>
     LCDWriteStringXY(2,0,"ECEN1310 Door Opener");
- 6f8:	60 e0       	ldi	r22, 0x00	; 0
- 6fa:	82 e0       	ldi	r24, 0x02	; 2
- 6fc:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 700:	82 e1       	ldi	r24, 0x12	; 18
- 702:	91 e0       	ldi	r25, 0x01	; 1
- 704:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 756:	60 e0       	ldi	r22, 0x00	; 0
+ 758:	82 e0       	ldi	r24, 0x02	; 2
+ 75a:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 75e:	8f e1       	ldi	r24, 0x1F	; 31
+ 760:	91 e0       	ldi	r25, 0x01	; 1
+ 762:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
 
     spi_init(); //start communication for rfid
- 708:	0e 94 53 03 	call	0x6a6	; 0x6a6 <spi_init>
- 70c:	ef ef       	ldi	r30, 0xFF	; 255
- 70e:	f9 e6       	ldi	r31, 0x69	; 105
- 710:	28 e1       	ldi	r18, 0x18	; 24
- 712:	e1 50       	subi	r30, 0x01	; 1
- 714:	f0 40       	sbci	r31, 0x00	; 0
- 716:	20 40       	sbci	r18, 0x00	; 0
- 718:	e1 f7       	brne	.-8      	; 0x712 <main+0x56>
- 71a:	00 c0       	rjmp	.+0      	; 0x71c <main+0x60>
- 71c:	00 00       	nop
+ 766:	0e 94 82 03 	call	0x704	; 0x704 <spi_init>
+ 76a:	ef ef       	ldi	r30, 0xFF	; 255
+ 76c:	f9 e6       	ldi	r31, 0x69	; 105
+ 76e:	28 e1       	ldi	r18, 0x18	; 24
+ 770:	e1 50       	subi	r30, 0x01	; 1
+ 772:	f0 40       	sbci	r31, 0x00	; 0
+ 774:	20 40       	sbci	r18, 0x00	; 0
+ 776:	e1 f7       	brne	.-8      	; 0x770 <main+0x56>
+ 778:	00 c0       	rjmp	.+0      	; 0x77a <main+0x60>
+ 77a:	00 00       	nop
     _delay_ms(1000);
     LCDClear();
- 71e:	60 e0       	ldi	r22, 0x00	; 0
- 720:	81 e0       	ldi	r24, 0x01	; 1
- 722:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 77c:	60 e0       	ldi	r22, 0x00	; 0
+ 77e:	81 e0       	ldi	r24, 0x01	; 1
+ 780:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
 
     open();
- 726:	0e 94 8a 01 	call	0x314	; 0x314 <open>
+ 784:	0e 94 8a 01 	call	0x314	; 0x314 <open>
     close();
 
     //init reader
     mfrc522_init();
- 72a:	0e 94 d6 01 	call	0x3ac	; 0x3ac <mfrc522_init>
+ 788:	0e 94 05 02 	call	0x40a	; 0x40a <mfrc522_init>
 
     //check version of the reader
     byte = mfrc522_read(VersionReg);
- 72e:	87 e3       	ldi	r24, 0x37	; 55
- 730:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
+ 78c:	87 e3       	ldi	r24, 0x37	; 55
+ 78e:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
     if(byte == 0x92)
- 734:	82 39       	cpi	r24, 0x92	; 146
- 736:	09 f0       	breq	.+2      	; 0x73a <main+0x7e>
- 738:	3f c1       	rjmp	.+638    	; 0x9b8 <__stack+0xb9>
+ 792:	82 39       	cpi	r24, 0x92	; 146
+ 794:	09 f0       	breq	.+2      	; 0x798 <main+0x7e>
+ 796:	41 c1       	rjmp	.+642    	; 0xa1a <__stack+0x11b>
     {
         LCDWriteStringXY(2,0,"MIFARE RC522v2");
- 73a:	60 e0       	ldi	r22, 0x00	; 0
- 73c:	82 e0       	ldi	r24, 0x02	; 2
- 73e:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 742:	87 e2       	ldi	r24, 0x27	; 39
- 744:	91 e0       	ldi	r25, 0x01	; 1
+ 798:	60 e0       	ldi	r22, 0x00	; 0
+ 79a:	82 e0       	ldi	r24, 0x02	; 2
+ 79c:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 7a0:	84 e3       	ldi	r24, 0x34	; 52
+ 7a2:	91 e0       	ldi	r25, 0x01	; 1
         LCDWriteStringXY(4,1,"Detected");
     }else if(byte == 0x91 || byte==0x90)
     {
         LCDWriteStringXY(2,0,"MIFARE RC522v1");
- 746:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 7a4:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
         LCDWriteStringXY(4,1,"Detected");
- 74a:	61 e0       	ldi	r22, 0x01	; 1
- 74c:	84 e0       	ldi	r24, 0x04	; 4
- 74e:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 752:	86 e3       	ldi	r24, 0x36	; 54
- 754:	91 e0       	ldi	r25, 0x01	; 1
+ 7a8:	61 e0       	ldi	r22, 0x01	; 1
+ 7aa:	84 e0       	ldi	r24, 0x04	; 4
+ 7ac:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 7b0:	83 e4       	ldi	r24, 0x43	; 67
+ 7b2:	91 e0       	ldi	r25, 0x01	; 1
     }else
     {
         LCDWriteStringXY(0,0,"No reader found");
- 756:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 7b4:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
     }
 
     byte = mfrc522_read(ComIEnReg);
- 75a:	82 e0       	ldi	r24, 0x02	; 2
- 75c:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
+ 7b8:	82 e0       	ldi	r24, 0x02	; 2
+ 7ba:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
     mfrc522_write(ComIEnReg,byte|0x20);
- 760:	68 2f       	mov	r22, r24
- 762:	60 62       	ori	r22, 0x20	; 32
- 764:	82 e0       	ldi	r24, 0x02	; 2
- 766:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
+ 7be:	68 2f       	mov	r22, r24
+ 7c0:	60 62       	ori	r22, 0x20	; 32
+ 7c2:	82 e0       	ldi	r24, 0x02	; 2
+ 7c4:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
     byte = mfrc522_read(DivIEnReg);
- 76a:	83 e0       	ldi	r24, 0x03	; 3
- 76c:	0e 94 c7 01 	call	0x38e	; 0x38e <mfrc522_read>
+ 7c8:	83 e0       	ldi	r24, 0x03	; 3
+ 7ca:	0e 94 f6 01 	call	0x3ec	; 0x3ec <mfrc522_read>
     mfrc522_write(DivIEnReg,byte|0x80);
- 770:	68 2f       	mov	r22, r24
- 772:	60 68       	ori	r22, 0x80	; 128
- 774:	83 e0       	ldi	r24, 0x03	; 3
- 776:	0e 94 ba 01 	call	0x374	; 0x374 <mfrc522_write>
- 77a:	8f ef       	ldi	r24, 0xFF	; 255
- 77c:	9e e9       	ldi	r25, 0x9E	; 158
- 77e:	e4 e2       	ldi	r30, 0x24	; 36
- 780:	81 50       	subi	r24, 0x01	; 1
- 782:	90 40       	sbci	r25, 0x00	; 0
- 784:	e0 40       	sbci	r30, 0x00	; 0
- 786:	e1 f7       	brne	.-8      	; 0x780 <main+0xc4>
- 788:	00 c0       	rjmp	.+0      	; 0x78a <main+0xce>
- 78a:	00 00       	nop
+ 7ce:	68 2f       	mov	r22, r24
+ 7d0:	60 68       	ori	r22, 0x80	; 128
+ 7d2:	83 e0       	ldi	r24, 0x03	; 3
+ 7d4:	0e 94 e9 01 	call	0x3d2	; 0x3d2 <mfrc522_write>
+ 7d8:	8f ef       	ldi	r24, 0xFF	; 255
+ 7da:	9e e9       	ldi	r25, 0x9E	; 158
+ 7dc:	e4 e2       	ldi	r30, 0x24	; 36
+ 7de:	81 50       	subi	r24, 0x01	; 1
+ 7e0:	90 40       	sbci	r25, 0x00	; 0
+ 7e2:	e0 40       	sbci	r30, 0x00	; 0
+ 7e4:	e1 f7       	brne	.-8      	; 0x7de <main+0xc4>
+ 7e6:	00 c0       	rjmp	.+0      	; 0x7e8 <main+0xce>
+ 7e8:	00 00       	nop
 
     _delay_ms(1500);
     LCDClear();
- 78c:	60 e0       	ldi	r22, 0x00	; 0
- 78e:	81 e0       	ldi	r24, 0x01	; 1
- 790:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 794:	2e 01       	movw	r4, r28
- 796:	f6 e0       	ldi	r31, 0x06	; 6
- 798:	4f 0e       	add	r4, r31
- 79a:	51 1c       	adc	r5, r1
+ 7ea:	60 e0       	ldi	r22, 0x00	; 0
+ 7ec:	81 e0       	ldi	r24, 0x01	; 1
+ 7ee:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 7f2:	2e 01       	movw	r4, r28
+ 7f4:	f6 e0       	ldi	r31, 0x06	; 6
+ 7f6:	4f 0e       	add	r4, r31
+ 7f8:	51 1c       	adc	r5, r1
             if(validCard == 1){
                 LCDClear();
                 _delay_ms(500);
                 LCDWriteString("SUCCESS");
                 open();
                 validCard=5;
- 79c:	95 e0       	ldi	r25, 0x05	; 5
- 79e:	69 2e       	mov	r6, r25
- 7a0:	71 2c       	mov	r7, r1
+ 7fa:	95 e0       	ldi	r25, 0x05	; 5
+ 7fc:	69 2e       	mov	r6, r25
+ 7fe:	71 2c       	mov	r7, r1
                 {
                     LCDWriteIntXY(0,1,str[k], -1);
                     LCDWriteString("MATCH"); //jk i am testing
                     _delay_ms(50);
                     LCDClear();
                     validCard = 1;
- 7a2:	aa 24       	eor	r10, r10
- 7a4:	a3 94       	inc	r10
- 7a6:	b1 2c       	mov	r11, r1
- 7a8:	4e 01       	movw	r8, r28
- 7aa:	29 e0       	ldi	r18, 0x09	; 9
- 7ac:	82 0e       	add	r8, r18
- 7ae:	91 1c       	adc	r9, r1
+ 800:	aa 24       	eor	r10, r10
+ 802:	a3 94       	inc	r10
+ 804:	b1 2c       	mov	r11, r1
+ 806:	4e 01       	movw	r8, r28
+ 808:	29 e0       	ldi	r18, 0x09	; 9
+ 80a:	82 0e       	add	r8, r18
+ 80c:	91 1c       	adc	r9, r1
     _delay_ms(1500);
     LCDClear();
 
 
 while(1){
         byte = mfrc522_request(PICC_REQALL,str);
- 7b0:	be 01       	movw	r22, r28
- 7b2:	6f 5f       	subi	r22, 0xFF	; 255
- 7b4:	7f 4f       	sbci	r23, 0xFF	; 255
- 7b6:	82 e5       	ldi	r24, 0x52	; 82
- 7b8:	0e 94 e8 02 	call	0x5d0	; 0x5d0 <mfrc522_request>
- 7bc:	18 2f       	mov	r17, r24
+ 80e:	be 01       	movw	r22, r28
+ 810:	6f 5f       	subi	r22, 0xFF	; 255
+ 812:	7f 4f       	sbci	r23, 0xFF	; 255
+ 814:	82 e5       	ldi	r24, 0x52	; 82
+ 816:	0e 94 17 03 	call	0x62e	; 0x62e <mfrc522_request>
+ 81a:	18 2f       	mov	r17, r24
         LCDHexDumpXY(0,0,byte);
- 7be:	48 2f       	mov	r20, r24
- 7c0:	60 e0       	ldi	r22, 0x00	; 0
- 7c2:	80 e0       	ldi	r24, 0x00	; 0
- 7c4:	0e 94 59 01 	call	0x2b2	; 0x2b2 <LCDHexDumpXY>
-
+ 81c:	48 2f       	mov	r20, r24
+ 81e:	60 e0       	ldi	r22, 0x00	; 0
+ 820:	80 e0       	ldi	r24, 0x00	; 0
+ 822:	0e 94 59 01 	call	0x2b2	; 0x2b2 <LCDHexDumpXY>
+    buttonRead();
+ 826:	0e 94 c3 01 	call	0x386	; 0x386 <buttonRead>
         if(byte == CARD_FOUND)
- 7c8:	11 30       	cpi	r17, 0x01	; 1
- 7ca:	09 f0       	breq	.+2      	; 0x7ce <main+0x112>
- 7cc:	e3 c0       	rjmp	.+454    	; 0x994 <__stack+0x95>
+ 82a:	11 30       	cpi	r17, 0x01	; 1
+ 82c:	09 f0       	breq	.+2      	; 0x830 <main+0x116>
+ 82e:	e3 c0       	rjmp	.+454    	; 0x9f6 <__stack+0xf7>
         {
             byte = mfrc522_get_card_serial(str);
- 7ce:	ce 01       	movw	r24, r28
- 7d0:	01 96       	adiw	r24, 0x01	; 1
- 7d2:	0e 94 1b 03 	call	0x636	; 0x636 <mfrc522_get_card_serial>
+ 830:	ce 01       	movw	r24, r28
+ 832:	01 96       	adiw	r24, 0x01	; 1
+ 834:	0e 94 4a 03 	call	0x694	; 0x694 <mfrc522_get_card_serial>
             if(byte == CARD_FOUND)
- 7d6:	81 30       	cpi	r24, 0x01	; 1
- 7d8:	09 f0       	breq	.+2      	; 0x7dc <main+0x120>
- 7da:	fe c0       	rjmp	.+508    	; 0x9d8 <__stack+0xd9>
- 7dc:	8f e5       	ldi	r24, 0x5F	; 95
- 7de:	9a ee       	ldi	r25, 0xEA	; 234
- 7e0:	01 97       	sbiw	r24, 0x01	; 1
- 7e2:	f1 f7       	brne	.-4      	; 0x7e0 <main+0x124>
- 7e4:	00 c0       	rjmp	.+0      	; 0x7e6 <main+0x12a>
- 7e6:	00 00       	nop
+ 838:	81 30       	cpi	r24, 0x01	; 1
+ 83a:	09 f0       	breq	.+2      	; 0x83e <main+0x124>
+ 83c:	fe c0       	rjmp	.+508    	; 0xa3a <__stack+0x13b>
+ 83e:	8f e5       	ldi	r24, 0x5F	; 95
+ 840:	9a ee       	ldi	r25, 0xEA	; 234
+ 842:	01 97       	sbiw	r24, 0x01	; 1
+ 844:	f1 f7       	brne	.-4      	; 0x842 <main+0x128>
+ 846:	00 c0       	rjmp	.+0      	; 0x848 <main+0x12e>
+ 848:	00 00       	nop
             {
                 _delay_ms(30);
                 LCDClear();
- 7e8:	60 e0       	ldi	r22, 0x00	; 0
- 7ea:	81 e0       	ldi	r24, 0x01	; 1
- 7ec:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 7f0:	8e 01       	movw	r16, r28
- 7f2:	0f 5f       	subi	r16, 0xFF	; 255
- 7f4:	1f 4f       	sbci	r17, 0xFF	; 255
+ 84a:	60 e0       	ldi	r22, 0x00	; 0
+ 84c:	81 e0       	ldi	r24, 0x01	; 1
+ 84e:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 852:	8e 01       	movw	r16, r28
+ 854:	0f 5f       	subi	r16, 0xFF	; 255
+ 856:	1f 4f       	sbci	r17, 0xFF	; 255
 
                 for(byte=0;byte<8;byte++)
                     // LCDHexDumpXY(byte*2,0,str[byte]);
                     //       LCDHexDumpXY(byte*2, 0, str[byte]);
                     LCDWriteInt(str[byte], -1);
- 7f6:	f8 01       	movw	r30, r16
- 7f8:	81 91       	ld	r24, Z+
- 7fa:	8f 01       	movw	r16, r30
- 7fc:	6f ef       	ldi	r22, 0xFF	; 255
- 7fe:	7f ef       	ldi	r23, 0xFF	; 255
- 800:	90 e0       	ldi	r25, 0x00	; 0
- 802:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
+ 858:	f8 01       	movw	r30, r16
+ 85a:	81 91       	ld	r24, Z+
+ 85c:	8f 01       	movw	r16, r30
+ 85e:	6f ef       	ldi	r22, 0xFF	; 255
+ 860:	7f ef       	ldi	r23, 0xFF	; 255
+ 862:	90 e0       	ldi	r25, 0x00	; 0
+ 864:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
             if(byte == CARD_FOUND)
             {
                 _delay_ms(30);
                 LCDClear();
 
                 for(byte=0;byte<8;byte++)
- 806:	08 15       	cp	r16, r8
- 808:	19 05       	cpc	r17, r9
- 80a:	a9 f7       	brne	.-22     	; 0x7f6 <main+0x13a>
+ 868:	08 15       	cp	r16, r8
+ 86a:	19 05       	cpc	r17, r9
+ 86c:	a9 f7       	brne	.-22     	; 0x858 <main+0x13e>
             else
             { //not a valid card found
                 LCDWriteStringXY(0,1,"Error");
             }
 
             LCDWriteStringXY(0, 1, "BOUT TO CHECK");
- 80c:	61 e0       	ldi	r22, 0x01	; 1
- 80e:	80 e0       	ldi	r24, 0x00	; 0
- 810:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 814:	84 e6       	ldi	r24, 0x64	; 100
- 816:	91 e0       	ldi	r25, 0x01	; 1
- 818:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 81c:	ff ef       	ldi	r31, 0xFF	; 255
- 81e:	29 e6       	ldi	r18, 0x69	; 105
- 820:	88 e1       	ldi	r24, 0x18	; 24
- 822:	f1 50       	subi	r31, 0x01	; 1
- 824:	20 40       	sbci	r18, 0x00	; 0
- 826:	80 40       	sbci	r24, 0x00	; 0
- 828:	e1 f7       	brne	.-8      	; 0x822 <main+0x166>
- 82a:	00 c0       	rjmp	.+0      	; 0x82c <main+0x170>
- 82c:	00 00       	nop
+ 86e:	61 e0       	ldi	r22, 0x01	; 1
+ 870:	80 e0       	ldi	r24, 0x00	; 0
+ 872:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 876:	81 e7       	ldi	r24, 0x71	; 113
+ 878:	91 e0       	ldi	r25, 0x01	; 1
+ 87a:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 87e:	ff ef       	ldi	r31, 0xFF	; 255
+ 880:	29 e6       	ldi	r18, 0x69	; 105
+ 882:	88 e1       	ldi	r24, 0x18	; 24
+ 884:	f1 50       	subi	r31, 0x01	; 1
+ 886:	20 40       	sbci	r18, 0x00	; 0
+ 888:	80 40       	sbci	r24, 0x00	; 0
+ 88a:	e1 f7       	brne	.-8      	; 0x884 <main+0x16a>
+ 88c:	00 c0       	rjmp	.+0      	; 0x88e <main+0x174>
+ 88e:	00 00       	nop
             _delay_ms(1000);
             LCDClear(); //test
- 82e:	60 e0       	ldi	r22, 0x00	; 0
- 830:	81 e0       	ldi	r24, 0x01	; 1
- 832:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 836:	8e 01       	movw	r16, r28
- 838:	0f 5f       	subi	r16, 0xFF	; 255
- 83a:	1f 4f       	sbci	r17, 0xFF	; 255
- 83c:	78 01       	movw	r14, r16
- 83e:	8f e5       	ldi	r24, 0x5F	; 95
- 840:	9a ee       	ldi	r25, 0xEA	; 234
- 842:	01 97       	sbiw	r24, 0x01	; 1
- 844:	f1 f7       	brne	.-4      	; 0x842 <main+0x186>
- 846:	00 c0       	rjmp	.+0      	; 0x848 <main+0x18c>
- 848:	00 00       	nop
+ 890:	60 e0       	ldi	r22, 0x00	; 0
+ 892:	81 e0       	ldi	r24, 0x01	; 1
+ 894:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 898:	8e 01       	movw	r16, r28
+ 89a:	0f 5f       	subi	r16, 0xFF	; 255
+ 89c:	1f 4f       	sbci	r17, 0xFF	; 255
+ 89e:	78 01       	movw	r14, r16
+ 8a0:	8f e5       	ldi	r24, 0x5F	; 95
+ 8a2:	9a ee       	ldi	r25, 0xEA	; 234
+ 8a4:	01 97       	sbiw	r24, 0x01	; 1
+ 8a6:	f1 f7       	brne	.-4      	; 0x8a4 <main+0x18a>
+ 8a8:	00 c0       	rjmp	.+0      	; 0x8aa <main+0x190>
+ 8aa:	00 00       	nop
             for(int i=0; i<5; i++){
                 _delay_ms(30);//test
                 //LCDWriteStringXY(0,0,"i:  ");
                 // LCDWriteIntXY(5,0, i,1);//test
                 LCDWriteInt(str[i], -1);//test
- 84a:	f7 01       	movw	r30, r14
- 84c:	81 91       	ld	r24, Z+
- 84e:	7f 01       	movw	r14, r30
- 850:	6f ef       	ldi	r22, 0xFF	; 255
- 852:	7f ef       	ldi	r23, 0xFF	; 255
- 854:	90 e0       	ldi	r25, 0x00	; 0
- 856:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
+ 8ac:	f7 01       	movw	r30, r14
+ 8ae:	81 91       	ld	r24, Z+
+ 8b0:	7f 01       	movw	r14, r30
+ 8b2:	6f ef       	ldi	r22, 0xFF	; 255
+ 8b4:	7f ef       	ldi	r23, 0xFF	; 255
+ 8b6:	90 e0       	ldi	r25, 0x00	; 0
+ 8b8:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
             }
 
             LCDWriteStringXY(0, 1, "BOUT TO CHECK");
             _delay_ms(1000);
             LCDClear(); //test
             for(int i=0; i<5; i++){
- 85a:	e4 14       	cp	r14, r4
- 85c:	f5 04       	cpc	r15, r5
- 85e:	79 f7       	brne	.-34     	; 0x83e <main+0x182>
- 860:	ff ef       	ldi	r31, 0xFF	; 255
- 862:	20 e7       	ldi	r18, 0x70	; 112
- 864:	82 e0       	ldi	r24, 0x02	; 2
- 866:	f1 50       	subi	r31, 0x01	; 1
- 868:	20 40       	sbci	r18, 0x00	; 0
- 86a:	80 40       	sbci	r24, 0x00	; 0
- 86c:	e1 f7       	brne	.-8      	; 0x866 <main+0x1aa>
- 86e:	00 c0       	rjmp	.+0      	; 0x870 <main+0x1b4>
- 870:	00 00       	nop
+ 8bc:	e4 14       	cp	r14, r4
+ 8be:	f5 04       	cpc	r15, r5
+ 8c0:	79 f7       	brne	.-34     	; 0x8a0 <main+0x186>
+ 8c2:	ff ef       	ldi	r31, 0xFF	; 255
+ 8c4:	20 e7       	ldi	r18, 0x70	; 112
+ 8c6:	82 e0       	ldi	r24, 0x02	; 2
+ 8c8:	f1 50       	subi	r31, 0x01	; 1
+ 8ca:	20 40       	sbci	r18, 0x00	; 0
+ 8cc:	80 40       	sbci	r24, 0x00	; 0
+ 8ce:	e1 f7       	brne	.-8      	; 0x8c8 <main+0x1ae>
+ 8d0:	00 c0       	rjmp	.+0      	; 0x8d2 <main+0x1b8>
+ 8d2:	00 00       	nop
                 // LCDWriteIntXY(5,0, i,1);//test
                 LCDWriteInt(str[i], -1);//test
                 //   _delay_ms(1000);
             }
             _delay_ms(100);//test
             LCDClear();//test
- 872:	60 e0       	ldi	r22, 0x00	; 0
- 874:	81 e0       	ldi	r24, 0x01	; 1
- 876:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 87a:	82 e0       	ldi	r24, 0x02	; 2
- 87c:	c8 2e       	mov	r12, r24
- 87e:	81 e0       	ldi	r24, 0x01	; 1
- 880:	d8 2e       	mov	r13, r24
+ 8d4:	60 e0       	ldi	r22, 0x00	; 0
+ 8d6:	81 e0       	ldi	r24, 0x01	; 1
+ 8d8:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 8dc:	82 e0       	ldi	r24, 0x02	; 2
+ 8de:	c8 2e       	mov	r12, r24
+ 8e0:	81 e0       	ldi	r24, 0x01	; 1
+ 8e2:	d8 2e       	mov	r13, r24
 
             for(int k=0;k<5 ;k++){
                 // LCDHexDumpXY(byte*2,0,str[byte]);
                 //       LCDHexDumpXY(byte*2, 0, str[byte]);
                 LCDWriteIntXY(0,1,str[k], -1);
- 882:	61 e0       	ldi	r22, 0x01	; 1
- 884:	80 e0       	ldi	r24, 0x00	; 0
- 886:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 88a:	f8 01       	movw	r30, r16
- 88c:	80 81       	ld	r24, Z
- 88e:	6f ef       	ldi	r22, 0xFF	; 255
- 890:	7f ef       	ldi	r23, 0xFF	; 255
- 892:	90 e0       	ldi	r25, 0x00	; 0
- 894:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
+ 8e4:	61 e0       	ldi	r22, 0x01	; 1
+ 8e6:	80 e0       	ldi	r24, 0x00	; 0
+ 8e8:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 8ec:	f8 01       	movw	r30, r16
+ 8ee:	80 81       	ld	r24, Z
+ 8f0:	6f ef       	ldi	r22, 0xFF	; 255
+ 8f2:	7f ef       	ldi	r23, 0xFF	; 255
+ 8f4:	90 e0       	ldi	r25, 0x00	; 0
+ 8f6:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
                 if(str[k] == card1[k]) //this is where you are testing
- 898:	f6 01       	movw	r30, r12
- 89a:	81 91       	ld	r24, Z+
- 89c:	6f 01       	movw	r12, r30
- 89e:	f8 01       	movw	r30, r16
- 8a0:	90 81       	ld	r25, Z
- 8a2:	98 13       	cpse	r25, r24
- 8a4:	a2 c0       	rjmp	.+324    	; 0x9ea <__stack+0xeb>
+ 8fa:	f6 01       	movw	r30, r12
+ 8fc:	81 91       	ld	r24, Z+
+ 8fe:	6f 01       	movw	r12, r30
+ 900:	f8 01       	movw	r30, r16
+ 902:	90 81       	ld	r25, Z
+ 904:	98 13       	cpse	r25, r24
+ 906:	a2 c0       	rjmp	.+324    	; 0xa4c <__stack+0x14d>
                 {
                     LCDWriteIntXY(0,1,str[k], -1);
- 8a6:	61 e0       	ldi	r22, 0x01	; 1
- 8a8:	80 e0       	ldi	r24, 0x00	; 0
- 8aa:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 8ae:	f8 01       	movw	r30, r16
- 8b0:	80 81       	ld	r24, Z
- 8b2:	6f ef       	ldi	r22, 0xFF	; 255
- 8b4:	7f ef       	ldi	r23, 0xFF	; 255
- 8b6:	90 e0       	ldi	r25, 0x00	; 0
- 8b8:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
+ 908:	61 e0       	ldi	r22, 0x01	; 1
+ 90a:	80 e0       	ldi	r24, 0x00	; 0
+ 90c:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 910:	f8 01       	movw	r30, r16
+ 912:	80 81       	ld	r24, Z
+ 914:	6f ef       	ldi	r22, 0xFF	; 255
+ 916:	7f ef       	ldi	r23, 0xFF	; 255
+ 918:	90 e0       	ldi	r25, 0x00	; 0
+ 91a:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
                     LCDWriteString("MATCH"); //jk i am testing
- 8bc:	82 e7       	ldi	r24, 0x72	; 114
- 8be:	91 e0       	ldi	r25, 0x01	; 1
- 8c0:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 8c4:	ff e7       	ldi	r31, 0x7F	; 127
- 8c6:	28 e3       	ldi	r18, 0x38	; 56
- 8c8:	81 e0       	ldi	r24, 0x01	; 1
- 8ca:	f1 50       	subi	r31, 0x01	; 1
- 8cc:	20 40       	sbci	r18, 0x00	; 0
- 8ce:	80 40       	sbci	r24, 0x00	; 0
- 8d0:	e1 f7       	brne	.-8      	; 0x8ca <main+0x20e>
- 8d2:	00 c0       	rjmp	.+0      	; 0x8d4 <main+0x218>
- 8d4:	00 00       	nop
+ 91e:	8f e7       	ldi	r24, 0x7F	; 127
+ 920:	91 e0       	ldi	r25, 0x01	; 1
+ 922:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 926:	ff e7       	ldi	r31, 0x7F	; 127
+ 928:	28 e3       	ldi	r18, 0x38	; 56
+ 92a:	81 e0       	ldi	r24, 0x01	; 1
+ 92c:	f1 50       	subi	r31, 0x01	; 1
+ 92e:	20 40       	sbci	r18, 0x00	; 0
+ 930:	80 40       	sbci	r24, 0x00	; 0
+ 932:	e1 f7       	brne	.-8      	; 0x92c <__stack+0x2d>
+ 934:	00 c0       	rjmp	.+0      	; 0x936 <__stack+0x37>
+ 936:	00 00       	nop
                     _delay_ms(50);
                     LCDClear();
- 8d6:	60 e0       	ldi	r22, 0x00	; 0
- 8d8:	81 e0       	ldi	r24, 0x01	; 1
- 8da:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 938:	60 e0       	ldi	r22, 0x00	; 0
+ 93a:	81 e0       	ldi	r24, 0x01	; 1
+ 93c:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
                     validCard = 1;
- 8de:	b0 92 01 01 	sts	0x0101, r11
- 8e2:	a0 92 00 01 	sts	0x0100, r10
- 8e6:	0f 5f       	subi	r16, 0xFF	; 255
- 8e8:	1f 4f       	sbci	r17, 0xFF	; 255
+ 940:	b0 92 01 01 	sts	0x0101, r11
+ 944:	a0 92 00 01 	sts	0x0100, r10
+ 948:	0f 5f       	subi	r16, 0xFF	; 255
+ 94a:	1f 4f       	sbci	r17, 0xFF	; 255
                 //   _delay_ms(1000);
             }
             _delay_ms(100);//test
             LCDClear();//test
 
             for(int k=0;k<5 ;k++){
- 8ea:	0e 15       	cp	r16, r14
- 8ec:	1f 05       	cpc	r17, r15
- 8ee:	49 f6       	brne	.-110    	; 0x882 <main+0x1c6>
+ 94c:	0e 15       	cp	r16, r14
+ 94e:	1f 05       	cpc	r17, r15
+ 950:	49 f6       	brne	.-110    	; 0x8e4 <main+0x1ca>
                 else{
                     validCard = -1;
                 }
 
             } //end of for loop checking if valid card
             if(validCard == 1){
- 8f0:	80 91 00 01 	lds	r24, 0x0100
- 8f4:	90 91 01 01 	lds	r25, 0x0101
- 8f8:	01 97       	sbiw	r24, 0x01	; 1
- 8fa:	b9 f4       	brne	.+46     	; 0x92a <__stack+0x2b>
+ 952:	80 91 00 01 	lds	r24, 0x0100
+ 956:	90 91 01 01 	lds	r25, 0x0101
+ 95a:	01 97       	sbiw	r24, 0x01	; 1
+ 95c:	b9 f4       	brne	.+46     	; 0x98c <__stack+0x8d>
                 LCDClear();
- 8fc:	60 e0       	ldi	r22, 0x00	; 0
- 8fe:	81 e0       	ldi	r24, 0x01	; 1
- 900:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 904:	9f ef       	ldi	r25, 0xFF	; 255
- 906:	e4 e3       	ldi	r30, 0x34	; 52
- 908:	fc e0       	ldi	r31, 0x0C	; 12
- 90a:	91 50       	subi	r25, 0x01	; 1
- 90c:	e0 40       	sbci	r30, 0x00	; 0
- 90e:	f0 40       	sbci	r31, 0x00	; 0
- 910:	e1 f7       	brne	.-8      	; 0x90a <__stack+0xb>
- 912:	00 c0       	rjmp	.+0      	; 0x914 <__stack+0x15>
- 914:	00 00       	nop
+ 95e:	60 e0       	ldi	r22, 0x00	; 0
+ 960:	81 e0       	ldi	r24, 0x01	; 1
+ 962:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 966:	9f ef       	ldi	r25, 0xFF	; 255
+ 968:	e4 e3       	ldi	r30, 0x34	; 52
+ 96a:	fc e0       	ldi	r31, 0x0C	; 12
+ 96c:	91 50       	subi	r25, 0x01	; 1
+ 96e:	e0 40       	sbci	r30, 0x00	; 0
+ 970:	f0 40       	sbci	r31, 0x00	; 0
+ 972:	e1 f7       	brne	.-8      	; 0x96c <__stack+0x6d>
+ 974:	00 c0       	rjmp	.+0      	; 0x976 <__stack+0x77>
+ 976:	00 00       	nop
                 _delay_ms(500);
                 LCDWriteString("SUCCESS");
- 916:	88 e7       	ldi	r24, 0x78	; 120
- 918:	91 e0       	ldi	r25, 0x01	; 1
- 91a:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 978:	85 e8       	ldi	r24, 0x85	; 133
+ 97a:	91 e0       	ldi	r25, 0x01	; 1
+ 97c:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
                 open();
- 91e:	0e 94 8a 01 	call	0x314	; 0x314 <open>
+ 980:	0e 94 8a 01 	call	0x314	; 0x314 <open>
                 validCard=5;
- 922:	70 92 01 01 	sts	0x0101, r7
- 926:	60 92 00 01 	sts	0x0100, r6
+ 984:	70 92 01 01 	sts	0x0101, r7
+ 988:	60 92 00 01 	sts	0x0100, r6
             } //end if test worked
             if(validCard == -1){
- 92a:	80 91 00 01 	lds	r24, 0x0100
- 92e:	90 91 01 01 	lds	r25, 0x0101
- 932:	01 96       	adiw	r24, 0x01	; 1
- 934:	89 f4       	brne	.+34     	; 0x958 <__stack+0x59>
+ 98c:	80 91 00 01 	lds	r24, 0x0100
+ 990:	90 91 01 01 	lds	r25, 0x0101
+ 994:	01 96       	adiw	r24, 0x01	; 1
+ 996:	89 f4       	brne	.+34     	; 0x9ba <__stack+0xbb>
                 LCDClear();
- 936:	60 e0       	ldi	r22, 0x00	; 0
- 938:	81 e0       	ldi	r24, 0x01	; 1
- 93a:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 93e:	8f ef       	ldi	r24, 0xFF	; 255
- 940:	90 e7       	ldi	r25, 0x70	; 112
- 942:	e2 e0       	ldi	r30, 0x02	; 2
- 944:	81 50       	subi	r24, 0x01	; 1
- 946:	90 40       	sbci	r25, 0x00	; 0
- 948:	e0 40       	sbci	r30, 0x00	; 0
- 94a:	e1 f7       	brne	.-8      	; 0x944 <__stack+0x45>
- 94c:	00 c0       	rjmp	.+0      	; 0x94e <__stack+0x4f>
- 94e:	00 00       	nop
+ 998:	60 e0       	ldi	r22, 0x00	; 0
+ 99a:	81 e0       	ldi	r24, 0x01	; 1
+ 99c:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 9a0:	8f ef       	ldi	r24, 0xFF	; 255
+ 9a2:	90 e7       	ldi	r25, 0x70	; 112
+ 9a4:	e2 e0       	ldi	r30, 0x02	; 2
+ 9a6:	81 50       	subi	r24, 0x01	; 1
+ 9a8:	90 40       	sbci	r25, 0x00	; 0
+ 9aa:	e0 40       	sbci	r30, 0x00	; 0
+ 9ac:	e1 f7       	brne	.-8      	; 0x9a6 <__stack+0xa7>
+ 9ae:	00 c0       	rjmp	.+0      	; 0x9b0 <__stack+0xb1>
+ 9b0:	00 00       	nop
                 _delay_ms(100);
                 LCDWriteString("not valid");
- 950:	80 e8       	ldi	r24, 0x80	; 128
- 952:	91 e0       	ldi	r25, 0x01	; 1
- 954:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 958:	ff e7       	ldi	r31, 0x7F	; 127
- 95a:	2f e4       	ldi	r18, 0x4F	; 79
- 95c:	82 e1       	ldi	r24, 0x12	; 18
- 95e:	f1 50       	subi	r31, 0x01	; 1
- 960:	20 40       	sbci	r18, 0x00	; 0
- 962:	80 40       	sbci	r24, 0x00	; 0
- 964:	e1 f7       	brne	.-8      	; 0x95e <__stack+0x5f>
- 966:	00 c0       	rjmp	.+0      	; 0x968 <__stack+0x69>
- 968:	00 00       	nop
+ 9b2:	8d e8       	ldi	r24, 0x8D	; 141
+ 9b4:	91 e0       	ldi	r25, 0x01	; 1
+ 9b6:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 9ba:	ff e7       	ldi	r31, 0x7F	; 127
+ 9bc:	2f e4       	ldi	r18, 0x4F	; 79
+ 9be:	82 e1       	ldi	r24, 0x12	; 18
+ 9c0:	f1 50       	subi	r31, 0x01	; 1
+ 9c2:	20 40       	sbci	r18, 0x00	; 0
+ 9c4:	80 40       	sbci	r24, 0x00	; 0
+ 9c6:	e1 f7       	brne	.-8      	; 0x9c0 <__stack+0xc1>
+ 9c8:	00 c0       	rjmp	.+0      	; 0x9ca <__stack+0xcb>
+ 9ca:	00 00       	nop
                 close();
             } //end of loop for checking valid card
 
             _delay_ms(750);
             LCDClear();
- 96a:	60 e0       	ldi	r22, 0x00	; 0
- 96c:	81 e0       	ldi	r24, 0x01	; 1
- 96e:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 9cc:	60 e0       	ldi	r22, 0x00	; 0
+ 9ce:	81 e0       	ldi	r24, 0x01	; 1
+ 9d0:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
             LCDWriteString("CHECKED");
- 972:	8a e8       	ldi	r24, 0x8A	; 138
- 974:	91 e0       	ldi	r25, 0x01	; 1
- 976:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 97a:	9f e7       	ldi	r25, 0x7F	; 127
- 97c:	ea e1       	ldi	r30, 0x1A	; 26
- 97e:	f6 e0       	ldi	r31, 0x06	; 6
- 980:	91 50       	subi	r25, 0x01	; 1
- 982:	e0 40       	sbci	r30, 0x00	; 0
- 984:	f0 40       	sbci	r31, 0x00	; 0
- 986:	e1 f7       	brne	.-8      	; 0x980 <__stack+0x81>
- 988:	00 c0       	rjmp	.+0      	; 0x98a <__stack+0x8b>
- 98a:	00 00       	nop
+ 9d4:	87 e9       	ldi	r24, 0x97	; 151
+ 9d6:	91 e0       	ldi	r25, 0x01	; 1
+ 9d8:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 9dc:	9f e7       	ldi	r25, 0x7F	; 127
+ 9de:	ea e1       	ldi	r30, 0x1A	; 26
+ 9e0:	f6 e0       	ldi	r31, 0x06	; 6
+ 9e2:	91 50       	subi	r25, 0x01	; 1
+ 9e4:	e0 40       	sbci	r30, 0x00	; 0
+ 9e6:	f0 40       	sbci	r31, 0x00	; 0
+ 9e8:	e1 f7       	brne	.-8      	; 0x9e2 <__stack+0xe3>
+ 9ea:	00 c0       	rjmp	.+0      	; 0x9ec <__stack+0xed>
+ 9ec:	00 00       	nop
             _delay_ms(250);
             LCDClear();
- 98c:	60 e0       	ldi	r22, 0x00	; 0
- 98e:	81 e0       	ldi	r24, 0x01	; 1
- 990:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 9ee:	60 e0       	ldi	r22, 0x00	; 0
+ 9f0:	81 e0       	ldi	r24, 0x01	; 1
+ 9f2:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
         } //end of valid card found
 
         LCDWriteString("present card");
- 994:	82 e9       	ldi	r24, 0x92	; 146
- 996:	91 e0       	ldi	r25, 0x01	; 1
- 998:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 99c:	2f ef       	ldi	r18, 0xFF	; 255
- 99e:	89 e6       	ldi	r24, 0x69	; 105
- 9a0:	98 e1       	ldi	r25, 0x18	; 24
- 9a2:	21 50       	subi	r18, 0x01	; 1
- 9a4:	80 40       	sbci	r24, 0x00	; 0
- 9a6:	90 40       	sbci	r25, 0x00	; 0
- 9a8:	e1 f7       	brne	.-8      	; 0x9a2 <__stack+0xa3>
- 9aa:	00 c0       	rjmp	.+0      	; 0x9ac <__stack+0xad>
- 9ac:	00 00       	nop
+ 9f6:	8f e9       	ldi	r24, 0x9F	; 159
+ 9f8:	91 e0       	ldi	r25, 0x01	; 1
+ 9fa:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 9fe:	2f ef       	ldi	r18, 0xFF	; 255
+ a00:	89 e6       	ldi	r24, 0x69	; 105
+ a02:	98 e1       	ldi	r25, 0x18	; 24
+ a04:	21 50       	subi	r18, 0x01	; 1
+ a06:	80 40       	sbci	r24, 0x00	; 0
+ a08:	90 40       	sbci	r25, 0x00	; 0
+ a0a:	e1 f7       	brne	.-8      	; 0xa04 <__stack+0x105>
+ a0c:	00 c0       	rjmp	.+0      	; 0xa0e <__stack+0x10f>
+ a0e:	00 00       	nop
         _delay_ms(1000);
         LCDClear();
- 9ae:	60 e0       	ldi	r22, 0x00	; 0
- 9b0:	81 e0       	ldi	r24, 0x01	; 1
- 9b2:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ a10:	60 e0       	ldi	r22, 0x00	; 0
+ a12:	81 e0       	ldi	r24, 0x01	; 1
+ a14:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
     _delay_ms(1500);
     LCDClear();
 
 
 while(1){
         byte = mfrc522_request(PICC_REQALL,str);
- 9b6:	fc ce       	rjmp	.-520    	; 0x7b0 <main+0xf4>
+ a18:	fa ce       	rjmp	.-524    	; 0x80e <main+0xf4>
     byte = mfrc522_read(VersionReg);
     if(byte == 0x92)
     {
         LCDWriteStringXY(2,0,"MIFARE RC522v2");
         LCDWriteStringXY(4,1,"Detected");
     }else if(byte == 0x91 || byte==0x90)
- 9b8:	80 59       	subi	r24, 0x90	; 144
+ a1a:	80 59       	subi	r24, 0x90	; 144
     {
         LCDWriteStringXY(2,0,"MIFARE RC522v1");
- 9ba:	60 e0       	ldi	r22, 0x00	; 0
+ a1c:	60 e0       	ldi	r22, 0x00	; 0
     byte = mfrc522_read(VersionReg);
     if(byte == 0x92)
     {
         LCDWriteStringXY(2,0,"MIFARE RC522v2");
         LCDWriteStringXY(4,1,"Detected");
     }else if(byte == 0x91 || byte==0x90)
- 9bc:	82 30       	cpi	r24, 0x02	; 2
- 9be:	30 f4       	brcc	.+12     	; 0x9cc <__stack+0xcd>
+ a1e:	82 30       	cpi	r24, 0x02	; 2
+ a20:	30 f4       	brcc	.+12     	; 0xa2e <__stack+0x12f>
     {
         LCDWriteStringXY(2,0,"MIFARE RC522v1");
- 9c0:	82 e0       	ldi	r24, 0x02	; 2
- 9c2:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 9c6:	8f e3       	ldi	r24, 0x3F	; 63
- 9c8:	91 e0       	ldi	r25, 0x01	; 1
- 9ca:	bd ce       	rjmp	.-646    	; 0x746 <main+0x8a>
+ a22:	82 e0       	ldi	r24, 0x02	; 2
+ a24:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ a28:	8c e4       	ldi	r24, 0x4C	; 76
+ a2a:	91 e0       	ldi	r25, 0x01	; 1
+ a2c:	bb ce       	rjmp	.-650    	; 0x7a4 <main+0x8a>
         LCDWriteStringXY(4,1,"Detected");
     }else
     {
         LCDWriteStringXY(0,0,"No reader found");
- 9cc:	80 e0       	ldi	r24, 0x00	; 0
- 9ce:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 9d2:	8e e4       	ldi	r24, 0x4E	; 78
- 9d4:	91 e0       	ldi	r25, 0x01	; 1
- 9d6:	bf ce       	rjmp	.-642    	; 0x756 <main+0x9a>
+ a2e:	80 e0       	ldi	r24, 0x00	; 0
+ a30:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ a34:	8b e5       	ldi	r24, 0x5B	; 91
+ a36:	91 e0       	ldi	r25, 0x01	; 1
+ a38:	bd ce       	rjmp	.-646    	; 0x7b4 <main+0x9a>
                     LCDWriteInt(str[byte], -1);
 
             }
             else
             { //not a valid card found
                 LCDWriteStringXY(0,1,"Error");
- 9d8:	61 e0       	ldi	r22, 0x01	; 1
- 9da:	80 e0       	ldi	r24, 0x00	; 0
- 9dc:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 9e0:	8e e5       	ldi	r24, 0x5E	; 94
- 9e2:	91 e0       	ldi	r25, 0x01	; 1
- 9e4:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 9e8:	11 cf       	rjmp	.-478    	; 0x80c <main+0x150>
+ a3a:	61 e0       	ldi	r22, 0x01	; 1
+ a3c:	80 e0       	ldi	r24, 0x00	; 0
+ a3e:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ a42:	8b e6       	ldi	r24, 0x6B	; 107
+ a44:	91 e0       	ldi	r25, 0x01	; 1
+ a46:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ a4a:	11 cf       	rjmp	.-478    	; 0x86e <main+0x154>
                     _delay_ms(50);
                     LCDClear();
                     validCard = 1;
                 }
                 else{
                     validCard = -1;
- 9ea:	8f ef       	ldi	r24, 0xFF	; 255
- 9ec:	9f ef       	ldi	r25, 0xFF	; 255
- 9ee:	90 93 01 01 	sts	0x0101, r25
- 9f2:	80 93 00 01 	sts	0x0100, r24
- 9f6:	77 cf       	rjmp	.-274    	; 0x8e6 <main+0x22a>
+ a4c:	8f ef       	ldi	r24, 0xFF	; 255
+ a4e:	9f ef       	ldi	r25, 0xFF	; 255
+ a50:	90 93 01 01 	sts	0x0101, r25
+ a54:	80 93 00 01 	sts	0x0100, r24
+ a58:	77 cf       	rjmp	.-274    	; 0x948 <__stack+0x49>
 
-000009f8 <__divmodhi4>:
- 9f8:	97 fb       	bst	r25, 7
- 9fa:	07 2e       	mov	r0, r23
- 9fc:	16 f4       	brtc	.+4      	; 0xa02 <__divmodhi4+0xa>
- 9fe:	00 94       	com	r0
- a00:	07 d0       	rcall	.+14     	; 0xa10 <__divmodhi4_neg1>
- a02:	77 fd       	sbrc	r23, 7
- a04:	09 d0       	rcall	.+18     	; 0xa18 <__divmodhi4_neg2>
- a06:	0e 94 10 05 	call	0xa20	; 0xa20 <__udivmodhi4>
- a0a:	07 fc       	sbrc	r0, 7
- a0c:	05 d0       	rcall	.+10     	; 0xa18 <__divmodhi4_neg2>
- a0e:	3e f4       	brtc	.+14     	; 0xa1e <__divmodhi4_exit>
+00000a5a <__divmodhi4>:
+ a5a:	97 fb       	bst	r25, 7
+ a5c:	07 2e       	mov	r0, r23
+ a5e:	16 f4       	brtc	.+4      	; 0xa64 <__divmodhi4+0xa>
+ a60:	00 94       	com	r0
+ a62:	07 d0       	rcall	.+14     	; 0xa72 <__divmodhi4_neg1>
+ a64:	77 fd       	sbrc	r23, 7
+ a66:	09 d0       	rcall	.+18     	; 0xa7a <__divmodhi4_neg2>
+ a68:	0e 94 41 05 	call	0xa82	; 0xa82 <__udivmodhi4>
+ a6c:	07 fc       	sbrc	r0, 7
+ a6e:	05 d0       	rcall	.+10     	; 0xa7a <__divmodhi4_neg2>
+ a70:	3e f4       	brtc	.+14     	; 0xa80 <__divmodhi4_exit>
 
-00000a10 <__divmodhi4_neg1>:
- a10:	90 95       	com	r25
- a12:	81 95       	neg	r24
- a14:	9f 4f       	sbci	r25, 0xFF	; 255
- a16:	08 95       	ret
+00000a72 <__divmodhi4_neg1>:
+ a72:	90 95       	com	r25
+ a74:	81 95       	neg	r24
+ a76:	9f 4f       	sbci	r25, 0xFF	; 255
+ a78:	08 95       	ret
 
-00000a18 <__divmodhi4_neg2>:
- a18:	70 95       	com	r23
- a1a:	61 95       	neg	r22
- a1c:	7f 4f       	sbci	r23, 0xFF	; 255
+00000a7a <__divmodhi4_neg2>:
+ a7a:	70 95       	com	r23
+ a7c:	61 95       	neg	r22
+ a7e:	7f 4f       	sbci	r23, 0xFF	; 255
 
-00000a1e <__divmodhi4_exit>:
- a1e:	08 95       	ret
+00000a80 <__divmodhi4_exit>:
+ a80:	08 95       	ret
 
-00000a20 <__udivmodhi4>:
- a20:	aa 1b       	sub	r26, r26
- a22:	bb 1b       	sub	r27, r27
- a24:	51 e1       	ldi	r21, 0x11	; 17
- a26:	07 c0       	rjmp	.+14     	; 0xa36 <__udivmodhi4_ep>
+00000a82 <__udivmodhi4>:
+ a82:	aa 1b       	sub	r26, r26
+ a84:	bb 1b       	sub	r27, r27
+ a86:	51 e1       	ldi	r21, 0x11	; 17
+ a88:	07 c0       	rjmp	.+14     	; 0xa98 <__udivmodhi4_ep>
 
-00000a28 <__udivmodhi4_loop>:
- a28:	aa 1f       	adc	r26, r26
- a2a:	bb 1f       	adc	r27, r27
- a2c:	a6 17       	cp	r26, r22
- a2e:	b7 07       	cpc	r27, r23
- a30:	10 f0       	brcs	.+4      	; 0xa36 <__udivmodhi4_ep>
- a32:	a6 1b       	sub	r26, r22
- a34:	b7 0b       	sbc	r27, r23
+00000a8a <__udivmodhi4_loop>:
+ a8a:	aa 1f       	adc	r26, r26
+ a8c:	bb 1f       	adc	r27, r27
+ a8e:	a6 17       	cp	r26, r22
+ a90:	b7 07       	cpc	r27, r23
+ a92:	10 f0       	brcs	.+4      	; 0xa98 <__udivmodhi4_ep>
+ a94:	a6 1b       	sub	r26, r22
+ a96:	b7 0b       	sbc	r27, r23
 
-00000a36 <__udivmodhi4_ep>:
- a36:	88 1f       	adc	r24, r24
- a38:	99 1f       	adc	r25, r25
- a3a:	5a 95       	dec	r21
- a3c:	a9 f7       	brne	.-22     	; 0xa28 <__udivmodhi4_loop>
- a3e:	80 95       	com	r24
- a40:	90 95       	com	r25
- a42:	bc 01       	movw	r22, r24
- a44:	cd 01       	movw	r24, r26
- a46:	08 95       	ret
+00000a98 <__udivmodhi4_ep>:
+ a98:	88 1f       	adc	r24, r24
+ a9a:	99 1f       	adc	r25, r25
+ a9c:	5a 95       	dec	r21
+ a9e:	a9 f7       	brne	.-22     	; 0xa8a <__udivmodhi4_loop>
+ aa0:	80 95       	com	r24
+ aa2:	90 95       	com	r25
+ aa4:	bc 01       	movw	r22, r24
+ aa6:	cd 01       	movw	r24, r26
+ aa8:	08 95       	ret
 
-00000a48 <_exit>:
- a48:	f8 94       	cli
+00000aaa <_exit>:
+ aaa:	f8 94       	cli
 
-00000a4a <__stop_program>:
- a4a:	ff cf       	rjmp	.-2      	; 0xa4a <__stop_program>
+00000aac <__stop_program>:
+ aac:	ff cf       	rjmp	.-2      	; 0xaac <__stop_program>

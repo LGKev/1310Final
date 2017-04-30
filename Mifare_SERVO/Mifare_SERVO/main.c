@@ -25,7 +25,8 @@
 #define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift, 1st bit.
 #define ToggleBit(port, bit) (port ^= (1 << bit) //  toggles the bit by negating
 
-
+#define button 3 //that is the pin on portc that is input for button
+#define ledB 2 //led for indicator for button
 
 uint8_t SelfTestBuffer[64];
 
@@ -63,6 +64,7 @@ uint8_t SelfTestBuffer[64];
 //holds id cards
 uint8_t card1[16] = {174,68,45,91,156}; //only 5 elements!!!
 int validCard = -2;
+
 
 void initServo(){
 //            //make A5 output.
@@ -111,6 +113,28 @@ int close(void){
 }
 /* === === === END SERVO SETUP === === === */
 
+
+void initButton(){
+   // uint8_t button = 3;
+    //uint8_t ledB = 2;
+    DDRC ^= BV(button); //set as input
+    DDRC |= BV(ledB); //set output
+    
+    PORTC ^= BV(button); // set low
+    
+}
+
+int buttonRead(){
+    if(bit_is_clear(PINC, button)){
+        LCDClear();
+        _delay_ms(40);
+        LCDWriteString("button press");
+        _delay_ms(1000);
+        LCDClear();
+        return 1;
+    }
+    return 0;
+}
 
 
 int main(void)
@@ -161,7 +185,7 @@ int main(void)
 while(1){
         byte = mfrc522_request(PICC_REQALL,str);
         LCDHexDumpXY(0,0,byte);
-
+    buttonRead();
         if(byte == CARD_FOUND)
         {
             byte = mfrc522_get_card_serial(str);
