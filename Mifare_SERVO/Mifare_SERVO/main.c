@@ -12,7 +12,7 @@
 
  the AVR requires a .1uF capacitor on power and ground. Without it the avr would randomly restart. I have had no restarts since the installation of the capacitors
 
- */
+ x*/
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -64,7 +64,7 @@ uint8_t SelfTestBuffer[64];
 uint8_t card1[16] = {174,68,45,91,156}; //only 5 elements!!!
 int validCard = -2;
 
-void initServo(volatile uint8_t *port, volatile uint8_t *ddr, int pin){
+void initServo(){
 //            //make A5 output.
 //            *ddr=BV(pin);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
 //            *port=BV(pin);     // PORTC is initially LOW OFF the led initially /
@@ -78,7 +78,7 @@ void initServo(volatile uint8_t *port, volatile uint8_t *ddr, int pin){
         _delay_us(19000); //remember that total period is 2ms or 2k micros and you need to do it this way because of standard 50hz servo
 }
 
-int open(volatile uint8_t *port, int pin){
+int open(){
 //        *port = (uint8_t)(BV(pin)); //need to change this code to work
 //        _delay_us(2000);
 //         *port   ^=BV(pin);
@@ -91,7 +91,7 @@ int open(volatile uint8_t *port, int pin){
 //         *port   ^=BV(pin);
 //        _delay_us(19000);
     
-    PORTC = (uint8_t)(BV(pin));
+    PORTC = (BV(5));
     _delay_us(2000);
    PORTC  ^=BV(5);
     _delay_us(18000);
@@ -128,7 +128,7 @@ int main(void)
     _delay_ms(1000);
     LCDClear();
 
-    open(PORTC, 5);
+    open();
     close();
 
     //init reader
@@ -215,7 +215,7 @@ while(1){
                 LCDClear();
                 _delay_ms(500);
                 LCDWriteString("SUCCESS");
-                open(PORTC, 5);
+                open();
                 validCard=5;
             } //end if test worked
             if(validCard == -1){
