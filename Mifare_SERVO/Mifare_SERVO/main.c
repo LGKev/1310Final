@@ -129,6 +129,9 @@ int buttonRead(){
         LCDClear();
         _delay_ms(40);
         LCDWriteString("button press");
+        open();
+        _delay_ms(500);
+        close();
         _delay_ms(1000);
         LCDClear();
         return 1;
@@ -158,21 +161,6 @@ int main(void)
     //init reader
     mfrc522_init();
 
-    //check version of the reader
-    byte = mfrc522_read(VersionReg);
-    if(byte == 0x92)
-    {
-        LCDWriteStringXY(2,0,"MIFARE RC522v2");
-        LCDWriteStringXY(4,1,"Detected");
-    }else if(byte == 0x91 || byte==0x90)
-    {
-        LCDWriteStringXY(2,0,"MIFARE RC522v1");
-        LCDWriteStringXY(4,1,"Detected");
-    }else
-    {
-        LCDWriteStringXY(0,0,"No reader found");
-    }
-
     byte = mfrc522_read(ComIEnReg);
     mfrc522_write(ComIEnReg,byte|0x20);
     byte = mfrc522_read(DivIEnReg);
@@ -185,7 +173,8 @@ int main(void)
 while(1){
         byte = mfrc522_request(PICC_REQALL,str);
         LCDHexDumpXY(0,0,byte);
-    buttonRead();
+        buttonRead();
+    
         if(byte == CARD_FOUND)
         {
             byte = mfrc522_get_card_serial(str);
@@ -205,7 +194,7 @@ while(1){
                 LCDWriteStringXY(0,1,"Error");
             }
 
-            LCDWriteStringXY(0, 1, "BOUT TO CHECK");
+            LCDWriteStringXY(0, 1, "Card Comparison");
             _delay_ms(1000);
             LCDClear(); //test
             for(int i=0; i<5; i++){
