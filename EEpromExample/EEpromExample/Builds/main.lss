@@ -1,0 +1,428 @@
+
+Builds/main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00000248  000002dc  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000248  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .eeprom       0000000a  00810000  00810000  000002dc  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .stab         00000918  00000000  00000000  000002e8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      00000f5b  00000000  00000000  00000c00  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .comment      00000011  00000000  00000000  00001b5b  2**0
+                  CONTENTS, READONLY
+  6 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00001b6c  2**2
+                  CONTENTS, READONLY
+  7 .debug_info   000005f4  00000000  00000000  00001bac  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_abbrev 000005a2  00000000  00000000  000021a0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_line   0000001d  00000000  00000000  00002742  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000208  00000000  00000000  0000275f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 73 00 	call	0xe6	; 0xe6 <main>
+  78:	0c 94 22 01 	jmp	0x244	; 0x244 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <initButton>:
+unsigned int EEMEM   my_eeprom_array[5];
+
+void initButton(void){
+    // uint8_t button = 3;
+    //uint8_t ledB = 2;
+    DDRC ^= BV(button); //set as input
+  80:	97 b1       	in	r25, 0x07	; 7
+  82:	28 e0       	ldi	r18, 0x08	; 8
+  84:	92 27       	eor	r25, r18
+  86:	97 b9       	out	0x07, r25	; 7
+    DDRC |= BV(ledB); //set output
+  88:	3a 9a       	sbi	0x07, 2	; 7
+    
+    PORTC ^= BV(button); // set low
+  8a:	88 b1       	in	r24, 0x08	; 8
+  8c:	82 27       	eor	r24, r18
+  8e:	88 b9       	out	0x08, r24	; 8
+  90:	08 95       	ret
+
+00000092 <initIO>:
+    //set input.
+    // uint8_t button = 3;
+    uint8_t led2 = 2;
+    uint8_t led = 4;
+    //    DDRC &= ~(1 << button);
+    DDRC ^= BV(button); //set the pin 3 in DDRC as input;
+  92:	97 b1       	in	r25, 0x07	; 7
+  94:	28 e0       	ldi	r18, 0x08	; 8
+  96:	92 27       	eor	r25, r18
+  98:	97 b9       	out	0x07, r25	; 7
+    DDRC |= BV(led2);
+  9a:	3a 9a       	sbi	0x07, 2	; 7
+    DDRC |= BV(led); //set pin 4 as output
+  9c:	3c 9a       	sbi	0x07, 4	; 7
+    
+    PORTC ^= BV(button); //don't forget to set as input
+  9e:	88 b1       	in	r24, 0x08	; 8
+  a0:	82 27       	eor	r24, r18
+  a2:	88 b9       	out	0x08, r24	; 8
+  a4:	85 e0       	ldi	r24, 0x05	; 5
+  a6:	90 e0       	ldi	r25, 0x00	; 0
+    for (int i = 0; i<5; i++) {
+        PORTC |= (BV(led));//set high
+        PORTC |=(BV(led2));
+        _delay_ms(80);
+        PORTC ^= (BV(led));
+  a8:	40 e1       	ldi	r20, 0x10	; 16
+        PORTC ^=(BV(led2));
+  aa:	34 e0       	ldi	r19, 0x04	; 4
+    DDRC |= BV(led2);
+    DDRC |= BV(led); //set pin 4 as output
+    
+    PORTC ^= BV(button); //don't forget to set as input
+    for (int i = 0; i<5; i++) {
+        PORTC |= (BV(led));//set high
+  ac:	44 9a       	sbi	0x08, 4	; 8
+        PORTC |=(BV(led2));
+  ae:	42 9a       	sbi	0x08, 2	; 8
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  b0:	2f ef       	ldi	r18, 0xFF	; 255
+  b2:	53 ef       	ldi	r21, 0xF3	; 243
+  b4:	61 e0       	ldi	r22, 0x01	; 1
+  b6:	21 50       	subi	r18, 0x01	; 1
+  b8:	50 40       	sbci	r21, 0x00	; 0
+  ba:	60 40       	sbci	r22, 0x00	; 0
+  bc:	e1 f7       	brne	.-8      	; 0xb6 <initIO+0x24>
+  be:	00 c0       	rjmp	.+0      	; 0xc0 <initIO+0x2e>
+  c0:	00 00       	nop
+        _delay_ms(80);
+        PORTC ^= (BV(led));
+  c2:	28 b1       	in	r18, 0x08	; 8
+  c4:	24 27       	eor	r18, r20
+  c6:	28 b9       	out	0x08, r18	; 8
+        PORTC ^=(BV(led2));
+  c8:	28 b1       	in	r18, 0x08	; 8
+  ca:	23 27       	eor	r18, r19
+  cc:	28 b9       	out	0x08, r18	; 8
+  ce:	2f ef       	ldi	r18, 0xFF	; 255
+  d0:	53 ef       	ldi	r21, 0xF3	; 243
+  d2:	61 e0       	ldi	r22, 0x01	; 1
+  d4:	21 50       	subi	r18, 0x01	; 1
+  d6:	50 40       	sbci	r21, 0x00	; 0
+  d8:	60 40       	sbci	r22, 0x00	; 0
+  da:	e1 f7       	brne	.-8      	; 0xd4 <initIO+0x42>
+  dc:	00 c0       	rjmp	.+0      	; 0xde <initIO+0x4c>
+  de:	00 00       	nop
+  e0:	01 97       	sbiw	r24, 0x01	; 1
+    DDRC ^= BV(button); //set the pin 3 in DDRC as input;
+    DDRC |= BV(led2);
+    DDRC |= BV(led); //set pin 4 as output
+    
+    PORTC ^= BV(button); //don't forget to set as input
+    for (int i = 0; i<5; i++) {
+  e2:	21 f7       	brne	.-56     	; 0xac <initIO+0x1a>
+        _delay_ms(80);
+        PORTC ^= (BV(led));
+        PORTC ^=(BV(led2));
+        _delay_ms(80);
+    }
+}
+  e4:	08 95       	ret
+
+000000e6 <main>:
+
+
+int main(void)
+{
+    initIO();
+  e6:	0e 94 49 00 	call	0x92	; 0x92 <initIO>
+    
+    initButton();
+  ea:	0e 94 40 00 	call	0x80	; 0x80 <initButton>
+    
+    int i=0;
+    int count =0;
+    
+    
+    write_eeprom_word(&my_eeprom_array[0], 0);
+  ee:	60 e0       	ldi	r22, 0x00	; 0
+  f0:	70 e0       	ldi	r23, 0x00	; 0
+  f2:	80 e0       	ldi	r24, 0x00	; 0
+  f4:	90 e0       	ldi	r25, 0x00	; 0
+  f6:	0e 94 ff 00 	call	0x1fe	; 0x1fe <eeprom_write_word>
+        
+        if(my_ram_array[2]==2){
+            for(int j=1;j<=3; j++){
+                PORTC |= BV(ledB);
+                _delay_ms(5);
+                PORTC ^= BV(ledB);
+  fa:	84 e0       	ldi	r24, 0x04	; 4
+  fc:	f8 2e       	mov	r15, r24
+  fe:	94 e0       	ldi	r25, 0x04	; 4
+ 100:	e9 2e       	mov	r14, r25
+ 102:	00 e0       	ldi	r16, 0x00	; 0
+ 104:	10 e0       	ldi	r17, 0x00	; 0
+    }
+}
+
+
+int main(void)
+{
+ 106:	c0 e0       	ldi	r28, 0x00	; 0
+ 108:	d0 e0       	ldi	r29, 0x00	; 0
+    write_eeprom_word(&my_eeprom_array[0], 0);
+
+    while(1)
+    {
+        
+        my_ram_array[2] = read_eeprom_word(my_eeprom_array[2]);     // restore from eeprom
+ 10a:	80 91 04 00 	lds	r24, 0x0004
+ 10e:	90 91 05 00 	lds	r25, 0x0005
+ 112:	0e 94 f9 00 	call	0x1f2	; 0x1f2 <eeprom_read_word>
+        
+        if(my_ram_array[2]==2){
+ 116:	02 97       	sbiw	r24, 0x02	; 2
+ 118:	f9 f4       	brne	.+62     	; 0x158 <main+0x72>
+ 11a:	83 e0       	ldi	r24, 0x03	; 3
+ 11c:	90 e0       	ldi	r25, 0x00	; 0
+            for(int j=1;j<=3; j++){
+                PORTC |= BV(ledB);
+ 11e:	42 9a       	sbi	0x08, 2	; 8
+ 120:	ef e0       	ldi	r30, 0x0F	; 15
+ 122:	f7 e2       	ldi	r31, 0x27	; 39
+ 124:	31 97       	sbiw	r30, 0x01	; 1
+ 126:	f1 f7       	brne	.-4      	; 0x124 <main+0x3e>
+ 128:	00 c0       	rjmp	.+0      	; 0x12a <main+0x44>
+ 12a:	00 00       	nop
+                _delay_ms(5);
+                PORTC ^= BV(ledB);
+ 12c:	28 b1       	in	r18, 0x08	; 8
+ 12e:	2f 25       	eor	r18, r15
+ 130:	28 b9       	out	0x08, r18	; 8
+ 132:	ff ef       	ldi	r31, 0xFF	; 255
+ 134:	23 ef       	ldi	r18, 0xF3	; 243
+ 136:	31 e0       	ldi	r19, 0x01	; 1
+ 138:	f1 50       	subi	r31, 0x01	; 1
+ 13a:	20 40       	sbci	r18, 0x00	; 0
+ 13c:	30 40       	sbci	r19, 0x00	; 0
+ 13e:	e1 f7       	brne	.-8      	; 0x138 <main+0x52>
+ 140:	00 c0       	rjmp	.+0      	; 0x142 <main+0x5c>
+ 142:	00 00       	nop
+ 144:	01 97       	sbiw	r24, 0x01	; 1
+    {
+        
+        my_ram_array[2] = read_eeprom_word(my_eeprom_array[2]);     // restore from eeprom
+        
+        if(my_ram_array[2]==2){
+            for(int j=1;j<=3; j++){
+ 146:	59 f7       	brne	.-42     	; 0x11e <main+0x38>
+                _delay_ms(5);
+                PORTC ^= BV(ledB);
+                _delay_ms(80);
+                
+            }
+            write_eeprom_word(my_eeprom_array[2],0);       // store value in eeprom
+ 148:	60 e0       	ldi	r22, 0x00	; 0
+ 14a:	70 e0       	ldi	r23, 0x00	; 0
+ 14c:	80 91 04 00 	lds	r24, 0x0004
+ 150:	90 91 05 00 	lds	r25, 0x0005
+ 154:	0e 94 ff 00 	call	0x1fe	; 0x1fe <eeprom_write_word>
+
+        }
+        
+        if(bit_is_clear(PINC, button)){
+ 158:	33 99       	sbic	0x06, 3	; 6
+ 15a:	d7 cf       	rjmp	.-82     	; 0x10a <main+0x24>
+            ///my_ram_array[i] = count;
+            PORTC |= BV(ledB);
+ 15c:	42 9a       	sbi	0x08, 2	; 8
+ 15e:	4f ef       	ldi	r20, 0xFF	; 255
+ 160:	80 e7       	ldi	r24, 0x70	; 112
+ 162:	92 e0       	ldi	r25, 0x02	; 2
+ 164:	41 50       	subi	r20, 0x01	; 1
+ 166:	80 40       	sbci	r24, 0x00	; 0
+ 168:	90 40       	sbci	r25, 0x00	; 0
+ 16a:	e1 f7       	brne	.-8      	; 0x164 <main+0x7e>
+ 16c:	00 c0       	rjmp	.+0      	; 0x16e <main+0x88>
+ 16e:	00 00       	nop
+            _delay_ms(100);
+            PORTC ^= BV(ledB);
+ 170:	88 b1       	in	r24, 0x08	; 8
+ 172:	8f 25       	eor	r24, r15
+ 174:	88 b9       	out	0x08, r24	; 8
+ 176:	ef ef       	ldi	r30, 0xFF	; 255
+ 178:	f0 e7       	ldi	r31, 0x70	; 112
+ 17a:	22 e0       	ldi	r18, 0x02	; 2
+ 17c:	e1 50       	subi	r30, 0x01	; 1
+ 17e:	f0 40       	sbci	r31, 0x00	; 0
+ 180:	20 40       	sbci	r18, 0x00	; 0
+ 182:	e1 f7       	brne	.-8      	; 0x17c <main+0x96>
+ 184:	00 c0       	rjmp	.+0      	; 0x186 <main+0xa0>
+ 186:	00 00       	nop
+            _delay_ms(100);
+            write_eeprom_word(my_eeprom_array[i],count);       // store value in eeprom
+ 188:	be 01       	movw	r22, r28
+ 18a:	f8 01       	movw	r30, r16
+ 18c:	81 91       	ld	r24, Z+
+ 18e:	91 91       	ld	r25, Z+
+ 190:	8f 01       	movw	r16, r30
+ 192:	0e 94 ff 00 	call	0x1fe	; 0x1fe <eeprom_write_word>
+ 196:	ff ef       	ldi	r31, 0xFF	; 255
+ 198:	20 e7       	ldi	r18, 0x70	; 112
+ 19a:	32 e0       	ldi	r19, 0x02	; 2
+ 19c:	f1 50       	subi	r31, 0x01	; 1
+ 19e:	20 40       	sbci	r18, 0x00	; 0
+ 1a0:	30 40       	sbci	r19, 0x00	; 0
+ 1a2:	e1 f7       	brne	.-8      	; 0x19c <main+0xb6>
+ 1a4:	00 c0       	rjmp	.+0      	; 0x1a6 <main+0xc0>
+ 1a6:	00 00       	nop
+            _delay_ms(100);
+            i++;
+ 1a8:	21 96       	adiw	r28, 0x01	; 1
+            count++;
+            if(i> 5){
+ 1aa:	c6 30       	cpi	r28, 0x06	; 6
+ 1ac:	d1 05       	cpc	r29, r1
+ 1ae:	09 f0       	breq	.+2      	; 0x1b2 <main+0xcc>
+ 1b0:	ac cf       	rjmp	.-168    	; 0x10a <main+0x24>
+ 1b2:	4f ef       	ldi	r20, 0xFF	; 255
+ 1b4:	82 e5       	ldi	r24, 0x52	; 82
+ 1b6:	97 e0       	ldi	r25, 0x07	; 7
+ 1b8:	41 50       	subi	r20, 0x01	; 1
+ 1ba:	80 40       	sbci	r24, 0x00	; 0
+ 1bc:	90 40       	sbci	r25, 0x00	; 0
+ 1be:	e1 f7       	brne	.-8      	; 0x1b8 <main+0xd2>
+ 1c0:	00 c0       	rjmp	.+0      	; 0x1c2 <main+0xdc>
+ 1c2:	00 00       	nop
+                _delay_ms(300);
+
+                PORTC |= BV(ledB);
+ 1c4:	42 9a       	sbi	0x08, 2	; 8
+ 1c6:	ef ef       	ldi	r30, 0xFF	; 255
+ 1c8:	f9 e6       	ldi	r31, 0x69	; 105
+ 1ca:	28 e1       	ldi	r18, 0x18	; 24
+ 1cc:	e1 50       	subi	r30, 0x01	; 1
+ 1ce:	f0 40       	sbci	r31, 0x00	; 0
+ 1d0:	20 40       	sbci	r18, 0x00	; 0
+ 1d2:	e1 f7       	brne	.-8      	; 0x1cc <main+0xe6>
+ 1d4:	00 c0       	rjmp	.+0      	; 0x1d6 <main+0xf0>
+ 1d6:	00 00       	nop
+                _delay_ms(1000);
+                PORTC ^= BV(ledB);
+ 1d8:	88 b1       	in	r24, 0x08	; 8
+ 1da:	8e 25       	eor	r24, r14
+ 1dc:	88 b9       	out	0x08, r24	; 8
+ 1de:	3f ef       	ldi	r19, 0xFF	; 255
+ 1e0:	49 ef       	ldi	r20, 0xF9	; 249
+ 1e2:	80 e0       	ldi	r24, 0x00	; 0
+ 1e4:	31 50       	subi	r19, 0x01	; 1
+ 1e6:	40 40       	sbci	r20, 0x00	; 0
+ 1e8:	80 40       	sbci	r24, 0x00	; 0
+ 1ea:	e1 f7       	brne	.-8      	; 0x1e4 <main+0xfe>
+ 1ec:	00 c0       	rjmp	.+0      	; 0x1ee <main+0x108>
+ 1ee:	00 00       	nop
+ 1f0:	88 cf       	rjmp	.-240    	; 0x102 <main+0x1c>
+
+000001f2 <eeprom_read_word>:
+ 1f2:	a8 e1       	ldi	r26, 0x18	; 24
+ 1f4:	b0 e0       	ldi	r27, 0x00	; 0
+ 1f6:	42 e0       	ldi	r20, 0x02	; 2
+ 1f8:	50 e0       	ldi	r21, 0x00	; 0
+ 1fa:	0c 94 06 01 	jmp	0x20c	; 0x20c <eeprom_read_blraw>
+
+000001fe <eeprom_write_word>:
+ 1fe:	0e 94 14 01 	call	0x228	; 0x228 <eeprom_write_byte>
+ 202:	27 2f       	mov	r18, r23
+ 204:	0c 94 15 01 	jmp	0x22a	; 0x22a <eeprom_write_r18>
+
+00000208 <eeprom_read_block>:
+ 208:	dc 01       	movw	r26, r24
+ 20a:	cb 01       	movw	r24, r22
+
+0000020c <eeprom_read_blraw>:
+ 20c:	fc 01       	movw	r30, r24
+ 20e:	f9 99       	sbic	0x1f, 1	; 31
+ 210:	fe cf       	rjmp	.-4      	; 0x20e <eeprom_read_blraw+0x2>
+ 212:	06 c0       	rjmp	.+12     	; 0x220 <eeprom_read_blraw+0x14>
+ 214:	f2 bd       	out	0x22, r31	; 34
+ 216:	e1 bd       	out	0x21, r30	; 33
+ 218:	f8 9a       	sbi	0x1f, 0	; 31
+ 21a:	31 96       	adiw	r30, 0x01	; 1
+ 21c:	00 b4       	in	r0, 0x20	; 32
+ 21e:	0d 92       	st	X+, r0
+ 220:	41 50       	subi	r20, 0x01	; 1
+ 222:	50 40       	sbci	r21, 0x00	; 0
+ 224:	b8 f7       	brcc	.-18     	; 0x214 <eeprom_read_blraw+0x8>
+ 226:	08 95       	ret
+
+00000228 <eeprom_write_byte>:
+ 228:	26 2f       	mov	r18, r22
+
+0000022a <eeprom_write_r18>:
+ 22a:	f9 99       	sbic	0x1f, 1	; 31
+ 22c:	fe cf       	rjmp	.-4      	; 0x22a <eeprom_write_r18>
+ 22e:	1f ba       	out	0x1f, r1	; 31
+ 230:	92 bd       	out	0x22, r25	; 34
+ 232:	81 bd       	out	0x21, r24	; 33
+ 234:	20 bd       	out	0x20, r18	; 32
+ 236:	0f b6       	in	r0, 0x3f	; 63
+ 238:	f8 94       	cli
+ 23a:	fa 9a       	sbi	0x1f, 2	; 31
+ 23c:	f9 9a       	sbi	0x1f, 1	; 31
+ 23e:	0f be       	out	0x3f, r0	; 63
+ 240:	01 96       	adiw	r24, 0x01	; 1
+ 242:	08 95       	ret
+
+00000244 <_exit>:
+ 244:	f8 94       	cli
+
+00000246 <__stop_program>:
+ 246:	ff cf       	rjmp	.-2      	; 0x246 <__stop_program>

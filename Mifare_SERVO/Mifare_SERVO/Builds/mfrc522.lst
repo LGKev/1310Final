@@ -849,18 +849,18 @@
  809               		.ident	"GCC: (GNU) 6.2.0"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mfrc522.c
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:114    .text:0000000000000000 mfrc522_write
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:150    .text:000000000000001a mfrc522_read
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:182    .text:0000000000000030 mfrc522_reset
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:200    .text:0000000000000038 mfrc522_init
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:269    .text:0000000000000084 mfrc522_to_card
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:629    .text:000000000000025c mfrc522_request
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cch9KMGE.s:715    .text:00000000000002c2 mfrc522_get_card_serial
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:114    .text:0000000000000000 mfrc522_write
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:150    .text:000000000000001a mfrc522_read
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:182    .text:0000000000000030 mfrc522_reset
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:200    .text:0000000000000038 mfrc522_init
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:269    .text:0000000000000084 mfrc522_to_card
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:629    .text:000000000000025c mfrc522_request
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccikZ5YH.s:715    .text:00000000000002c2 mfrc522_get_card_serial
 
 UNDEFINED SYMBOLS
 spi_transmit

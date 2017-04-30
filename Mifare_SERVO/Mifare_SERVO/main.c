@@ -29,12 +29,20 @@
 #include <spi.h>
 #include <mfrc522.h>
 #include <string.h>
+#include <avr/eeprom.h> //so we can store cards
 
 #define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift, 1st bit.
 #define ToggleBit(port, bit) (port ^= (1 << bit) //  toggles the bit by negating
 
 #define button 3 //that is the pin on portc that is input for button
 #define ledB 2 //led for indicator for button
+#define card_display_Delay 1 //adds delay for the card readout 0 for no delay, 1 for a 1000 delay
+
+//macros for adding stuff to eeprom
+#define read_eeprom_word(address) eeprom_read_word((const uint8_t *) address)
+#define write_eeprom_word(address, value) eeprom_write_word((uint8_t *) address, (uint8_t *) val)
+
+unsigned int EEMEM newCard;
 
 uint8_t SelfTestBuffer[64];
 
@@ -72,6 +80,8 @@ uint8_t SelfTestBuffer[64];
 //holds id cards
 uint8_t card1[5] = {174,68,45,91,156}; //only 5 elements!!!
 uint8_t card2[5] = {64, 238 , 223, 135, 246};
+uint8_t ADD[5] ={}; //add card used to add other cards.
+uint8_t DELETE[5] = {}; //delete card used to delete the next card scanned.
 
 
 int validCard = -2;
@@ -195,13 +205,14 @@ while(1){
                 _delay_ms(30);
                 LCDClear();
 
-                for(byte=0;byte<8;byte++){
+                
+                for(byte=0;byte<5;byte++){
                     // LCDHexDumpXY(byte*2,0,str[byte]);
                     //       LCDHexDumpXY(byte*2, 0, str[byte]);
                   //  LCDWriteString(" ");
                   
                     LCDWriteInt(str[byte], -1);
-                _delay_ms(1000);
+                    if(card_display_Delay==1){_delay_ms(1000);}
                 }
 
             }

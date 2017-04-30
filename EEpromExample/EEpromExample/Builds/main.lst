@@ -1,0 +1,658 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+ 120               	.global	initButton
+ 122               	initButton:
+   1:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #include <stdio.h>
+   2:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #include <avr/io.h>
+   3:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #include <avr/interrupt.h>
+   4:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #include <util/delay.h>
+   5:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #include <avr/eeprom.h>
+   6:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+   7:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** /*
+   8:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****  
+   9:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****  this project will show the use of eeprom
+  10:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****  
+  11:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****  
+  12:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****  cannnot get serial to work at this time, will use an led to indicate that serial EE prom saved and
+  13:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****  its an example of serial communicaiton as well.
+  14:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****  */
+  15:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  16:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #define button 3 //that is the pin on portc that is input for button
+  17:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #define ledB 2 //led for indicator for button
+  18:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift
+  19:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #define ToggleBit(port, bit) (port ^= (1 << bit) //  toggles the bit by negating
+  20:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  21:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #define read_eeprom_word(address) eeprom_read_word ((const uint16_t*)address)
+  22:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #define write_eeprom_word(address,value) eeprom_write_word ((uint16_t*)address,(uint16_t)value)
+  23:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** #define update_eeprom_word(address,value) eeprom_update_word ((uint16_t*)address,(uint16_t)value)
+  24:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  26:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** unsigned int EEMEM   my_eeprom_array[5];
+  27:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  28:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** void initButton(void){
+ 124               	.LM0:
+ 125               	.LFBB1:
+ 126               	/* prologue: function */
+ 127               	/* frame size = 0 */
+ 128               	/* stack size = 0 */
+ 129               	.L__stack_usage = 0
+  29:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     // uint8_t button = 3;
+  30:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     //uint8_t ledB = 2;
+  31:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     DDRC ^= BV(button); //set as input
+ 131               	.LM1:
+ 132 0000 97B1      		in r25,0x7
+ 133 0002 28E0      		ldi r18,lo8(8)
+ 134 0004 9227      		eor r25,r18
+ 135 0006 97B9      		out 0x7,r25
+  32:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     DDRC |= BV(ledB); //set output
+ 137               	.LM2:
+ 138 0008 3A9A      		sbi 0x7,2
+  33:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  34:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     PORTC ^= BV(button); // set low
+ 140               	.LM3:
+ 141 000a 88B1      		in r24,0x8
+ 142 000c 8227      		eor r24,r18
+ 143 000e 88B9      		out 0x8,r24
+ 144 0010 0895      		ret
+ 146               	.Lscope1:
+ 148               	.global	initIO
+ 150               	initIO:
+  35:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  36:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** }
+  37:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  38:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  39:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  40:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** void initIO(void) {
+ 152               	.LM4:
+ 153               	.LFBB2:
+ 154               	/* prologue: function */
+ 155               	/* frame size = 0 */
+ 156               	/* stack size = 0 */
+ 157               	.L__stack_usage = 0
+  41:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     //set input.
+  42:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     // uint8_t button = 3;
+  43:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     uint8_t led2 = 2;
+  44:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     uint8_t led = 4;
+  45:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     //    DDRC &= ~(1 << button);
+  46:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     DDRC ^= BV(button); //set the pin 3 in DDRC as input;
+ 159               	.LM5:
+ 160 0012 97B1      		in r25,0x7
+ 161 0014 28E0      		ldi r18,lo8(8)
+ 162 0016 9227      		eor r25,r18
+ 163 0018 97B9      		out 0x7,r25
+  47:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     DDRC |= BV(led2);
+ 165               	.LM6:
+ 166 001a 3A9A      		sbi 0x7,2
+  48:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     DDRC |= BV(led); //set pin 4 as output
+ 168               	.LM7:
+ 169 001c 3C9A      		sbi 0x7,4
+  49:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  50:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     PORTC ^= BV(button); //don't forget to set as input
+ 171               	.LM8:
+ 172 001e 88B1      		in r24,0x8
+ 173 0020 8227      		eor r24,r18
+ 174 0022 88B9      		out 0x8,r24
+ 175 0024 85E0      		ldi r24,lo8(5)
+ 176 0026 90E0      		ldi r25,0
+ 177               	.LBB24:
+  51:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     for (int i = 0; i<5; i++) {
+  52:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         PORTC |= (BV(led));//set high
+  53:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         PORTC |=(BV(led2));
+  54:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         _delay_ms(80);
+  55:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         PORTC ^= (BV(led));
+ 179               	.LM9:
+ 180 0028 40E1      		ldi r20,lo8(16)
+  56:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         PORTC ^=(BV(led2));
+ 182               	.LM10:
+ 183 002a 34E0      		ldi r19,lo8(4)
+ 184               	.L3:
+  52:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         PORTC |=(BV(led2));
+ 186               	.LM11:
+ 187 002c 449A      		sbi 0x8,4
+  53:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         _delay_ms(80);
+ 189               	.LM12:
+ 190 002e 429A      		sbi 0x8,2
+ 191               	.LBB25:
+ 192               	.LBB26:
+ 194               	.Ltext1:
+   1:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+   6:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+   9:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  12:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  17:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  21:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  33:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* $Id: delay.h.in 2506 2016-02-08 10:05:45Z joerg_wunsch $ */
+  34:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  35:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  38:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef __DOXYGEN__
+  39:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #  ifndef __HAS_DELAY_CYCLES
+  40:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #    define __HAS_DELAY_CYCLES 1
+  41:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #  endif
+  42:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif  /* __DOXYGEN__ */
+  43:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  44:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #include <inttypes.h>
+  45:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  46:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #include <math.h>
+  47:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  48:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /** \file */
+  49:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  50:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \code
+  51:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  52:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  53:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     #include <util/delay.h>
+  54:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \endcode
+  55:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  56:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  57:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  58:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  59:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     used.
+  60:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  61:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  62:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  63:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  64:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  65:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  66:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  67:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  68:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  69:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  70:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  71:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  72:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  73:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  74:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  75:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  76:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  77:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     routines linked into the application.
+  78:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  79:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  80:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  81:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  82:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  83:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** */
+  84:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  85:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  86:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
+  87:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
+  88:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+  89:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  90:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef F_CPU
+  91:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  92:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  93:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /** \ingroup util_delay
+  94:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \def F_CPU
+  95:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \brief CPU frequency in Hz
+  96:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  97:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
+  98:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     the delay macros.  This macro is normally supplied by the
+  99:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     environment (e.g. from within a project header, or the project's
+ 100:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
+ 101:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     fallback if no such user-provided definition could be found.
+ 102:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 103:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     In terms of the delay functions, the CPU frequency can be given as
+ 104:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
+ 105:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     However, the macros in <util/setbaud.h> require it to be an
+ 106:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     integer value.
+ 107:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****  */
+ 108:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** # define F_CPU 1000000UL
+ 109:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 110:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 111:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+ 112:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+ 113:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 114:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 115:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 116:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 117:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 118:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #  include <math.h>
+ 119:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 120:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 121:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /**
+ 122:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \ingroup util_delay
+ 123:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 124:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 125:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 126:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 127:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 128:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 129:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 130:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 131:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 132:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 133:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 134:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 135:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 136:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 137:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 138:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 139:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 140:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 141:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 142:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Conversion of \c __ms into clock cycles may not always result in
+ 143:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 144:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __ms
+ 145:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    microseconds of delay.
+ 146:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 147:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 148:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 149:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 150:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    respectively.
+ 151:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 152:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \note
+ 153:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 154:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
+ 155:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 156:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
+ 157:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
+ 158:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
+ 159:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
+ 160:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 161:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 162:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    not available to the compiler then.
+ 163:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 164:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****  */
+ 165:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** void
+ 166:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 167:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** {
+ 168:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	double __tmp ;
+ 169:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 170:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 171:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 172:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 173:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 174:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 175:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 176:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 177:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 178:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 179:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 180:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 181:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 182:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#else
+ 183:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		//round up by default
+ 184:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 185:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#endif
+ 186:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 196               	.LM13:
+ 197 0030 2FEF      		ldi r18,lo8(127999)
+ 198 0032 53EF      		ldi r21,hi8(127999)
+ 199 0034 61E0      		ldi r22,hlo8(127999)
+ 200 0036 2150      	1:	subi r18,1
+ 201 0038 5040      		sbci r21,0
+ 202 003a 6040      		sbci r22,0
+ 203 003c 01F4      		brne 1b
+ 204 003e 00C0      		rjmp .
+ 205 0040 0000      		nop
+ 206               	.LBE26:
+ 207               	.LBE25:
+ 209               	.Ltext2:
+  55:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         PORTC ^=(BV(led2));
+ 211               	.LM14:
+ 212 0042 28B1      		in r18,0x8
+ 213 0044 2427      		eor r18,r20
+ 214 0046 28B9      		out 0x8,r18
+ 216               	.LM15:
+ 217 0048 28B1      		in r18,0x8
+ 218 004a 2327      		eor r18,r19
+ 219 004c 28B9      		out 0x8,r18
+ 220               	.LBB27:
+ 221               	.LBB28:
+ 223               	.Ltext3:
+ 225               	.LM16:
+ 226 004e 2FEF      		ldi r18,lo8(127999)
+ 227 0050 53EF      		ldi r21,hi8(127999)
+ 228 0052 61E0      		ldi r22,hlo8(127999)
+ 229 0054 2150      	1:	subi r18,1
+ 230 0056 5040      		sbci r21,0
+ 231 0058 6040      		sbci r22,0
+ 232 005a 01F4      		brne 1b
+ 233 005c 00C0      		rjmp .
+ 234 005e 0000      		nop
+ 235 0060 0197      		sbiw r24,1
+ 236               	.LBE28:
+ 237               	.LBE27:
+ 239               	.Ltext4:
+  51:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         PORTC |= (BV(led));//set high
+ 241               	.LM17:
+ 242 0062 01F4      		brne .L3
+ 243               	/* epilogue start */
+ 244               	.LBE24:
+  57:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         _delay_ms(80);
+  58:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     }
+  59:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** }
+ 246               	.LM18:
+ 247 0064 0895      		ret
+ 249               	.Lscope2:
+ 250               		.section	.text.startup,"ax",@progbits
+ 252               	.global	main
+ 254               	main:
+  60:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  61:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  62:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** int main(void)
+  63:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** {
+ 256               	.LM19:
+ 257               	.LFBB3:
+ 258               	/* prologue: function */
+ 259               	/* frame size = 0 */
+ 260               	/* stack size = 0 */
+ 261               	.L__stack_usage = 0
+  64:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     initIO();
+ 263               	.LM20:
+ 264 0000 0E94 0000 		call initIO
+  65:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  66:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     initButton();
+ 266               	.LM21:
+ 267 0004 0E94 0000 		call initButton
+  67:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  68:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  69:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****    // write_eeprom_word(&my_eeprom_array[0],1);       // store value in eeprom
+  70:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  71:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****    int my_ram_array[5]={0,0,0,0,0};     // restore from eeprom
+  72:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  73:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  74:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     int i=0;
+  75:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     int count =0;
+  76:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  77:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     
+  78:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     write_eeprom_word(&my_eeprom_array[0], 0);
+ 269               	.LM22:
+ 270 0008 60E0      		ldi r22,0
+ 271 000a 70E0      		ldi r23,0
+ 272 000c 80E0      		ldi r24,lo8(my_eeprom_array)
+ 273 000e 90E0      		ldi r25,hi8(my_eeprom_array)
+ 274 0010 0E94 0000 		call eeprom_write_word
+ 275               	.LBB29:
+  79:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  80:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     while(1)
+  81:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     {
+  82:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         
+  83:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         my_ram_array[2] = read_eeprom_word(my_eeprom_array[2]);     // restore from eeprom
+  84:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         
+  85:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         if(my_ram_array[2]==2){
+  86:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             for(int j=1;j<=3; j++){
+  87:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 PORTC |= BV(ledB);
+  88:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 _delay_ms(5);
+  89:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 PORTC ^= BV(ledB);
+ 277               	.LM23:
+ 278 0014 84E0      		ldi r24,lo8(4)
+ 279 0016 F82E      		mov r15,r24
+ 280 0018 94E0      		ldi r25,lo8(4)
+ 281 001a E92E      		mov r14,r25
+ 282               	.L10:
+ 283 001c 00E0      		ldi r16,lo8(my_eeprom_array)
+ 284 001e 10E0      		ldi r17,hi8(my_eeprom_array)
+ 285               	.LBE29:
+  63:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****     initIO();
+ 287               	.LM24:
+ 288 0020 C0E0      		ldi r28,0
+ 289 0022 D0E0      		ldi r29,0
+ 290               	.L8:
+  83:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         
+ 292               	.LM25:
+ 293 0024 8091 0000 		lds r24,my_eeprom_array+4
+ 294 0028 9091 0000 		lds r25,my_eeprom_array+4+1
+ 295 002c 0E94 0000 		call eeprom_read_word
+  85:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             for(int j=1;j<=3; j++){
+ 297               	.LM26:
+ 298 0030 0297      		sbiw r24,2
+ 299 0032 01F4      		brne .L6
+ 300 0034 83E0      		ldi r24,lo8(3)
+ 301 0036 90E0      		ldi r25,0
+ 302               	.L7:
+ 303               	.LBB34:
+  87:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 _delay_ms(5);
+ 305               	.LM27:
+ 306 0038 429A      		sbi 0x8,2
+ 307               	.LBB30:
+ 308               	.LBB31:
+ 310               	.Ltext5:
+ 312               	.LM28:
+ 313 003a EFE0      		ldi r30,lo8(9999)
+ 314 003c F7E2      		ldi r31,hi8(9999)
+ 315 003e 3197      	1:	sbiw r30,1
+ 316 0040 01F4      		brne 1b
+ 317 0042 00C0      		rjmp .
+ 318 0044 0000      		nop
+ 319               	.LBE31:
+ 320               	.LBE30:
+ 322               	.Ltext6:
+ 324               	.LM29:
+ 325 0046 28B1      		in r18,0x8
+ 326 0048 2F25      		eor r18,r15
+ 327 004a 28B9      		out 0x8,r18
+ 328               	.LBB32:
+ 329               	.LBB33:
+ 331               	.Ltext7:
+ 333               	.LM30:
+ 334 004c FFEF      		ldi r31,lo8(127999)
+ 335 004e 23EF      		ldi r18,hi8(127999)
+ 336 0050 31E0      		ldi r19,hlo8(127999)
+ 337 0052 F150      	1:	subi r31,1
+ 338 0054 2040      		sbci r18,0
+ 339 0056 3040      		sbci r19,0
+ 340 0058 01F4      		brne 1b
+ 341 005a 00C0      		rjmp .
+ 342 005c 0000      		nop
+ 343 005e 0197      		sbiw r24,1
+ 344               	.LBE33:
+ 345               	.LBE32:
+ 347               	.Ltext8:
+  86:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 PORTC |= BV(ledB);
+ 349               	.LM31:
+ 350 0060 01F4      		brne .L7
+ 351               	.LBE34:
+  90:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 _delay_ms(80);
+  91:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 
+  92:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             }
+  93:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             write_eeprom_word(my_eeprom_array[2],0);       // store value in eeprom
+ 353               	.LM32:
+ 354 0062 60E0      		ldi r22,0
+ 355 0064 70E0      		ldi r23,0
+ 356 0066 8091 0000 		lds r24,my_eeprom_array+4
+ 357 006a 9091 0000 		lds r25,my_eeprom_array+4+1
+ 358 006e 0E94 0000 		call eeprom_write_word
+ 359               	.L6:
+  94:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+  95:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         }
+  96:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         
+  97:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****         if(bit_is_clear(PINC, button)){
+ 361               	.LM33:
+ 362 0072 3399      		sbic 0x6,3
+ 363 0074 00C0      		rjmp .L8
+  98:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             ///my_ram_array[i] = count;
+  99:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             PORTC |= BV(ledB);
+ 365               	.LM34:
+ 366 0076 429A      		sbi 0x8,2
+ 367               	.LBB35:
+ 368               	.LBB36:
+ 370               	.Ltext9:
+ 372               	.LM35:
+ 373 0078 4FEF      		ldi r20,lo8(159999)
+ 374 007a 80E7      		ldi r24,hi8(159999)
+ 375 007c 92E0      		ldi r25,hlo8(159999)
+ 376 007e 4150      	1:	subi r20,1
+ 377 0080 8040      		sbci r24,0
+ 378 0082 9040      		sbci r25,0
+ 379 0084 01F4      		brne 1b
+ 380 0086 00C0      		rjmp .
+ 381 0088 0000      		nop
+ 382               	.LBE36:
+ 383               	.LBE35:
+ 385               	.Ltext10:
+ 100:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             _delay_ms(100);
+ 101:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             PORTC ^= BV(ledB);
+ 387               	.LM36:
+ 388 008a 88B1      		in r24,0x8
+ 389 008c 8F25      		eor r24,r15
+ 390 008e 88B9      		out 0x8,r24
+ 391               	.LBB37:
+ 392               	.LBB38:
+ 394               	.Ltext11:
+ 396               	.LM37:
+ 397 0090 EFEF      		ldi r30,lo8(159999)
+ 398 0092 F0E7      		ldi r31,hi8(159999)
+ 399 0094 22E0      		ldi r18,hlo8(159999)
+ 400 0096 E150      	1:	subi r30,1
+ 401 0098 F040      		sbci r31,0
+ 402 009a 2040      		sbci r18,0
+ 403 009c 01F4      		brne 1b
+ 404 009e 00C0      		rjmp .
+ 405 00a0 0000      		nop
+ 406               	.LBE38:
+ 407               	.LBE37:
+ 409               	.Ltext12:
+ 102:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             _delay_ms(100);
+ 103:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             write_eeprom_word(my_eeprom_array[i],count);       // store value in eeprom
+ 411               	.LM38:
+ 412 00a2 BE01      		movw r22,r28
+ 413 00a4 F801      		movw r30,r16
+ 414 00a6 8191      		ld r24,Z+
+ 415 00a8 9191      		ld r25,Z+
+ 416 00aa 8F01      		movw r16,r30
+ 417 00ac 0E94 0000 		call eeprom_write_word
+ 418               	.LBB39:
+ 419               	.LBB40:
+ 421               	.Ltext13:
+ 423               	.LM39:
+ 424 00b0 FFEF      		ldi r31,lo8(159999)
+ 425 00b2 20E7      		ldi r18,hi8(159999)
+ 426 00b4 32E0      		ldi r19,hlo8(159999)
+ 427 00b6 F150      	1:	subi r31,1
+ 428 00b8 2040      		sbci r18,0
+ 429 00ba 3040      		sbci r19,0
+ 430 00bc 01F4      		brne 1b
+ 431 00be 00C0      		rjmp .
+ 432 00c0 0000      		nop
+ 433               	.LBE40:
+ 434               	.LBE39:
+ 436               	.Ltext14:
+ 104:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             _delay_ms(100);
+ 105:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             i++;
+ 438               	.LM40:
+ 439 00c2 2196      		adiw r28,1
+ 106:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             count++;
+ 107:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****             if(i> 5){
+ 441               	.LM41:
+ 442 00c4 C630      		cpi r28,6
+ 443 00c6 D105      		cpc r29,__zero_reg__
+ 444 00c8 01F0      		breq .+2
+ 445 00ca 00C0      		rjmp .L8
+ 446               	.LBB41:
+ 447               	.LBB42:
+ 449               	.Ltext15:
+ 451               	.LM42:
+ 452 00cc 4FEF      		ldi r20,lo8(479999)
+ 453 00ce 82E5      		ldi r24,hi8(479999)
+ 454 00d0 97E0      		ldi r25,hlo8(479999)
+ 455 00d2 4150      	1:	subi r20,1
+ 456 00d4 8040      		sbci r24,0
+ 457 00d6 9040      		sbci r25,0
+ 458 00d8 01F4      		brne 1b
+ 459 00da 00C0      		rjmp .
+ 460 00dc 0000      		nop
+ 461               	.LBE42:
+ 462               	.LBE41:
+ 464               	.Ltext16:
+ 108:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 _delay_ms(300);
+ 109:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c **** 
+ 110:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 PORTC |= BV(ledB);
+ 466               	.LM43:
+ 467 00de 429A      		sbi 0x8,2
+ 468               	.LBB43:
+ 469               	.LBB44:
+ 471               	.Ltext17:
+ 473               	.LM44:
+ 474 00e0 EFEF      		ldi r30,lo8(1599999)
+ 475 00e2 F9E6      		ldi r31,hi8(1599999)
+ 476 00e4 28E1      		ldi r18,hlo8(1599999)
+ 477 00e6 E150      	1:	subi r30,1
+ 478 00e8 F040      		sbci r31,0
+ 479 00ea 2040      		sbci r18,0
+ 480 00ec 01F4      		brne 1b
+ 481 00ee 00C0      		rjmp .
+ 482 00f0 0000      		nop
+ 483               	.LBE44:
+ 484               	.LBE43:
+ 486               	.Ltext18:
+ 111:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 _delay_ms(1000);
+ 112:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/EEpromExample/EEpromExample/main.c ****                 PORTC ^= BV(ledB);
+ 488               	.LM45:
+ 489 00f2 88B1      		in r24,0x8
+ 490 00f4 8E25      		eor r24,r14
+ 491 00f6 88B9      		out 0x8,r24
+ 492               	.LBB45:
+ 493               	.LBB46:
+ 495               	.Ltext19:
+ 497               	.LM46:
+ 498 00f8 3FEF      		ldi r19,lo8(63999)
+ 499 00fa 49EF      		ldi r20,hi8(63999)
+ 500 00fc 80E0      		ldi r24,hlo8(63999)
+ 501 00fe 3150      	1:	subi r19,1
+ 502 0100 4040      		sbci r20,0
+ 503 0102 8040      		sbci r24,0
+ 504 0104 01F4      		brne 1b
+ 505 0106 00C0      		rjmp .
+ 506 0108 0000      		nop
+ 507 010a 00C0      		rjmp .L10
+ 508               	.LBE46:
+ 509               	.LBE45:
+ 514               	.Lscope3:
+ 515               	.global	my_eeprom_array
+ 516               		.section	.eeprom,"aw",@progbits
+ 519               	my_eeprom_array:
+ 520 0000 0000 0000 		.zero	10
+ 520      0000 0000 
+ 520      0000 
+ 522               		.text
+ 524               	.Letext0:
+ 525               		.ident	"GCC: (GNU) 6.2.0"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccEyfe4k.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccEyfe4k.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccEyfe4k.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccEyfe4k.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccEyfe4k.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccEyfe4k.s:122    .text:0000000000000000 initButton
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccEyfe4k.s:150    .text:0000000000000012 initIO
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccEyfe4k.s:254    .text.startup:0000000000000000 main
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccEyfe4k.s:519    .eeprom:0000000000000000 my_eeprom_array
+
+UNDEFINED SYMBOLS
+eeprom_write_word
+eeprom_read_word

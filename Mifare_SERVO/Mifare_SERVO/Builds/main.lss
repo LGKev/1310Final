@@ -3,27 +3,27 @@ Builds/main.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000074  00800100  00000a6e  00000b02  2**0
+  0 .data         00000074  00800100  00000a62  00000af6  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000a6e  00000000  00000000  00000094  2**1
+  1 .text         00000a62  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000040  00800174  00800174  00000b76  2**0
+  2 .bss          0000004a  00800174  00800174  00000b6a  2**0
                   ALLOC
-  3 .stab         00002724  00000000  00000000  00000b78  2**2
+  3 .stab         0000273c  00000000  00000000  00000b6c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      0000130d  00000000  00000000  0000329c  2**0
+  4 .stabstr      00001328  00000000  00000000  000032a8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .comment      00000011  00000000  00000000  000045a9  2**0
+  5 .comment      00000011  00000000  00000000  000045d0  2**0
                   CONTENTS, READONLY
-  6 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000045bc  2**2
+  6 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000045e4  2**2
                   CONTENTS, READONLY
-  7 .debug_info   000005f4  00000000  00000000  000045fc  2**0
+  7 .debug_info   000005f4  00000000  00000000  00004624  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 000005a2  00000000  00000000  00004bf0  2**0
+  8 .debug_abbrev 000005a2  00000000  00000000  00004c18  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   0000001d  00000000  00000000  00005192  2**0
+  9 .debug_line   0000001d  00000000  00000000  000051ba  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000208  00000000  00000000  000051af  2**0
+ 10 .debug_str    00000208  00000000  00000000  000051d7  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -68,7 +68,7 @@ Disassembly of section .text:
   74:	11 e0       	ldi	r17, 0x01	; 1
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ee e6       	ldi	r30, 0x6E	; 110
+  7a:	e2 e6       	ldi	r30, 0x62	; 98
   7c:	fa e0       	ldi	r31, 0x0A	; 10
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
@@ -87,11 +87,11 @@ Disassembly of section .text:
   92:	1d 92       	st	X+, r1
 
 00000094 <.do_clear_bss_start>:
-  94:	a4 3b       	cpi	r26, 0xB4	; 180
+  94:	ae 3b       	cpi	r26, 0xBE	; 190
   96:	b2 07       	cpc	r27, r18
   98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
   9a:	0e 94 98 03 	call	0x730	; 0x730 <main>
-  9e:	0c 94 35 05 	jmp	0xa6a	; 0xa6a <_exit>
+  9e:	0c 94 2f 05 	jmp	0xa5e	; 0xa5e <_exit>
 
 000000a2 <__bad_interrupt>:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -598,7 +598,7 @@ void LCDWriteInt(int val,unsigned int field_length)
 	{
 	str[i]=val%10;
  268:	b8 01       	movw	r22, r16
- 26a:	0e 94 0d 05 	call	0xa1a	; 0xa1a <__divmodhi4>
+ 26a:	0e 94 07 05 	call	0xa0e	; 0xa0e <__divmodhi4>
  26e:	82 93       	st	-Z, r24
 	val=val/10;
  270:	cb 01       	movw	r24, r22
@@ -1737,455 +1737,449 @@ int main(void)
  7b4:	60 e0       	ldi	r22, 0x00	; 0
  7b6:	81 e0       	ldi	r24, 0x01	; 1
  7b8:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 7bc:	1e 01       	movw	r2, r28
- 7be:	f6 e0       	ldi	r31, 0x06	; 6
- 7c0:	2f 0e       	add	r2, r31
- 7c2:	31 1c       	adc	r3, r1
+ 7bc:	ce 01       	movw	r24, r28
+ 7be:	06 96       	adiw	r24, 0x06	; 6
+ 7c0:	5c 01       	movw	r10, r24
             if(validCard == 1){
                 LCDClear();
                 _delay_ms(500);
                 LCDWriteString("SUCCESS");
                 open();
                 validCard=5;
- 7c4:	25 e0       	ldi	r18, 0x05	; 5
- 7c6:	42 2e       	mov	r4, r18
- 7c8:	51 2c       	mov	r5, r1
+ 7c2:	25 e0       	ldi	r18, 0x05	; 5
+ 7c4:	42 2e       	mov	r4, r18
+ 7c6:	51 2c       	mov	r5, r1
                 {
                     LCDWriteIntXY(0,1,str[k], -1);
                     LCDWriteString("MATCH"); //jk i am testing
                     _delay_ms(50);
                     LCDClear();
                     validCard = 1;
- 7ca:	66 24       	eor	r6, r6
- 7cc:	63 94       	inc	r6
- 7ce:	71 2c       	mov	r7, r1
- 7d0:	4e 01       	movw	r8, r28
- 7d2:	29 e0       	ldi	r18, 0x09	; 9
- 7d4:	82 0e       	add	r8, r18
- 7d6:	91 1c       	adc	r9, r1
+ 7c8:	66 24       	eor	r6, r6
+ 7ca:	63 94       	inc	r6
+ 7cc:	71 2c       	mov	r7, r1
     _delay_ms(1500);
     LCDClear();
 
 
 while(1){
         byte = mfrc522_request(PICC_REQALL,str);
- 7d8:	be 01       	movw	r22, r28
- 7da:	6f 5f       	subi	r22, 0xFF	; 255
- 7dc:	7f 4f       	sbci	r23, 0xFF	; 255
- 7de:	82 e5       	ldi	r24, 0x52	; 82
- 7e0:	0e 94 22 03 	call	0x644	; 0x644 <mfrc522_request>
- 7e4:	18 2f       	mov	r17, r24
+ 7ce:	be 01       	movw	r22, r28
+ 7d0:	6f 5f       	subi	r22, 0xFF	; 255
+ 7d2:	7f 4f       	sbci	r23, 0xFF	; 255
+ 7d4:	82 e5       	ldi	r24, 0x52	; 82
+ 7d6:	0e 94 22 03 	call	0x644	; 0x644 <mfrc522_request>
+ 7da:	18 2f       	mov	r17, r24
 
         LCDHexDumpXY(0,0,byte);
- 7e6:	48 2f       	mov	r20, r24
- 7e8:	60 e0       	ldi	r22, 0x00	; 0
- 7ea:	80 e0       	ldi	r24, 0x00	; 0
- 7ec:	0e 94 59 01 	call	0x2b2	; 0x2b2 <LCDHexDumpXY>
+ 7dc:	48 2f       	mov	r20, r24
+ 7de:	60 e0       	ldi	r22, 0x00	; 0
+ 7e0:	80 e0       	ldi	r24, 0x00	; 0
+ 7e2:	0e 94 59 01 	call	0x2b2	; 0x2b2 <LCDHexDumpXY>
         buttonRead();
- 7f0:	0e 94 c3 01 	call	0x386	; 0x386 <buttonRead>
+ 7e6:	0e 94 c3 01 	call	0x386	; 0x386 <buttonRead>
     
         if(byte == CARD_FOUND)
- 7f4:	11 30       	cpi	r17, 0x01	; 1
- 7f6:	09 f0       	breq	.+2      	; 0x7fa <main+0xca>
- 7f8:	f7 c0       	rjmp	.+494    	; 0x9e8 <__stack+0xe9>
+ 7ea:	11 30       	cpi	r17, 0x01	; 1
+ 7ec:	09 f0       	breq	.+2      	; 0x7f0 <main+0xc0>
+ 7ee:	f6 c0       	rjmp	.+492    	; 0x9dc <__stack+0xdd>
         {
             byte = mfrc522_get_card_serial(str);
- 7fa:	ce 01       	movw	r24, r28
- 7fc:	01 96       	adiw	r24, 0x01	; 1
- 7fe:	0e 94 55 03 	call	0x6aa	; 0x6aa <mfrc522_get_card_serial>
+ 7f0:	ce 01       	movw	r24, r28
+ 7f2:	01 96       	adiw	r24, 0x01	; 1
+ 7f4:	0e 94 55 03 	call	0x6aa	; 0x6aa <mfrc522_get_card_serial>
             if(byte == CARD_FOUND)
- 802:	81 30       	cpi	r24, 0x01	; 1
- 804:	09 f0       	breq	.+2      	; 0x808 <main+0xd8>
- 806:	f9 c0       	rjmp	.+498    	; 0x9fa <__stack+0xfb>
- 808:	8f e5       	ldi	r24, 0x5F	; 95
- 80a:	9a ee       	ldi	r25, 0xEA	; 234
- 80c:	01 97       	sbiw	r24, 0x01	; 1
- 80e:	f1 f7       	brne	.-4      	; 0x80c <main+0xdc>
- 810:	00 c0       	rjmp	.+0      	; 0x812 <main+0xe2>
- 812:	00 00       	nop
+ 7f8:	81 30       	cpi	r24, 0x01	; 1
+ 7fa:	09 f0       	breq	.+2      	; 0x7fe <main+0xce>
+ 7fc:	f8 c0       	rjmp	.+496    	; 0x9ee <__stack+0xef>
+ 7fe:	ef e5       	ldi	r30, 0x5F	; 95
+ 800:	fa ee       	ldi	r31, 0xEA	; 234
+ 802:	31 97       	sbiw	r30, 0x01	; 1
+ 804:	f1 f7       	brne	.-4      	; 0x802 <main+0xd2>
+ 806:	00 c0       	rjmp	.+0      	; 0x808 <main+0xd8>
+ 808:	00 00       	nop
             {
                 _delay_ms(30);
                 LCDClear();
- 814:	60 e0       	ldi	r22, 0x00	; 0
- 816:	81 e0       	ldi	r24, 0x01	; 1
- 818:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 81c:	8e 01       	movw	r16, r28
- 81e:	0f 5f       	subi	r16, 0xFF	; 255
- 820:	1f 4f       	sbci	r17, 0xFF	; 255
-                for(byte=0;byte<8;byte++){
+ 80a:	60 e0       	ldi	r22, 0x00	; 0
+ 80c:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 810:	8e 01       	movw	r16, r28
+ 812:	0f 5f       	subi	r16, 0xFF	; 255
+ 814:	1f 4f       	sbci	r17, 0xFF	; 255
+                for(byte=0;byte<5;byte++){
                     // LCDHexDumpXY(byte*2,0,str[byte]);
                     //       LCDHexDumpXY(byte*2, 0, str[byte]);
                   //  LCDWriteString(" ");
                   
                     LCDWriteInt(str[byte], -1);
- 822:	f8 01       	movw	r30, r16
- 824:	81 91       	ld	r24, Z+
- 826:	8f 01       	movw	r16, r30
- 828:	6f ef       	ldi	r22, 0xFF	; 255
- 82a:	7f ef       	ldi	r23, 0xFF	; 255
- 82c:	90 e0       	ldi	r25, 0x00	; 0
- 82e:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
- 832:	ff ef       	ldi	r31, 0xFF	; 255
- 834:	29 e6       	ldi	r18, 0x69	; 105
- 836:	88 e1       	ldi	r24, 0x18	; 24
- 838:	f1 50       	subi	r31, 0x01	; 1
- 83a:	20 40       	sbci	r18, 0x00	; 0
- 83c:	80 40       	sbci	r24, 0x00	; 0
- 83e:	e1 f7       	brne	.-8      	; 0x838 <main+0x108>
- 840:	00 c0       	rjmp	.+0      	; 0x842 <main+0x112>
- 842:	00 00       	nop
-            if(byte == CARD_FOUND)
+ 816:	f8 01       	movw	r30, r16
+ 818:	81 91       	ld	r24, Z+
+ 81a:	8f 01       	movw	r16, r30
+ 81c:	6f ef       	ldi	r22, 0xFF	; 255
+ 81e:	7f ef       	ldi	r23, 0xFF	; 255
+ 820:	90 e0       	ldi	r25, 0x00	; 0
+ 822:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
+ 826:	ff ef       	ldi	r31, 0xFF	; 255
+ 828:	29 e6       	ldi	r18, 0x69	; 105
+ 82a:	88 e1       	ldi	r24, 0x18	; 24
+ 82c:	f1 50       	subi	r31, 0x01	; 1
+ 82e:	20 40       	sbci	r18, 0x00	; 0
+ 830:	80 40       	sbci	r24, 0x00	; 0
+ 832:	e1 f7       	brne	.-8      	; 0x82c <main+0xfc>
+ 834:	00 c0       	rjmp	.+0      	; 0x836 <main+0x106>
+ 836:	00 00       	nop
             {
                 _delay_ms(30);
                 LCDClear();
 
-                for(byte=0;byte<8;byte++){
- 844:	08 15       	cp	r16, r8
- 846:	19 05       	cpc	r17, r9
- 848:	61 f7       	brne	.-40     	; 0x822 <main+0xf2>
+                
+                for(byte=0;byte<5;byte++){
+ 838:	0a 15       	cp	r16, r10
+ 83a:	1b 05       	cpc	r17, r11
+ 83c:	61 f7       	brne	.-40     	; 0x816 <main+0xe6>
             else
             { //not a valid card found
                 LCDWriteStringXY(0,1,"Error");
             }
 
             LCDWriteStringXY(0, 1, "Card Comparison");
- 84a:	61 e0       	ldi	r22, 0x01	; 1
- 84c:	80 e0       	ldi	r24, 0x00	; 0
- 84e:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 852:	88 e3       	ldi	r24, 0x38	; 56
- 854:	91 e0       	ldi	r25, 0x01	; 1
- 856:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 85a:	9f ef       	ldi	r25, 0xFF	; 255
- 85c:	e9 e6       	ldi	r30, 0x69	; 105
- 85e:	f8 e1       	ldi	r31, 0x18	; 24
- 860:	91 50       	subi	r25, 0x01	; 1
- 862:	e0 40       	sbci	r30, 0x00	; 0
- 864:	f0 40       	sbci	r31, 0x00	; 0
- 866:	e1 f7       	brne	.-8      	; 0x860 <main+0x130>
- 868:	00 c0       	rjmp	.+0      	; 0x86a <main+0x13a>
- 86a:	00 00       	nop
+ 83e:	61 e0       	ldi	r22, 0x01	; 1
+ 840:	80 e0       	ldi	r24, 0x00	; 0
+ 842:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 846:	88 e3       	ldi	r24, 0x38	; 56
+ 848:	91 e0       	ldi	r25, 0x01	; 1
+ 84a:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 84e:	9f ef       	ldi	r25, 0xFF	; 255
+ 850:	e9 e6       	ldi	r30, 0x69	; 105
+ 852:	f8 e1       	ldi	r31, 0x18	; 24
+ 854:	91 50       	subi	r25, 0x01	; 1
+ 856:	e0 40       	sbci	r30, 0x00	; 0
+ 858:	f0 40       	sbci	r31, 0x00	; 0
+ 85a:	e1 f7       	brne	.-8      	; 0x854 <main+0x124>
+ 85c:	00 c0       	rjmp	.+0      	; 0x85e <main+0x12e>
+ 85e:	00 00       	nop
             _delay_ms(1000);
             LCDClear(); //test
- 86c:	60 e0       	ldi	r22, 0x00	; 0
- 86e:	81 e0       	ldi	r24, 0x01	; 1
- 870:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 874:	8e 01       	movw	r16, r28
- 876:	0f 5f       	subi	r16, 0xFF	; 255
- 878:	1f 4f       	sbci	r17, 0xFF	; 255
- 87a:	78 01       	movw	r14, r16
- 87c:	ef e5       	ldi	r30, 0x5F	; 95
- 87e:	fa ee       	ldi	r31, 0xEA	; 234
- 880:	31 97       	sbiw	r30, 0x01	; 1
- 882:	f1 f7       	brne	.-4      	; 0x880 <main+0x150>
- 884:	00 c0       	rjmp	.+0      	; 0x886 <main+0x156>
- 886:	00 00       	nop
+ 860:	60 e0       	ldi	r22, 0x00	; 0
+ 862:	81 e0       	ldi	r24, 0x01	; 1
+ 864:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 868:	8e 01       	movw	r16, r28
+ 86a:	0f 5f       	subi	r16, 0xFF	; 255
+ 86c:	1f 4f       	sbci	r17, 0xFF	; 255
+ 86e:	78 01       	movw	r14, r16
+ 870:	ef e5       	ldi	r30, 0x5F	; 95
+ 872:	fa ee       	ldi	r31, 0xEA	; 234
+ 874:	31 97       	sbiw	r30, 0x01	; 1
+ 876:	f1 f7       	brne	.-4      	; 0x874 <main+0x144>
+ 878:	00 c0       	rjmp	.+0      	; 0x87a <main+0x14a>
+ 87a:	00 00       	nop
             for(int i=0; i<5; i++){
                 _delay_ms(30);//test
                 //LCDWriteStringXY(0,0,"i:  ");                 // LCDWriteIntXY(5,0, i,1);//test
                 LCDWriteInt(str[i], -1);//test
- 888:	f7 01       	movw	r30, r14
- 88a:	81 91       	ld	r24, Z+
- 88c:	7f 01       	movw	r14, r30
- 88e:	6f ef       	ldi	r22, 0xFF	; 255
- 890:	7f ef       	ldi	r23, 0xFF	; 255
- 892:	90 e0       	ldi	r25, 0x00	; 0
- 894:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
+ 87c:	f7 01       	movw	r30, r14
+ 87e:	81 91       	ld	r24, Z+
+ 880:	7f 01       	movw	r14, r30
+ 882:	6f ef       	ldi	r22, 0xFF	; 255
+ 884:	7f ef       	ldi	r23, 0xFF	; 255
+ 886:	90 e0       	ldi	r25, 0x00	; 0
+ 888:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
             }
 
             LCDWriteStringXY(0, 1, "Card Comparison");
             _delay_ms(1000);
             LCDClear(); //test
             for(int i=0; i<5; i++){
- 898:	e2 14       	cp	r14, r2
- 89a:	f3 04       	cpc	r15, r3
- 89c:	79 f7       	brne	.-34     	; 0x87c <main+0x14c>
- 89e:	ff ef       	ldi	r31, 0xFF	; 255
- 8a0:	20 e7       	ldi	r18, 0x70	; 112
- 8a2:	82 e0       	ldi	r24, 0x02	; 2
- 8a4:	f1 50       	subi	r31, 0x01	; 1
- 8a6:	20 40       	sbci	r18, 0x00	; 0
- 8a8:	80 40       	sbci	r24, 0x00	; 0
- 8aa:	e1 f7       	brne	.-8      	; 0x8a4 <main+0x174>
- 8ac:	00 c0       	rjmp	.+0      	; 0x8ae <main+0x17e>
- 8ae:	00 00       	nop
+ 88c:	ea 14       	cp	r14, r10
+ 88e:	fb 04       	cpc	r15, r11
+ 890:	79 f7       	brne	.-34     	; 0x870 <main+0x140>
+ 892:	ff ef       	ldi	r31, 0xFF	; 255
+ 894:	20 e7       	ldi	r18, 0x70	; 112
+ 896:	82 e0       	ldi	r24, 0x02	; 2
+ 898:	f1 50       	subi	r31, 0x01	; 1
+ 89a:	20 40       	sbci	r18, 0x00	; 0
+ 89c:	80 40       	sbci	r24, 0x00	; 0
+ 89e:	e1 f7       	brne	.-8      	; 0x898 <main+0x168>
+ 8a0:	00 c0       	rjmp	.+0      	; 0x8a2 <main+0x172>
+ 8a2:	00 00       	nop
                 //LCDWriteStringXY(0,0,"i:  ");                 // LCDWriteIntXY(5,0, i,1);//test
                 LCDWriteInt(str[i], -1);//test
                 //   _delay_ms(1000);
             }
             _delay_ms(100);//test
             LCDClear();//test
- 8b0:	60 e0       	ldi	r22, 0x00	; 0
- 8b2:	81 e0       	ldi	r24, 0x01	; 1
- 8b4:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 8b8:	82 e0       	ldi	r24, 0x02	; 2
- 8ba:	a8 2e       	mov	r10, r24
- 8bc:	81 e0       	ldi	r24, 0x01	; 1
- 8be:	b8 2e       	mov	r11, r24
- 8c0:	97 e0       	ldi	r25, 0x07	; 7
- 8c2:	c9 2e       	mov	r12, r25
- 8c4:	91 e0       	ldi	r25, 0x01	; 1
- 8c6:	d9 2e       	mov	r13, r25
+ 8a4:	60 e0       	ldi	r22, 0x00	; 0
+ 8a6:	81 e0       	ldi	r24, 0x01	; 1
+ 8a8:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 8ac:	82 e0       	ldi	r24, 0x02	; 2
+ 8ae:	88 2e       	mov	r8, r24
+ 8b0:	81 e0       	ldi	r24, 0x01	; 1
+ 8b2:	98 2e       	mov	r9, r24
+ 8b4:	97 e0       	ldi	r25, 0x07	; 7
+ 8b6:	c9 2e       	mov	r12, r25
+ 8b8:	91 e0       	ldi	r25, 0x01	; 1
+ 8ba:	d9 2e       	mov	r13, r25
 
             for(int k=0;k<5 ;k++){
                 // LCDHexDumpXY(byte*2,0,str[byte]);
                 //       LCDHexDumpXY(byte*2, 0, str[byte]);
                 LCDWriteIntXY(0,1,str[k], -1);
- 8c8:	61 e0       	ldi	r22, 0x01	; 1
- 8ca:	80 e0       	ldi	r24, 0x00	; 0
- 8cc:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 8d0:	f8 01       	movw	r30, r16
- 8d2:	80 81       	ld	r24, Z
- 8d4:	6f ef       	ldi	r22, 0xFF	; 255
- 8d6:	7f ef       	ldi	r23, 0xFF	; 255
- 8d8:	90 e0       	ldi	r25, 0x00	; 0
- 8da:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
+ 8bc:	61 e0       	ldi	r22, 0x01	; 1
+ 8be:	80 e0       	ldi	r24, 0x00	; 0
+ 8c0:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 8c4:	f8 01       	movw	r30, r16
+ 8c6:	80 81       	ld	r24, Z
+ 8c8:	6f ef       	ldi	r22, 0xFF	; 255
+ 8ca:	7f ef       	ldi	r23, 0xFF	; 255
+ 8cc:	90 e0       	ldi	r25, 0x00	; 0
+ 8ce:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
                 if(str[k] == card2[k] || str[k] == card1[k]) //this is where you are testing
- 8de:	f8 01       	movw	r30, r16
- 8e0:	80 81       	ld	r24, Z
- 8e2:	f5 01       	movw	r30, r10
- 8e4:	91 91       	ld	r25, Z+
- 8e6:	5f 01       	movw	r10, r30
- 8e8:	89 17       	cp	r24, r25
- 8ea:	21 f0       	breq	.+8      	; 0x8f4 <main+0x1c4>
- 8ec:	f6 01       	movw	r30, r12
- 8ee:	90 81       	ld	r25, Z
- 8f0:	89 13       	cpse	r24, r25
- 8f2:	8c c0       	rjmp	.+280    	; 0xa0c <__stack+0x10d>
+ 8d2:	f8 01       	movw	r30, r16
+ 8d4:	80 81       	ld	r24, Z
+ 8d6:	f4 01       	movw	r30, r8
+ 8d8:	91 91       	ld	r25, Z+
+ 8da:	4f 01       	movw	r8, r30
+ 8dc:	89 17       	cp	r24, r25
+ 8de:	21 f0       	breq	.+8      	; 0x8e8 <main+0x1b8>
+ 8e0:	f6 01       	movw	r30, r12
+ 8e2:	90 81       	ld	r25, Z
+ 8e4:	89 13       	cpse	r24, r25
+ 8e6:	8c c0       	rjmp	.+280    	; 0xa00 <__stack+0x101>
                 {
                     LCDWriteIntXY(0,1,str[k], -1);
- 8f4:	61 e0       	ldi	r22, 0x01	; 1
- 8f6:	80 e0       	ldi	r24, 0x00	; 0
- 8f8:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 8fc:	f8 01       	movw	r30, r16
- 8fe:	80 81       	ld	r24, Z
- 900:	6f ef       	ldi	r22, 0xFF	; 255
- 902:	7f ef       	ldi	r23, 0xFF	; 255
- 904:	90 e0       	ldi	r25, 0x00	; 0
- 906:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
+ 8e8:	61 e0       	ldi	r22, 0x01	; 1
+ 8ea:	80 e0       	ldi	r24, 0x00	; 0
+ 8ec:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 8f0:	f8 01       	movw	r30, r16
+ 8f2:	80 81       	ld	r24, Z
+ 8f4:	6f ef       	ldi	r22, 0xFF	; 255
+ 8f6:	7f ef       	ldi	r23, 0xFF	; 255
+ 8f8:	90 e0       	ldi	r25, 0x00	; 0
+ 8fa:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
                     LCDWriteString("MATCH"); //jk i am testing
- 90a:	88 e4       	ldi	r24, 0x48	; 72
- 90c:	91 e0       	ldi	r25, 0x01	; 1
- 90e:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 912:	ff e7       	ldi	r31, 0x7F	; 127
- 914:	28 e3       	ldi	r18, 0x38	; 56
- 916:	81 e0       	ldi	r24, 0x01	; 1
- 918:	f1 50       	subi	r31, 0x01	; 1
- 91a:	20 40       	sbci	r18, 0x00	; 0
- 91c:	80 40       	sbci	r24, 0x00	; 0
- 91e:	e1 f7       	brne	.-8      	; 0x918 <__stack+0x19>
- 920:	00 c0       	rjmp	.+0      	; 0x922 <__stack+0x23>
- 922:	00 00       	nop
+ 8fe:	88 e4       	ldi	r24, 0x48	; 72
+ 900:	91 e0       	ldi	r25, 0x01	; 1
+ 902:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 906:	ff e7       	ldi	r31, 0x7F	; 127
+ 908:	28 e3       	ldi	r18, 0x38	; 56
+ 90a:	81 e0       	ldi	r24, 0x01	; 1
+ 90c:	f1 50       	subi	r31, 0x01	; 1
+ 90e:	20 40       	sbci	r18, 0x00	; 0
+ 910:	80 40       	sbci	r24, 0x00	; 0
+ 912:	e1 f7       	brne	.-8      	; 0x90c <__stack+0xd>
+ 914:	00 c0       	rjmp	.+0      	; 0x916 <__stack+0x17>
+ 916:	00 00       	nop
                     _delay_ms(50);
                     LCDClear();
- 924:	60 e0       	ldi	r22, 0x00	; 0
- 926:	81 e0       	ldi	r24, 0x01	; 1
- 928:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 918:	60 e0       	ldi	r22, 0x00	; 0
+ 91a:	81 e0       	ldi	r24, 0x01	; 1
+ 91c:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
                     validCard = 1;
- 92c:	70 92 01 01 	sts	0x0101, r7
- 930:	60 92 00 01 	sts	0x0100, r6
- 934:	0f 5f       	subi	r16, 0xFF	; 255
- 936:	1f 4f       	sbci	r17, 0xFF	; 255
- 938:	9f ef       	ldi	r25, 0xFF	; 255
- 93a:	c9 1a       	sub	r12, r25
- 93c:	d9 0a       	sbc	r13, r25
+ 920:	70 92 01 01 	sts	0x0101, r7
+ 924:	60 92 00 01 	sts	0x0100, r6
+ 928:	0f 5f       	subi	r16, 0xFF	; 255
+ 92a:	1f 4f       	sbci	r17, 0xFF	; 255
+ 92c:	9f ef       	ldi	r25, 0xFF	; 255
+ 92e:	c9 1a       	sub	r12, r25
+ 930:	d9 0a       	sbc	r13, r25
                 //   _delay_ms(1000);
             }
             _delay_ms(100);//test
             LCDClear();//test
 
             for(int k=0;k<5 ;k++){
- 93e:	0e 15       	cp	r16, r14
- 940:	1f 05       	cpc	r17, r15
- 942:	11 f6       	brne	.-124    	; 0x8c8 <main+0x198>
+ 932:	0e 15       	cp	r16, r14
+ 934:	1f 05       	cpc	r17, r15
+ 936:	11 f6       	brne	.-124    	; 0x8bc <main+0x18c>
                 else{
                     validCard = -1;
                 }
 
             } //end of for loop checking if valid card
             if(validCard == 1){
- 944:	80 91 00 01 	lds	r24, 0x0100
- 948:	90 91 01 01 	lds	r25, 0x0101
- 94c:	01 97       	sbiw	r24, 0x01	; 1
- 94e:	b9 f4       	brne	.+46     	; 0x97e <__stack+0x7f>
+ 938:	80 91 00 01 	lds	r24, 0x0100
+ 93c:	90 91 01 01 	lds	r25, 0x0101
+ 940:	01 97       	sbiw	r24, 0x01	; 1
+ 942:	b9 f4       	brne	.+46     	; 0x972 <__stack+0x73>
                 LCDClear();
- 950:	60 e0       	ldi	r22, 0x00	; 0
- 952:	81 e0       	ldi	r24, 0x01	; 1
- 954:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 958:	ef ef       	ldi	r30, 0xFF	; 255
- 95a:	f4 e3       	ldi	r31, 0x34	; 52
- 95c:	2c e0       	ldi	r18, 0x0C	; 12
- 95e:	e1 50       	subi	r30, 0x01	; 1
- 960:	f0 40       	sbci	r31, 0x00	; 0
- 962:	20 40       	sbci	r18, 0x00	; 0
- 964:	e1 f7       	brne	.-8      	; 0x95e <__stack+0x5f>
- 966:	00 c0       	rjmp	.+0      	; 0x968 <__stack+0x69>
- 968:	00 00       	nop
+ 944:	60 e0       	ldi	r22, 0x00	; 0
+ 946:	81 e0       	ldi	r24, 0x01	; 1
+ 948:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 94c:	ef ef       	ldi	r30, 0xFF	; 255
+ 94e:	f4 e3       	ldi	r31, 0x34	; 52
+ 950:	2c e0       	ldi	r18, 0x0C	; 12
+ 952:	e1 50       	subi	r30, 0x01	; 1
+ 954:	f0 40       	sbci	r31, 0x00	; 0
+ 956:	20 40       	sbci	r18, 0x00	; 0
+ 958:	e1 f7       	brne	.-8      	; 0x952 <__stack+0x53>
+ 95a:	00 c0       	rjmp	.+0      	; 0x95c <__stack+0x5d>
+ 95c:	00 00       	nop
                 _delay_ms(500);
                 LCDWriteString("SUCCESS");
- 96a:	8e e4       	ldi	r24, 0x4E	; 78
- 96c:	91 e0       	ldi	r25, 0x01	; 1
- 96e:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 95e:	8e e4       	ldi	r24, 0x4E	; 78
+ 960:	91 e0       	ldi	r25, 0x01	; 1
+ 962:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
                 open();
- 972:	0e 94 8a 01 	call	0x314	; 0x314 <open>
+ 966:	0e 94 8a 01 	call	0x314	; 0x314 <open>
                 validCard=5;
- 976:	50 92 01 01 	sts	0x0101, r5
- 97a:	40 92 00 01 	sts	0x0100, r4
+ 96a:	50 92 01 01 	sts	0x0101, r5
+ 96e:	40 92 00 01 	sts	0x0100, r4
             } //end if test worked
             if(validCard == -1){
- 97e:	80 91 00 01 	lds	r24, 0x0100
- 982:	90 91 01 01 	lds	r25, 0x0101
- 986:	01 96       	adiw	r24, 0x01	; 1
- 988:	89 f4       	brne	.+34     	; 0x9ac <__stack+0xad>
+ 972:	80 91 00 01 	lds	r24, 0x0100
+ 976:	90 91 01 01 	lds	r25, 0x0101
+ 97a:	01 96       	adiw	r24, 0x01	; 1
+ 97c:	89 f4       	brne	.+34     	; 0x9a0 <__stack+0xa1>
                 LCDClear();
- 98a:	60 e0       	ldi	r22, 0x00	; 0
- 98c:	81 e0       	ldi	r24, 0x01	; 1
- 98e:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
- 992:	ff ef       	ldi	r31, 0xFF	; 255
- 994:	20 e7       	ldi	r18, 0x70	; 112
- 996:	82 e0       	ldi	r24, 0x02	; 2
- 998:	f1 50       	subi	r31, 0x01	; 1
- 99a:	20 40       	sbci	r18, 0x00	; 0
- 99c:	80 40       	sbci	r24, 0x00	; 0
- 99e:	e1 f7       	brne	.-8      	; 0x998 <__stack+0x99>
- 9a0:	00 c0       	rjmp	.+0      	; 0x9a2 <__stack+0xa3>
- 9a2:	00 00       	nop
+ 97e:	60 e0       	ldi	r22, 0x00	; 0
+ 980:	81 e0       	ldi	r24, 0x01	; 1
+ 982:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 986:	ff ef       	ldi	r31, 0xFF	; 255
+ 988:	20 e7       	ldi	r18, 0x70	; 112
+ 98a:	82 e0       	ldi	r24, 0x02	; 2
+ 98c:	f1 50       	subi	r31, 0x01	; 1
+ 98e:	20 40       	sbci	r18, 0x00	; 0
+ 990:	80 40       	sbci	r24, 0x00	; 0
+ 992:	e1 f7       	brne	.-8      	; 0x98c <__stack+0x8d>
+ 994:	00 c0       	rjmp	.+0      	; 0x996 <__stack+0x97>
+ 996:	00 00       	nop
                 _delay_ms(100);
                 LCDWriteString("not valid");
- 9a4:	86 e5       	ldi	r24, 0x56	; 86
- 9a6:	91 e0       	ldi	r25, 0x01	; 1
- 9a8:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 9ac:	9f e7       	ldi	r25, 0x7F	; 127
- 9ae:	ef e4       	ldi	r30, 0x4F	; 79
- 9b0:	f2 e1       	ldi	r31, 0x12	; 18
- 9b2:	91 50       	subi	r25, 0x01	; 1
- 9b4:	e0 40       	sbci	r30, 0x00	; 0
- 9b6:	f0 40       	sbci	r31, 0x00	; 0
- 9b8:	e1 f7       	brne	.-8      	; 0x9b2 <__stack+0xb3>
- 9ba:	00 c0       	rjmp	.+0      	; 0x9bc <__stack+0xbd>
- 9bc:	00 00       	nop
+ 998:	86 e5       	ldi	r24, 0x56	; 86
+ 99a:	91 e0       	ldi	r25, 0x01	; 1
+ 99c:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 9a0:	9f e7       	ldi	r25, 0x7F	; 127
+ 9a2:	ef e4       	ldi	r30, 0x4F	; 79
+ 9a4:	f2 e1       	ldi	r31, 0x12	; 18
+ 9a6:	91 50       	subi	r25, 0x01	; 1
+ 9a8:	e0 40       	sbci	r30, 0x00	; 0
+ 9aa:	f0 40       	sbci	r31, 0x00	; 0
+ 9ac:	e1 f7       	brne	.-8      	; 0x9a6 <__stack+0xa7>
+ 9ae:	00 c0       	rjmp	.+0      	; 0x9b0 <__stack+0xb1>
+ 9b0:	00 00       	nop
                 close();
             } //end of loop for checking valid card
 
             _delay_ms(750);
             LCDClear();
- 9be:	60 e0       	ldi	r22, 0x00	; 0
- 9c0:	81 e0       	ldi	r24, 0x01	; 1
- 9c2:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 9b2:	60 e0       	ldi	r22, 0x00	; 0
+ 9b4:	81 e0       	ldi	r24, 0x01	; 1
+ 9b6:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
             LCDWriteString("CHECKED");
- 9c6:	80 e6       	ldi	r24, 0x60	; 96
- 9c8:	91 e0       	ldi	r25, 0x01	; 1
- 9ca:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- 9ce:	2f e7       	ldi	r18, 0x7F	; 127
- 9d0:	8a e1       	ldi	r24, 0x1A	; 26
- 9d2:	96 e0       	ldi	r25, 0x06	; 6
- 9d4:	21 50       	subi	r18, 0x01	; 1
- 9d6:	80 40       	sbci	r24, 0x00	; 0
- 9d8:	90 40       	sbci	r25, 0x00	; 0
- 9da:	e1 f7       	brne	.-8      	; 0x9d4 <__stack+0xd5>
- 9dc:	00 c0       	rjmp	.+0      	; 0x9de <__stack+0xdf>
- 9de:	00 00       	nop
+ 9ba:	80 e6       	ldi	r24, 0x60	; 96
+ 9bc:	91 e0       	ldi	r25, 0x01	; 1
+ 9be:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 9c2:	2f e7       	ldi	r18, 0x7F	; 127
+ 9c4:	8a e1       	ldi	r24, 0x1A	; 26
+ 9c6:	96 e0       	ldi	r25, 0x06	; 6
+ 9c8:	21 50       	subi	r18, 0x01	; 1
+ 9ca:	80 40       	sbci	r24, 0x00	; 0
+ 9cc:	90 40       	sbci	r25, 0x00	; 0
+ 9ce:	e1 f7       	brne	.-8      	; 0x9c8 <__stack+0xc9>
+ 9d0:	00 c0       	rjmp	.+0      	; 0x9d2 <__stack+0xd3>
+ 9d2:	00 00       	nop
             _delay_ms(250);
             LCDClear();
- 9e0:	60 e0       	ldi	r22, 0x00	; 0
- 9e2:	81 e0       	ldi	r24, 0x01	; 1
- 9e4:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
+ 9d4:	60 e0       	ldi	r22, 0x00	; 0
+ 9d6:	81 e0       	ldi	r24, 0x01	; 1
+ 9d8:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
             
         } //end of valid card found
 
     LCDWriteStringXY(0,0,"Present Tag");
- 9e8:	60 e0       	ldi	r22, 0x00	; 0
- 9ea:	80 e0       	ldi	r24, 0x00	; 0
- 9ec:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- 9f0:	88 e6       	ldi	r24, 0x68	; 104
- 9f2:	91 e0       	ldi	r25, 0x01	; 1
- 9f4:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 9dc:	60 e0       	ldi	r22, 0x00	; 0
+ 9de:	80 e0       	ldi	r24, 0x00	; 0
+ 9e0:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 9e4:	88 e6       	ldi	r24, 0x68	; 104
+ 9e6:	91 e0       	ldi	r25, 0x01	; 1
+ 9e8:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
     _delay_ms(1500);
     LCDClear();
 
 
 while(1){
         byte = mfrc522_request(PICC_REQALL,str);
- 9f8:	ef ce       	rjmp	.-546    	; 0x7d8 <main+0xa8>
+ 9ec:	f0 ce       	rjmp	.-544    	; 0x7ce <main+0x9e>
                 }
 
             }
             else
             { //not a valid card found
                 LCDWriteStringXY(0,1,"Error");
- 9fa:	61 e0       	ldi	r22, 0x01	; 1
- 9fc:	80 e0       	ldi	r24, 0x00	; 0
- 9fe:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
- a02:	82 e3       	ldi	r24, 0x32	; 50
- a04:	91 e0       	ldi	r25, 0x01	; 1
- a06:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
- a0a:	1f cf       	rjmp	.-450    	; 0x84a <main+0x11a>
+ 9ee:	61 e0       	ldi	r22, 0x01	; 1
+ 9f0:	80 e0       	ldi	r24, 0x00	; 0
+ 9f2:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
+ 9f6:	82 e3       	ldi	r24, 0x32	; 50
+ 9f8:	91 e0       	ldi	r25, 0x01	; 1
+ 9fa:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
+ 9fe:	1f cf       	rjmp	.-450    	; 0x83e <main+0x10e>
                     _delay_ms(50);
                     LCDClear();
                     validCard = 1;
                 }
                 else{
                     validCard = -1;
- a0c:	8f ef       	ldi	r24, 0xFF	; 255
- a0e:	9f ef       	ldi	r25, 0xFF	; 255
- a10:	90 93 01 01 	sts	0x0101, r25
- a14:	80 93 00 01 	sts	0x0100, r24
- a18:	8d cf       	rjmp	.-230    	; 0x934 <__stack+0x35>
+ a00:	8f ef       	ldi	r24, 0xFF	; 255
+ a02:	9f ef       	ldi	r25, 0xFF	; 255
+ a04:	90 93 01 01 	sts	0x0101, r25
+ a08:	80 93 00 01 	sts	0x0100, r24
+ a0c:	8d cf       	rjmp	.-230    	; 0x928 <__stack+0x29>
 
-00000a1a <__divmodhi4>:
- a1a:	97 fb       	bst	r25, 7
- a1c:	07 2e       	mov	r0, r23
- a1e:	16 f4       	brtc	.+4      	; 0xa24 <__divmodhi4+0xa>
- a20:	00 94       	com	r0
- a22:	07 d0       	rcall	.+14     	; 0xa32 <__divmodhi4_neg1>
- a24:	77 fd       	sbrc	r23, 7
- a26:	09 d0       	rcall	.+18     	; 0xa3a <__divmodhi4_neg2>
- a28:	0e 94 21 05 	call	0xa42	; 0xa42 <__udivmodhi4>
- a2c:	07 fc       	sbrc	r0, 7
- a2e:	05 d0       	rcall	.+10     	; 0xa3a <__divmodhi4_neg2>
- a30:	3e f4       	brtc	.+14     	; 0xa40 <__divmodhi4_exit>
+00000a0e <__divmodhi4>:
+ a0e:	97 fb       	bst	r25, 7
+ a10:	07 2e       	mov	r0, r23
+ a12:	16 f4       	brtc	.+4      	; 0xa18 <__divmodhi4+0xa>
+ a14:	00 94       	com	r0
+ a16:	07 d0       	rcall	.+14     	; 0xa26 <__divmodhi4_neg1>
+ a18:	77 fd       	sbrc	r23, 7
+ a1a:	09 d0       	rcall	.+18     	; 0xa2e <__divmodhi4_neg2>
+ a1c:	0e 94 1b 05 	call	0xa36	; 0xa36 <__udivmodhi4>
+ a20:	07 fc       	sbrc	r0, 7
+ a22:	05 d0       	rcall	.+10     	; 0xa2e <__divmodhi4_neg2>
+ a24:	3e f4       	brtc	.+14     	; 0xa34 <__divmodhi4_exit>
 
-00000a32 <__divmodhi4_neg1>:
- a32:	90 95       	com	r25
- a34:	81 95       	neg	r24
- a36:	9f 4f       	sbci	r25, 0xFF	; 255
- a38:	08 95       	ret
+00000a26 <__divmodhi4_neg1>:
+ a26:	90 95       	com	r25
+ a28:	81 95       	neg	r24
+ a2a:	9f 4f       	sbci	r25, 0xFF	; 255
+ a2c:	08 95       	ret
 
-00000a3a <__divmodhi4_neg2>:
- a3a:	70 95       	com	r23
- a3c:	61 95       	neg	r22
- a3e:	7f 4f       	sbci	r23, 0xFF	; 255
+00000a2e <__divmodhi4_neg2>:
+ a2e:	70 95       	com	r23
+ a30:	61 95       	neg	r22
+ a32:	7f 4f       	sbci	r23, 0xFF	; 255
 
-00000a40 <__divmodhi4_exit>:
- a40:	08 95       	ret
+00000a34 <__divmodhi4_exit>:
+ a34:	08 95       	ret
 
-00000a42 <__udivmodhi4>:
- a42:	aa 1b       	sub	r26, r26
- a44:	bb 1b       	sub	r27, r27
- a46:	51 e1       	ldi	r21, 0x11	; 17
- a48:	07 c0       	rjmp	.+14     	; 0xa58 <__udivmodhi4_ep>
+00000a36 <__udivmodhi4>:
+ a36:	aa 1b       	sub	r26, r26
+ a38:	bb 1b       	sub	r27, r27
+ a3a:	51 e1       	ldi	r21, 0x11	; 17
+ a3c:	07 c0       	rjmp	.+14     	; 0xa4c <__udivmodhi4_ep>
 
-00000a4a <__udivmodhi4_loop>:
- a4a:	aa 1f       	adc	r26, r26
- a4c:	bb 1f       	adc	r27, r27
- a4e:	a6 17       	cp	r26, r22
- a50:	b7 07       	cpc	r27, r23
- a52:	10 f0       	brcs	.+4      	; 0xa58 <__udivmodhi4_ep>
- a54:	a6 1b       	sub	r26, r22
- a56:	b7 0b       	sbc	r27, r23
+00000a3e <__udivmodhi4_loop>:
+ a3e:	aa 1f       	adc	r26, r26
+ a40:	bb 1f       	adc	r27, r27
+ a42:	a6 17       	cp	r26, r22
+ a44:	b7 07       	cpc	r27, r23
+ a46:	10 f0       	brcs	.+4      	; 0xa4c <__udivmodhi4_ep>
+ a48:	a6 1b       	sub	r26, r22
+ a4a:	b7 0b       	sbc	r27, r23
 
-00000a58 <__udivmodhi4_ep>:
- a58:	88 1f       	adc	r24, r24
- a5a:	99 1f       	adc	r25, r25
- a5c:	5a 95       	dec	r21
- a5e:	a9 f7       	brne	.-22     	; 0xa4a <__udivmodhi4_loop>
- a60:	80 95       	com	r24
- a62:	90 95       	com	r25
- a64:	bc 01       	movw	r22, r24
- a66:	cd 01       	movw	r24, r26
- a68:	08 95       	ret
+00000a4c <__udivmodhi4_ep>:
+ a4c:	88 1f       	adc	r24, r24
+ a4e:	99 1f       	adc	r25, r25
+ a50:	5a 95       	dec	r21
+ a52:	a9 f7       	brne	.-22     	; 0xa3e <__udivmodhi4_loop>
+ a54:	80 95       	com	r24
+ a56:	90 95       	com	r25
+ a58:	bc 01       	movw	r22, r24
+ a5a:	cd 01       	movw	r24, r26
+ a5c:	08 95       	ret
 
-00000a6a <_exit>:
- a6a:	f8 94       	cli
+00000a5e <_exit>:
+ a5e:	f8 94       	cli
 
-00000a6c <__stop_program>:
- a6c:	ff cf       	rjmp	.-2      	; 0xa6c <__stop_program>
+00000a60 <__stop_program>:
+ a60:	ff cf       	rjmp	.-2      	; 0xa60 <__stop_program>
