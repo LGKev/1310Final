@@ -11,6 +11,14 @@
  base code from Shimon to get the spi and rfid working. I added the servo support and implimented servo action on valid card read.
 
  the AVR requires a .1uF capacitor on power and ground. Without it the avr would randomly restart. I have had no restarts since the installation of the capacitors
+ 
+ 
+ button polling works to turn on servo
+ 
+ Not sure how I got card1 id. I dont know if it was uart or if it was with creative print lines 
+    I used creative print lines
+ 
+ I want to find a way to write the read card to an array. I think its stored in str[k] array so that should do it.
 
  x*/
 
@@ -62,7 +70,10 @@ uint8_t SelfTestBuffer[64];
 
 //RFID constants
 //holds id cards
-uint8_t card1[16] = {174,68,45,91,156}; //only 5 elements!!!
+uint8_t card1[5] = {174,68,45,91,156}; //only 5 elements!!!
+uint8_t card2[5] = {64, 238 , 223, 135, 246};
+
+
 int validCard = -2;
 
 
@@ -149,7 +160,7 @@ int main(void)
     uint8_t str[MAX_LEN];
     _delay_ms(50);
     LCDInit(LS_BLINK);
-    LCDWriteStringXY(2,0,"ECEN1310 Door Opener");
+    LCDWriteStringXY(2,0,"ECEN1310 RFID Tag Reader");
 
     spi_init(); //start communication for rfid
     _delay_ms(1000);
@@ -161,10 +172,10 @@ int main(void)
     //init reader
     mfrc522_init();
 
-    byte = mfrc522_read(ComIEnReg);
-    mfrc522_write(ComIEnReg,byte|0x20);
-    byte = mfrc522_read(DivIEnReg);
-    mfrc522_write(DivIEnReg,byte|0x80);
+//    byte = mfrc522_read(ComIEnReg);
+//    mfrc522_write(ComIEnReg,byte|0x20);
+//    byte = mfrc522_read(DivIEnReg);
+//    mfrc522_write(DivIEnReg,byte|0x80);
 
     _delay_ms(1500);
     LCDClear();
@@ -172,6 +183,7 @@ int main(void)
 
 while(1){
         byte = mfrc522_request(PICC_REQALL,str);
+
         LCDHexDumpXY(0,0,byte);
         buttonRead();
     
@@ -183,10 +195,14 @@ while(1){
                 _delay_ms(30);
                 LCDClear();
 
-                for(byte=0;byte<8;byte++)
+                for(byte=0;byte<8;byte++){
                     // LCDHexDumpXY(byte*2,0,str[byte]);
                     //       LCDHexDumpXY(byte*2, 0, str[byte]);
+                  //  LCDWriteString(" ");
+                  
                     LCDWriteInt(str[byte], -1);
+                _delay_ms(1000);
+                }
 
             }
             else
@@ -199,8 +215,7 @@ while(1){
             LCDClear(); //test
             for(int i=0; i<5; i++){
                 _delay_ms(30);//test
-                //LCDWriteStringXY(0,0,"i:  ");
-                // LCDWriteIntXY(5,0, i,1);//test
+                //LCDWriteStringXY(0,0,"i:  ");                 // LCDWriteIntXY(5,0, i,1);//test
                 LCDWriteInt(str[i], -1);//test
                 //   _delay_ms(1000);
             }
@@ -211,7 +226,7 @@ while(1){
                 // LCDHexDumpXY(byte*2,0,str[byte]);
                 //       LCDHexDumpXY(byte*2, 0, str[byte]);
                 LCDWriteIntXY(0,1,str[k], -1);
-                if(str[k] == card1[k]) //this is where you are testing
+                if(str[k] == card2[k] || str[k] == card1[k]) //this is where you are testing
                 {
                     LCDWriteIntXY(0,1,str[k], -1);
                     LCDWriteString("MATCH"); //jk i am testing
@@ -243,10 +258,11 @@ while(1){
             LCDWriteString("CHECKED");
             _delay_ms(250);
             LCDClear();
+            
         } //end of valid card found
 
-        LCDWriteString("present card");
-  //      _delay_ms(200);
+    LCDWriteStringXY(0,0,"Present Tag");
+    //      _delay_ms(200);
     //    LCDClear();
     }
 } //end of main
