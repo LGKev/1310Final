@@ -250,10 +250,10 @@ while(1){
         buttonRead();
             LCDClear();
     while(addNext == 1){
+        byte = mfrc522_request(PICC_REQALL,str);
         LCDClear();
         LCDWriteString("Scan tag to ");
         LCDWriteStringXY(0, 1, "be added.");
-               _delay_ms(300);
         byte = mfrc522_request(PICC_REQALL,str);
         if(byte == CARD_FOUND)
         {
@@ -300,11 +300,6 @@ while(1){
         loadTags();
         byte = mfrc522_request(PICC_REQALL,str);
     }
-    LCDClear();
-    LCDWriteStringXY(0,0,"No. Stored:  ");
-    LCDWriteIntXY(0, 1, tagNumber-1, -1);
-    _delay_ms(200);
-
     
     if(byte == CARD_FOUND && addNext !=1)
         {
