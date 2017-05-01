@@ -737,16 +737,16 @@ void LCDHexDumpXY(uint8_t x, uint8_t y,uint8_t d)
  2ec:	f6 cf       	rjmp	.-20     	; 0x2da <LCDHexDumpXY+0x28>
 
 000002ee <initServo>:
-//            //make A5 output.
-//            *ddr=BV(pin);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
-//            *port=BV(pin);     // PORTC is initially LOW OFF the led initially /
+    //            //make A5 output.
+    //            *ddr=BV(pin);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
+    //            *port=BV(pin);     // PORTC is initially LOW OFF the led initially /
     //to do make the register parameter work
-
-        DDRC = BV(5);
+    
+    DDRC = BV(5);
  2ee:	90 e2       	ldi	r25, 0x20	; 32
  2f0:	97 b9       	out	0x07, r25	; 7
-        //set to closed position
-        PORTC = (BV(5));
+    //set to closed position
+    PORTC = (BV(5));
  2f2:	98 b9       	out	0x08, r25	; 8
  2f4:	ef ec       	ldi	r30, 0xCF	; 207
  2f6:	f7 e0       	ldi	r31, 0x07	; 7
@@ -754,8 +754,8 @@ void LCDHexDumpXY(uint8_t x, uint8_t y,uint8_t d)
  2fa:	f1 f7       	brne	.-4      	; 0x2f8 <initServo+0xa>
  2fc:	00 c0       	rjmp	.+0      	; 0x2fe <initServo+0x10>
  2fe:	00 00       	nop
-        _delay_us(1000);
-        PORTC   ^=BV(5);
+    _delay_us(1000);
+    PORTC   ^=BV(5);
  300:	88 b1       	in	r24, 0x08	; 8
  302:	89 27       	eor	r24, r25
  304:	88 b9       	out	0x08, r24	; 8
@@ -768,8 +768,8 @@ void LCDHexDumpXY(uint8_t x, uint8_t y,uint8_t d)
  312:	08 95       	ret
 
 00000314 <initLED>:
-        _delay_us(19000); //remember that total period is 2ms or 2k micros and you need to do it this way because of standard 50hz servo
-
+    _delay_us(19000); //remember that total period is 2ms or 2k micros and you need to do it this way because of standard 50hz servo
+    
 }
 
 void initLED(void){
@@ -862,7 +862,7 @@ void addTag(int str[], int tagNumber){
  366:	1f 93       	push	r17
  368:	cf 93       	push	r28
  36a:	df 93       	push	r29
-        if(tagNumber ==1){
+    if(tagNumber ==1){
  36c:	61 30       	cpi	r22, 0x01	; 1
  36e:	71 05       	cpc	r23, r1
  370:	51 f5       	brne	.+84     	; 0x3c6 <addTag+0x68>
@@ -875,17 +875,17 @@ void addTag(int str[], int tagNumber){
  37e:	f3 2e       	mov	r15, r19
  380:	ec 01       	movw	r28, r24
  382:	2c 96       	adiw	r28, 0x0c	; 12
-            for(int i=1; i<=5; i++){
-                write_eeprom_word(tag1[i], str[i]);
-                PORTC = BV(ledB);
+        for(int i=1; i<=5; i++){
+            write_eeprom_word(tag1[i], str[i]);
+            PORTC = BV(ledB);
  384:	44 e0       	ldi	r20, 0x04	; 4
  386:	d4 2e       	mov	r13, r20
 
 //to do int tagNumber)
 void addTag(int str[], int tagNumber){
-        if(tagNumber ==1){
-            for(int i=1; i<=5; i++){
-                write_eeprom_word(tag1[i], str[i]);
+    if(tagNumber ==1){
+        for(int i=1; i<=5; i++){
+            write_eeprom_word(tag1[i], str[i]);
  388:	f8 01       	movw	r30, r16
  38a:	61 91       	ld	r22, Z+
  38c:	71 91       	ld	r23, Z+
@@ -895,7 +895,7 @@ void addTag(int str[], int tagNumber){
  394:	7f 01       	movw	r14, r30
  396:	90 e0       	ldi	r25, 0x00	; 0
  398:	0e 94 66 06 	call	0xccc	; 0xccc <eeprom_write_word>
-                PORTC = BV(ledB);
+            PORTC = BV(ledB);
  39c:	d8 b8       	out	0x08, r13	; 8
  39e:	ff ef       	ldi	r31, 0xFF	; 255
  3a0:	20 e7       	ldi	r18, 0x70	; 112
@@ -910,16 +910,16 @@ unsigned int ram_tag[5]; //this is where we write the read tag to the stack will
 
 //to do int tagNumber)
 void addTag(int str[], int tagNumber){
-        if(tagNumber ==1){
-            for(int i=1; i<=5; i++){
+    if(tagNumber ==1){
+        for(int i=1; i<=5; i++){
  3b0:	c0 17       	cp	r28, r16
  3b2:	d1 07       	cpc	r29, r17
  3b4:	49 f7       	brne	.-46     	; 0x388 <addTag+0x2a>
-            for(int i=1; i<=5; i++){
-                write_eeprom_word(tag2[i], str[i]);
-            }
-            tagNumber++; //incriment so we can keep track if we have room or not
+        for(int i=1; i<=5; i++){
+            write_eeprom_word(tag2[i], str[i]);
         }
+        tagNumber++; //incriment so we can keep track if we have room or not
+    }
 }
  3b6:	df 91       	pop	r29
  3b8:	cf 91       	pop	r28
@@ -929,12 +929,12 @@ void addTag(int str[], int tagNumber){
  3c0:	ef 90       	pop	r14
  3c2:	df 90       	pop	r13
  3c4:	08 95       	ret
-                PORTC = BV(ledB);
-                _delay_ms(100);
-            }
-            tagNumber++;
+            PORTC = BV(ledB);
+            _delay_ms(100);
         }
-        else if(tagNumber ==2){
+        tagNumber++;
+    }
+    else if(tagNumber ==2){
  3c6:	62 30       	cpi	r22, 0x02	; 2
  3c8:	71 05       	cpc	r23, r1
  3ca:	a9 f7       	brne	.-22     	; 0x3b6 <addTag+0x58>
@@ -947,8 +947,8 @@ void addTag(int str[], int tagNumber){
  3d8:	f2 2e       	mov	r15, r18
  3da:	ec 01       	movw	r28, r24
  3dc:	2c 96       	adiw	r28, 0x0c	; 12
-            for(int i=1; i<=5; i++){
-                write_eeprom_word(tag2[i], str[i]);
+        for(int i=1; i<=5; i++){
+            write_eeprom_word(tag2[i], str[i]);
  3de:	f8 01       	movw	r30, r16
  3e0:	61 91       	ld	r22, Z+
  3e2:	71 91       	ld	r23, Z+
@@ -958,19 +958,19 @@ void addTag(int str[], int tagNumber){
  3ea:	7f 01       	movw	r14, r30
  3ec:	90 e0       	ldi	r25, 0x00	; 0
  3ee:	0e 94 66 06 	call	0xccc	; 0xccc <eeprom_write_word>
-                _delay_ms(100);
-            }
-            tagNumber++;
+            _delay_ms(100);
         }
-        else if(tagNumber ==2){
-            for(int i=1; i<=5; i++){
+        tagNumber++;
+    }
+    else if(tagNumber ==2){
+        for(int i=1; i<=5; i++){
  3f2:	0c 17       	cp	r16, r28
  3f4:	1d 07       	cpc	r17, r29
  3f6:	99 f7       	brne	.-26     	; 0x3de <addTag+0x80>
  3f8:	de cf       	rjmp	.-68     	; 0x3b6 <addTag+0x58>
 
 000003fa <open>:
-        }
+    }
 }
 
 int open(void){
@@ -991,7 +991,7 @@ int open(void){
  406:	00 c0       	rjmp	.+0      	; 0x408 <open+0xe>
  408:	00 00       	nop
     _delay_us(2000);
-   PORTC  ^=BV(5);
+    PORTC  ^=BV(5);
  40a:	88 b1       	in	r24, 0x08	; 8
  40c:	89 27       	eor	r24, r25
  40e:	88 b9       	out	0x08, r24	; 8
@@ -1003,8 +1003,8 @@ int open(void){
  41a:	00 00       	nop
     _delay_us(18000);
     
-return 1;
-    }
+    return 1;
+}
  41c:	81 e0       	ldi	r24, 0x01	; 1
  41e:	90 e0       	ldi	r25, 0x00	; 0
  420:	08 95       	ret
@@ -1013,8 +1013,8 @@ return 1;
 
 int close(void){
     //ToDo: need to update this
-        //close sequence
-       PORTC = (BV(5));
+    //close sequence
+    PORTC = (BV(5));
  422:	90 e2       	ldi	r25, 0x20	; 32
  424:	98 b9       	out	0x08, r25	; 8
  426:	ef ec       	ldi	r30, 0xCF	; 207
@@ -1023,8 +1023,8 @@ int close(void){
  42c:	f1 f7       	brne	.-4      	; 0x42a <close+0x8>
  42e:	00 c0       	rjmp	.+0      	; 0x430 <close+0xe>
  430:	00 00       	nop
-        _delay_us(1000);
-       PORTC   ^=BV(5);
+    _delay_us(1000);
+    PORTC   ^=BV(5);
  432:	88 b1       	in	r24, 0x08	; 8
  434:	89 27       	eor	r24, r25
  436:	88 b9       	out	0x08, r24	; 8
@@ -1034,8 +1034,8 @@ int close(void){
  43e:	f1 f7       	brne	.-4      	; 0x43c <close+0x1a>
  440:	00 c0       	rjmp	.+0      	; 0x442 <close+0x20>
  442:	00 00       	nop
-        _delay_us(19000);
-        return 1;
+    _delay_us(19000);
+    return 1;
 }
  444:	81 e0       	ldi	r24, 0x01	; 1
  446:	90 e0       	ldi	r25, 0x00	; 0
@@ -1045,7 +1045,7 @@ int close(void){
 
 
 void initButton(){
-   // uint8_t button = 3;
+    // uint8_t button = 3;
     //uint8_t ledB = 2;
     DDRC ^= BV(button); //set as input
  44a:	97 b1       	in	r25, 0x07	; 7
@@ -1932,7 +1932,7 @@ int main(void)
  898:	e1 f7       	brne	.-8      	; 0x892 <main+0x26>
  89a:	00 c0       	rjmp	.+0      	; 0x89c <main+0x30>
  89c:	00 00       	nop
-
+    
     uint8_t byte;
     uint8_t str[MAX_LEN];
     _delay_ms(50);
@@ -1946,7 +1946,7 @@ int main(void)
  8ac:	87 e2       	ldi	r24, 0x27	; 39
  8ae:	91 e0       	ldi	r25, 0x01	; 1
  8b0:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
-
+    
     spi_init(); //start communication for rfid
  8b4:	0e 94 2b 04 	call	0x856	; 0x856 <spi_init>
  8b8:	af ef       	ldi	r26, 0xFF	; 255
@@ -1963,12 +1963,12 @@ int main(void)
  8ca:	60 e0       	ldi	r22, 0x00	; 0
  8cc:	81 e0       	ldi	r24, 0x01	; 1
  8ce:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
-
+    
     open();  //for testing
  8d2:	0e 94 fd 01 	call	0x3fa	; 0x3fa <open>
     close(); //was for testing
  8d6:	0e 94 11 02 	call	0x422	; 0x422 <close>
-
+    
     //init reader
     mfrc522_init();
  8da:	0e 94 ae 02 	call	0x55c	; 0x55c <mfrc522_init>
@@ -1981,16 +1981,16 @@ int main(void)
  8ea:	e1 f7       	brne	.-8      	; 0x8e4 <main+0x78>
  8ec:	00 c0       	rjmp	.+0      	; 0x8ee <main+0x82>
  8ee:	00 00       	nop
-
+    
     _delay_ms(1500);
     LCDClear();
  8f0:	60 e0       	ldi	r22, 0x00	; 0
  8f2:	81 e0       	ldi	r24, 0x01	; 1
  8f4:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
-
+    
     int addNext = 0;
     int deleteNext =0;
-
+    
     
     PORTC |=BV(ledB);
  8f8:	42 9a       	sbi	0x08, 2	; 8
@@ -2016,10 +2016,10 @@ int main(void)
  91c:	00 c0       	rjmp	.+0      	; 0x91e <__stack+0x1f>
  91e:	00 00       	nop
     mfrc522_init();
-
+    
     _delay_ms(1500);
     LCDClear();
-
+    
     int addNext = 0;
  920:	00 e0       	ldi	r16, 0x00	; 0
  922:	10 e0       	ldi	r17, 0x00	; 0
@@ -2031,8 +2031,8 @@ int main(void)
     PORTC ^= BV(ledB);
     _delay_ms(30);
     
-while(1){
-    loadTags();
+    while(1){
+        loadTags();
  92c:	0e 94 61 02 	call	0x4c2	; 0x4c2 <loadTags>
         byte = mfrc522_request(PICC_REQALL,str);
  930:	be 01       	movw	r22, r28
@@ -2041,7 +2041,7 @@ while(1){
  936:	82 e5       	ldi	r24, 0x52	; 82
  938:	0e 94 c0 03 	call	0x780	; 0x780 <mfrc522_request>
  93c:	f8 2e       	mov	r15, r24
-
+        
         LCDHexDumpXY(0,0,byte);
  93e:	48 2f       	mov	r20, r24
  940:	60 e0       	ldi	r22, 0x00	; 0
@@ -2049,21 +2049,21 @@ while(1){
  944:	0e 94 59 01 	call	0x2b2	; 0x2b2 <LCDHexDumpXY>
         buttonRead();
  948:	0e 94 2e 02 	call	0x45c	; 0x45c <buttonRead>
-            LCDClear();
+        LCDClear();
  94c:	60 e0       	ldi	r22, 0x00	; 0
  94e:	81 e0       	ldi	r24, 0x01	; 1
  950:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
-    while(addNext == 1){
+        while(addNext == 1){
  954:	01 30       	cpi	r16, 0x01	; 1
  956:	11 05       	cpc	r17, r1
  958:	09 f4       	brne	.+2      	; 0x95c <__stack+0x5d>
  95a:	f1 c0       	rjmp	.+482    	; 0xb3e <__stack+0x23f>
+            }
+            loadTags();
+            byte = mfrc522_request(PICC_REQALL,str);
         }
-        loadTags();
-        byte = mfrc522_request(PICC_REQALL,str);
-    }
-    
-    if(byte == CARD_FOUND && addNext !=1)
+        
+        if(byte == CARD_FOUND && addNext !=1)
  95c:	f1 e0       	ldi	r31, 0x01	; 1
  95e:	ff 12       	cpse	r15, r31
  960:	e5 c0       	rjmp	.+458    	; 0xb2c <__stack+0x22d>
@@ -2089,7 +2089,7 @@ while(1){
  97e:	7f ef       	ldi	r23, 0xFF	; 255
  980:	90 e0       	ldi	r25, 0x00	; 0
  982:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <LCDWriteInt>
-    if(byte == CARD_FOUND && addNext !=1)
+        if(byte == CARD_FOUND && addNext !=1)
         {
             byte = mfrc522_get_card_serial(str);
             if(byte == CARD_FOUND)
@@ -2101,12 +2101,12 @@ while(1){
  98c:	fe 01       	movw	r30, r28
  98e:	31 96       	adiw	r30, 0x01	; 1
  990:	7f 01       	movw	r14, r30
-                    _delay_ms(1000);
-                    for(int i=0; i<5; i++){
-                        write_eeprom_word(tag1[i], str[i]);
-                    }
-                    tagNumber++;
-                    addNext =0;
+                        _delay_ms(1000);
+                        for(int i=0; i<5; i++){
+                            write_eeprom_word(tag1[i], str[i]);
+                        }
+                        tagNumber++;
+                        addNext =0;
  992:	6f 01       	movw	r12, r30
  994:	af e5       	ldi	r26, 0x5F	; 95
  996:	ba ee       	ldi	r27, 0xEA	; 234
@@ -2177,7 +2177,7 @@ while(1){
  9fa:	f1 e0       	ldi	r31, 0x01	; 1
  9fc:	fa 8b       	std	Y+18, r31	; 0x12
  9fe:	e9 8b       	std	Y+17, r30	; 0x11
-
+            
             for(int k=0;k<5 ;k++){ //loop through id arras
                 LCDWriteIntXY(0,1,str[k], -1);
  a00:	61 e0       	ldi	r22, 0x01	; 1
@@ -2245,11 +2245,11 @@ while(1){
  a7a:	81 e0       	ldi	r24, 0x01	; 1
  a7c:	90 e0       	ldi	r25, 0x00	; 0
                 } //end of add
-            else if(str[k] == DELETE[k]){
-                deleteNext =1;
-            }
-            else{
-                validCard = -1;
+                else if(str[k] == DELETE[k]){
+                    deleteNext =1;
+                }
+                else{
+                    validCard = -1;
  a7e:	90 93 05 01 	sts	0x0105, r25
  a82:	80 93 04 01 	sts	0x0104, r24
  a86:	ff ef       	ldi	r31, 0xFF	; 255
@@ -2276,16 +2276,16 @@ while(1){
             }
             _delay_ms(100);//test
             LCDClear();//test
-
+            
             for(int k=0;k<5 ;k++){ //loop through id arras
  aae:	ec 14       	cp	r14, r12
  ab0:	fd 04       	cpc	r15, r13
  ab2:	09 f0       	breq	.+2      	; 0xab6 <__stack+0x1b7>
  ab4:	a5 cf       	rjmp	.-182    	; 0xa00 <__stack+0x101>
-            }
-            else{
-                validCard = -1;
-            }
+                }
+                else{
+                    validCard = -1;
+                }
             } //end of for loop checking if valid card
             if(validCard == 1){
  ab6:	80 91 04 01 	lds	r24, 0x0104
@@ -2346,12 +2346,12 @@ while(1){
  b24:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
                 close();
  b28:	0e 94 11 02 	call	0x422	; 0x422 <close>
-            LCDClear();
+                LCDClear();
             }
             
         } //end of valid card found
-
-    LCDWriteStringXY(0,0,"Present Tag");
+        
+        LCDWriteStringXY(0,0,"Present Tag");
  b2c:	60 e0       	ldi	r22, 0x00	; 0
  b2e:	80 e0       	ldi	r24, 0x00	; 0
  b30:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
@@ -2362,51 +2362,51 @@ while(1){
     PORTC ^= BV(ledB);
     _delay_ms(30);
     
-while(1){
-    loadTags();
+    while(1){
+        loadTags();
  b3c:	f7 ce       	rjmp	.-530    	; 0x92c <__stack+0x2d>
-
+        
         LCDHexDumpXY(0,0,byte);
         buttonRead();
-            LCDClear();
-    while(addNext == 1){
-        byte = mfrc522_request(PICC_REQALL,str);
+        LCDClear();
+        while(addNext == 1){
+            byte = mfrc522_request(PICC_REQALL,str);
  b3e:	be 01       	movw	r22, r28
  b40:	6f 5f       	subi	r22, 0xFF	; 255
  b42:	7f 4f       	sbci	r23, 0xFF	; 255
  b44:	82 e5       	ldi	r24, 0x52	; 82
  b46:	0e 94 c0 03 	call	0x780	; 0x780 <mfrc522_request>
-        LCDClear();
+            LCDClear();
  b4a:	60 e0       	ldi	r22, 0x00	; 0
  b4c:	81 e0       	ldi	r24, 0x01	; 1
  b4e:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
-        LCDWriteString("Scan tag to ");
+            LCDWriteString("Scan tag to ");
  b52:	80 e4       	ldi	r24, 0x40	; 64
  b54:	91 e0       	ldi	r25, 0x01	; 1
  b56:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
-        LCDWriteStringXY(0, 1, "be added.");
+            LCDWriteStringXY(0, 1, "be added.");
  b5a:	61 e0       	ldi	r22, 0x01	; 1
  b5c:	80 e0       	ldi	r24, 0x00	; 0
  b5e:	0e 94 47 01 	call	0x28e	; 0x28e <LCDGotoXY>
  b62:	8d e4       	ldi	r24, 0x4D	; 77
  b64:	91 e0       	ldi	r25, 0x01	; 1
  b66:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
-        byte = mfrc522_request(PICC_REQALL,str);
+            byte = mfrc522_request(PICC_REQALL,str);
  b6a:	be 01       	movw	r22, r28
  b6c:	6f 5f       	subi	r22, 0xFF	; 255
  b6e:	7f 4f       	sbci	r23, 0xFF	; 255
  b70:	82 e5       	ldi	r24, 0x52	; 82
  b72:	0e 94 c0 03 	call	0x780	; 0x780 <mfrc522_request>
-        if(byte == CARD_FOUND)
+            if(byte == CARD_FOUND)
  b76:	81 30       	cpi	r24, 0x01	; 1
  b78:	09 f0       	breq	.+2      	; 0xb7c <__stack+0x27d>
  b7a:	58 c0       	rjmp	.+176    	; 0xc2c <__stack+0x32d>
-        {
-            byte = mfrc522_get_card_serial(str);
+            {
+                byte = mfrc522_get_card_serial(str);
  b7c:	ce 01       	movw	r24, r28
  b7e:	01 96       	adiw	r24, 0x01	; 1
  b80:	0e 94 f3 03 	call	0x7e6	; 0x7e6 <mfrc522_get_card_serial>
-            if(byte == CARD_FOUND)
+                if(byte == CARD_FOUND)
  b84:	81 30       	cpi	r24, 0x01	; 1
  b86:	09 f0       	breq	.+2      	; 0xb8a <__stack+0x28b>
  b88:	51 c0       	rjmp	.+162    	; 0xc2c <__stack+0x32d>
@@ -2418,9 +2418,9 @@ while(1){
  b94:	e8 ea       	ldi	r30, 0xA8	; 168
  b96:	f1 e0       	ldi	r31, 0x01	; 1
  b98:	7c 01       	movw	r14, r24
-            {
-                for(int i=0; i<=4; i++){
-                    if(str[i] == ram_tag1[i] || str[i]== ram_tag2[i]){
+                {
+                    for(int i=0; i<=4; i++){
+                        if(str[i] == ram_tag1[i] || str[i]== ram_tag2[i]){
  b9a:	d7 01       	movw	r26, r14
  b9c:	8d 91       	ld	r24, X+
  b9e:	7d 01       	movw	r14, r26
@@ -2432,25 +2432,25 @@ while(1){
  baa:	90 81       	ld	r25, Z
  bac:	89 13       	cpse	r24, r25
  bae:	02 c0       	rjmp	.+4      	; 0xbb4 <__stack+0x2b5>
-                        addNext =0;//duplicate
+                            addNext =0;//duplicate
  bb0:	00 e0       	ldi	r16, 0x00	; 0
  bb2:	10 e0       	ldi	r17, 0x00	; 0
  bb4:	31 96       	adiw	r30, 0x01	; 1
-        if(byte == CARD_FOUND)
-        {
-            byte = mfrc522_get_card_serial(str);
             if(byte == CARD_FOUND)
             {
-                for(int i=0; i<=4; i++){
+                byte = mfrc522_get_card_serial(str);
+                if(byte == CARD_FOUND)
+                {
+                    for(int i=0; i<=4; i++){
  bb6:	ea 14       	cp	r14, r10
  bb8:	fb 04       	cpc	r15, r11
  bba:	79 f7       	brne	.-34     	; 0xb9a <__stack+0x29b>
-                        addNext =0;//duplicate
-                        //not likely to happen but it could
-                    }
-                }//end of check if duplicate
-           
-                if(tagNumber ==1 && addNext ==1){
+                            addNext =0;//duplicate
+                            //not likely to happen but it could
+                        }
+                    }//end of check if duplicate
+                    
+                    if(tagNumber ==1 && addNext ==1){
  bbc:	80 91 02 01 	lds	r24, 0x0102
  bc0:	90 91 03 01 	lds	r25, 0x0103
  bc4:	01 97       	sbiw	r24, 0x01	; 1
@@ -2458,11 +2458,11 @@ while(1){
  bc8:	01 30       	cpi	r16, 0x01	; 1
  bca:	11 05       	cpc	r17, r1
  bcc:	79 f5       	brne	.+94     	; 0xc2c <__stack+0x32d>
-                    LCDClear();
+                        LCDClear();
  bce:	60 e0       	ldi	r22, 0x00	; 0
  bd0:	81 e0       	ldi	r24, 0x01	; 1
  bd2:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
-                    LCDWriteString("ADDING CARD");
+                        LCDWriteString("ADDING CARD");
  bd6:	87 e5       	ldi	r24, 0x57	; 87
  bd8:	91 e0       	ldi	r25, 0x01	; 1
  bda:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <LCDWriteString>
@@ -2477,9 +2477,9 @@ while(1){
  bee:	00 00       	nop
  bf0:	09 e9       	ldi	r16, 0x99	; 153
  bf2:	11 e0       	ldi	r17, 0x01	; 1
-                    _delay_ms(1000);
-                    for(int i=0; i<5; i++){
-                        write_eeprom_word(tag1[i], str[i]);
+                        _delay_ms(1000);
+                        for(int i=0; i<5; i++){
+                            write_eeprom_word(tag1[i], str[i]);
  bf4:	d6 01       	movw	r26, r12
  bf6:	6d 91       	ld	r22, X+
  bf8:	6d 01       	movw	r12, r26
@@ -2489,44 +2489,44 @@ while(1){
  c00:	70 e0       	ldi	r23, 0x00	; 0
  c02:	90 e0       	ldi	r25, 0x00	; 0
  c04:	0e 94 66 06 	call	0xccc	; 0xccc <eeprom_write_word>
-           
-                if(tagNumber ==1 && addNext ==1){
-                    LCDClear();
-                    LCDWriteString("ADDING CARD");
-                    _delay_ms(1000);
-                    for(int i=0; i<5; i++){
+                    
+                    if(tagNumber ==1 && addNext ==1){
+                        LCDClear();
+                        LCDWriteString("ADDING CARD");
+                        _delay_ms(1000);
+                        for(int i=0; i<5; i++){
  c08:	ce 14       	cp	r12, r14
  c0a:	df 04       	cpc	r13, r15
  c0c:	99 f7       	brne	.-26     	; 0xbf4 <__stack+0x2f5>
-                        write_eeprom_word(tag1[i], str[i]);
-                    }
-                    tagNumber++;
+                            write_eeprom_word(tag1[i], str[i]);
+                        }
+                        tagNumber++;
  c0e:	80 91 02 01 	lds	r24, 0x0102
  c12:	90 91 03 01 	lds	r25, 0x0103
  c16:	01 96       	adiw	r24, 0x01	; 1
  c18:	90 93 03 01 	sts	0x0103, r25
  c1c:	80 93 02 01 	sts	0x0102, r24
-                    addNext =0;
-                    LCDClear();
+                        addNext =0;
+                        LCDClear();
  c20:	60 e0       	ldi	r22, 0x00	; 0
  c22:	81 e0       	ldi	r24, 0x01	; 1
  c24:	0e 94 79 00 	call	0xf2	; 0xf2 <LCDByte>
-                    _delay_ms(1000);
-                    for(int i=0; i<5; i++){
-                        write_eeprom_word(tag1[i], str[i]);
-                    }
-                    tagNumber++;
-                    addNext =0;
+                        _delay_ms(1000);
+                        for(int i=0; i<5; i++){
+                            write_eeprom_word(tag1[i], str[i]);
+                        }
+                        tagNumber++;
+                        addNext =0;
  c28:	00 e0       	ldi	r16, 0x00	; 0
  c2a:	10 e0       	ldi	r17, 0x00	; 0
-                
-                */
-                
-            }//end of if card found
-        }
-        loadTags();
+                     
+                     */
+                    
+                }//end of if card found
+            }
+            loadTags();
  c2c:	0e 94 61 02 	call	0x4c2	; 0x4c2 <loadTags>
-        byte = mfrc522_request(PICC_REQALL,str);
+            byte = mfrc522_request(PICC_REQALL,str);
  c30:	be 01       	movw	r22, r28
  c32:	6f 5f       	subi	r22, 0xFF	; 255
  c34:	7f 4f       	sbci	r23, 0xFF	; 255
@@ -2552,34 +2552,34 @@ while(1){
                     LCDClear();
                     validCard = 1;
                 }
-            else if(str[k] == ADD[k]){
+                else if(str[k] == ADD[k]){
  c52:	d3 01       	movw	r26, r6
  c54:	9c 91       	ld	r25, X
  c56:	89 17       	cp	r24, r25
  c58:	41 f0       	breq	.+16     	; 0xc6a <__stack+0x36b>
-                //nextTag read add
-                addNext = 1; //add the next tag
-                break;
+                    //nextTag read add
+                    addNext = 1; //add the next tag
+                    break;
                 } //end of add
-            else if(str[k] == DELETE[k]){
+                else if(str[k] == DELETE[k]){
  c5a:	f4 01       	movw	r30, r8
  c5c:	90 81       	ld	r25, Z
  c5e:	89 17       	cp	r24, r25
  c60:	09 f4       	brne	.+2      	; 0xc64 <__stack+0x365>
  c62:	11 cf       	rjmp	.-478    	; 0xa86 <__stack+0x187>
-                deleteNext =1;
-            }
-            else{
-                validCard = -1;
+                    deleteNext =1;
+                }
+                else{
+                    validCard = -1;
  c64:	8f ef       	ldi	r24, 0xFF	; 255
  c66:	9f ef       	ldi	r25, 0xFF	; 255
  c68:	0a cf       	rjmp	.-492    	; 0xa7e <__stack+0x17f>
                     LCDClear();
                     validCard = 1;
                 }
-            else if(str[k] == ADD[k]){
-                //nextTag read add
-                addNext = 1; //add the next tag
+                else if(str[k] == ADD[k]){
+                    //nextTag read add
+                    addNext = 1; //add the next tag
  c6a:	01 e0       	ldi	r16, 0x01	; 1
  c6c:	10 e0       	ldi	r17, 0x00	; 0
  c6e:	23 cf       	rjmp	.-442    	; 0xab6 <__stack+0x1b7>

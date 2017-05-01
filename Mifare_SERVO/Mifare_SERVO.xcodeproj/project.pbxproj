@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		445F4B4C1EB6ED53003BF729 /* RFID_UI.c in Sources */ = {isa = PBXBuildFile; fileRef = 445F4B4A1EB6ED53003BF729 /* RFID_UI.c */; };
 		449699E31E998EC400D5C0D8 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 449699E21E998EC400D5C0D8 /* main.c */; };
 		44969A021E998EE200D5C0D8 /* spi.c in Sources */ = {isa = PBXBuildFile; fileRef = 449699F81E998EE200D5C0D8 /* spi.c */; };
 		44969A031E998EE200D5C0D8 /* lcd.c in Sources */ = {isa = PBXBuildFile; fileRef = 449699FC1E998EE200D5C0D8 /* lcd.c */; };
@@ -15,8 +14,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		445F4B4A1EB6ED53003BF729 /* RFID_UI.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RFID_UI.c; sourceTree = "<group>"; };
-		445F4B4B1EB6ED53003BF729 /* RFID_UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFID_UI.h; sourceTree = "<group>"; };
 		449699DF1E998EC400D5C0D8 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
 		449699E21E998EC400D5C0D8 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		449699E51E998EC400D5C0D8 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -37,8 +34,6 @@
 		449699D41E998EC400D5C0D8 = {
 			isa = PBXGroup;
 			children = (
-				445F4B4A1EB6ED53003BF729 /* RFID_UI.c */,
-				445F4B4B1EB6ED53003BF729 /* RFID_UI.h */,
 				449699E11E998EC400D5C0D8 /* Mifare_SERVO */,
 				449699E01E998EC400D5C0D8 /* Products */,
 			);
@@ -208,7 +203,6 @@
 				44969A031E998EE200D5C0D8 /* lcd.c in Sources */,
 				44969A021E998EE200D5C0D8 /* spi.c in Sources */,
 				449699E31E998EC400D5C0D8 /* main.c in Sources */,
-				445F4B4C1EB6ED53003BF729 /* RFID_UI.c in Sources */,
 				44969A041E998EE200D5C0D8 /* mfrc522.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

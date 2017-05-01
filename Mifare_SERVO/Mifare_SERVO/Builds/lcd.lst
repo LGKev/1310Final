@@ -1290,18 +1290,18 @@
  870               		.ident	"GCC: (GNU) 6.2.0"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 lcd.c
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:106    .text:0000000000000000 LCDBusyLoop
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:256    .text:000000000000004c LCDByte
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:395    .text:00000000000000a0 LCDInit
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:541    .text:0000000000000102 LCDWriteString
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:627    .text:0000000000000150 LCDWriteInt
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:751    .text:00000000000001e8 LCDGotoXY
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccbF8fFB.s:804    .text:000000000000020c LCDHexDumpXY
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:106    .text:0000000000000000 LCDBusyLoop
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:256    .text:000000000000004c LCDByte
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:395    .text:00000000000000a0 LCDInit
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:541    .text:0000000000000102 LCDWriteString
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:627    .text:0000000000000150 LCDWriteInt
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:751    .text:00000000000001e8 LCDGotoXY
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccD0ggRh.s:804    .text:000000000000020c LCDHexDumpXY
 
 UNDEFINED SYMBOLS
 __divmodhi4

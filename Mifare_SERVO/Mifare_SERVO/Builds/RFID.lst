@@ -1,0 +1,944 @@
+   1               		.file	"RFID.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+ 122               	.global	initLED
+ 124               	initLED:
+   1:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** //
+   2:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** //  RFID_UI.c
+   3:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** //  Mifare_SERVO
+   4:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** //
+   5:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** //  Created by Kevin Kuwata on 4/30/17.
+   6:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** //  Copyright © 2017 Kevin Kuwata. All rights reserved.
+   7:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** //
+   8:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+   9:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** #include "RFID.h"
+  10:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  11:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** #define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift
+  12:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** #define ToggleBit(port, bit) (port ^= (1 << bit) //  toggles the bit by negating
+  13:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  14:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** #define button 3 //that is the pin on portc that is input for button
+  15:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** #define ledB 2 //led for indicator for button
+  16:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** #define card_display_Delay 0 //adds delay for the card readout 0 for no delay, 1 for a 1000 delay
+  17:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  18:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** //macros for adding stuff to eeprom
+  19:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** #define read_eeprom_word(address) eeprom_read_word((const uint8_t *) address)
+  20:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** #define write_eeprom_word(address, value) eeprom_write_word((uint8_t *) address, (uint8_t *) value)
+  21:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  22:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** const uint8_t card1[5] = {174,68,45,91,156}; //only 5 elements!!!
+  23:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** const uint8_t card2[5] = {64, 238 , 223, 135, 246};
+  24:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** const uint8_t ADD[5] ={ 121, 241, 181 ,59, 6}; //add card used to add other cards.
+  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** const uint8_t DELETE[5] = {145, 146  ,5 ,107 ,109}; //delete card used to delete the next card scan
+  26:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** const uint8_t tag1[5];
+  27:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** const uint8_t tag2[5];
+  28:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****  uint8_t ram_tag1[5];
+  29:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****  uint8_t ram_tag2[5];
+  30:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****  uint8_t ram_tag3[5];
+  31:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****  uint8_t ram_tag4[5];
+  32:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  33:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  34:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  35:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** void initLED(void){
+ 126               	.LM0:
+ 127               	.LFBB1:
+ 128               	/* prologue: function */
+ 129               	/* frame size = 0 */
+ 130               	/* stack size = 0 */
+ 131               	.L__stack_usage = 0
+  36:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     DDRC = BV(ledB);
+ 133               	.LM1:
+ 134 0000 94E0      		ldi r25,lo8(4)
+ 135 0002 97B9      		out 0x7,r25
+  37:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     
+  38:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     PORTC = BV(ledB);
+ 137               	.LM2:
+ 138 0004 98B9      		out 0x8,r25
+ 139               	.LBB22:
+ 140               	.LBB23:
+ 142               	.Ltext1:
+   1:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+   6:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+   9:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  12:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  17:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  21:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  33:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* $Id: delay.h.in 2506 2016-02-08 10:05:45Z joerg_wunsch $ */
+  34:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  35:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  38:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef __DOXYGEN__
+  39:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #  ifndef __HAS_DELAY_CYCLES
+  40:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #    define __HAS_DELAY_CYCLES 1
+  41:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #  endif
+  42:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif  /* __DOXYGEN__ */
+  43:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  44:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #include <inttypes.h>
+  45:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  46:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #include <math.h>
+  47:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  48:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /** \file */
+  49:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  50:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \code
+  51:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  52:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  53:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     #include <util/delay.h>
+  54:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \endcode
+  55:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  56:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  57:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  58:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  59:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     used.
+  60:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  61:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  62:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  63:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  64:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  65:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  66:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  67:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  68:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  69:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  70:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  71:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  72:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  73:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  74:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  75:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  76:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  77:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     routines linked into the application.
+  78:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  79:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  80:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  81:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  82:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  83:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** */
+  84:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  85:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  86:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
+  87:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
+  88:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+  89:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  90:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef F_CPU
+  91:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  92:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  93:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /** \ingroup util_delay
+  94:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \def F_CPU
+  95:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     \brief CPU frequency in Hz
+  96:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+  97:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
+  98:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     the delay macros.  This macro is normally supplied by the
+  99:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     environment (e.g. from within a project header, or the project's
+ 100:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
+ 101:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     fallback if no such user-provided definition could be found.
+ 102:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 103:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     In terms of the delay functions, the CPU frequency can be given as
+ 104:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
+ 105:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     However, the macros in <util/setbaud.h> require it to be an
+ 106:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****     integer value.
+ 107:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****  */
+ 108:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** # define F_CPU 1000000UL
+ 109:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 110:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 111:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+ 112:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+ 113:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 114:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 115:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 116:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 117:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 118:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #  include <math.h>
+ 119:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 120:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 121:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /**
+ 122:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \ingroup util_delay
+ 123:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 124:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 125:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 126:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 127:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 128:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 129:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 130:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 131:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 132:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 133:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 134:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 135:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 136:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 137:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 138:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 139:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 140:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 141:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 142:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Conversion of \c __ms into clock cycles may not always result in
+ 143:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 144:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __ms
+ 145:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    microseconds of delay.
+ 146:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 147:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 148:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 149:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 150:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    respectively.
+ 151:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 152:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \note
+ 153:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 154:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
+ 155:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 156:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
+ 157:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
+ 158:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
+ 159:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
+ 160:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 161:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 162:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    not available to the compiler then.
+ 163:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 164:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****  */
+ 165:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** void
+ 166:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 167:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** {
+ 168:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	double __tmp ;
+ 169:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 170:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 171:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 172:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 173:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 174:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 175:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 176:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 177:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 178:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 179:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 180:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 181:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 182:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#else
+ 183:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		//round up by default
+ 184:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 185:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#endif
+ 186:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 144               	.LM3:
+ 145 0006 2FEF      		ldi r18,lo8(159999)
+ 146 0008 30E7      		ldi r19,hi8(159999)
+ 147 000a 82E0      		ldi r24,hlo8(159999)
+ 148 000c 2150      	1:	subi r18,1
+ 149 000e 3040      		sbci r19,0
+ 150 0010 8040      		sbci r24,0
+ 151 0012 01F4      		brne 1b
+ 152 0014 00C0      		rjmp .
+ 153 0016 0000      		nop
+ 154               	.LBE23:
+ 155               	.LBE22:
+ 157               	.Ltext2:
+  39:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     _delay_ms(100);
+  40:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     PORTC ^= BV(ledB);
+ 159               	.LM4:
+ 160 0018 88B1      		in r24,0x8
+ 161 001a 8927      		eor r24,r25
+ 162 001c 88B9      		out 0x8,r24
+ 163 001e 0895      		ret
+ 165               	.Lscope1:
+ 169               	.global	addQ
+ 171               	addQ:
+  41:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** }
+  42:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  43:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** int addQ(int str[], int ADD[]){
+ 173               	.LM5:
+ 174               	.LFBB2:
+ 175               	/* prologue: function */
+ 176               	/* frame size = 0 */
+ 177               	/* stack size = 0 */
+ 178               	.L__stack_usage = 0
+ 179 0020 DC01      		movw r26,r24
+ 180 0022 1296      		adiw r26,2
+ 181 0024 FB01      		movw r30,r22
+ 182 0026 3296      		adiw r30,2
+ 183 0028 0C96      		adiw r24,12
+ 184               	.L4:
+ 185               	.LBB24:
+  44:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     for(int i=1; i<=5; i++){
+  45:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         if(str[i] != ADD[i])
+ 187               	.LM6:
+ 188 002a 4D91      		ld r20,X+
+ 189 002c 5D91      		ld r21,X+
+ 190 002e 2191      		ld r18,Z+
+ 191 0030 3191      		ld r19,Z+
+ 192 0032 4217      		cp r20,r18
+ 193 0034 5307      		cpc r21,r19
+ 194 0036 01F4      		brne .L5
+  44:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     for(int i=1; i<=5; i++){
+ 196               	.LM7:
+ 197 0038 A817      		cp r26,r24
+ 198 003a B907      		cpc r27,r25
+ 199 003c 01F4      		brne .L4
+ 200               	.LBE24:
+  46:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****             return -1;
+  47:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     }
+  48:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     return 0;
+ 202               	.LM8:
+ 203 003e 80E0      		ldi r24,0
+ 204 0040 90E0      		ldi r25,0
+ 205               	.LBB25:
+ 206 0042 0895      		ret
+ 207               	.L5:
+  46:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****             return -1;
+ 209               	.LM9:
+ 210 0044 8FEF      		ldi r24,lo8(-1)
+ 211 0046 9FEF      		ldi r25,lo8(-1)
+ 212               	.LBE25:
+  49:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** }
+ 214               	.LM10:
+ 215 0048 0895      		ret
+ 217               	.Lscope2:
+ 221               	.global	addTag
+ 223               	addTag:
+  50:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  51:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** void addTag(int str[], int tagNumber){
+ 225               	.LM11:
+ 226               	.LFBB3:
+ 227 004a DF92      		push r13
+ 228 004c EF92      		push r14
+ 229 004e FF92      		push r15
+ 230 0050 0F93      		push r16
+ 231 0052 1F93      		push r17
+ 232 0054 CF93      		push r28
+ 233 0056 DF93      		push r29
+ 234               	/* prologue: function */
+ 235               	/* frame size = 0 */
+ 236               	/* stack size = 7 */
+ 237               	.L__stack_usage = 7
+  52:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     if(tagNumber ==1){
+ 239               	.LM12:
+ 240 0058 6130      		cpi r22,1
+ 241 005a 7105      		cpc r23,__zero_reg__
+ 242 005c 01F4      		brne .L8
+ 243 005e 8C01      		movw r16,r24
+ 244 0060 0E5F      		subi r16,-2
+ 245 0062 1F4F      		sbci r17,-1
+ 246 0064 30E0      		ldi r19,lo8(tag1+1)
+ 247 0066 E32E      		mov r14,r19
+ 248 0068 30E0      		ldi r19,hi8(tag1+1)
+ 249 006a F32E      		mov r15,r19
+ 250 006c EC01      		movw r28,r24
+ 251 006e 2C96      		adiw r28,12
+ 252               	.LBB26:
+  53:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         for(int i=1; i<=5; i++){
+  54:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****             write_eeprom_word(tag1[i], str[i]);
+  55:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****             PORTC = BV(ledB);
+ 254               	.LM13:
+ 255 0070 44E0      		ldi r20,lo8(4)
+ 256 0072 D42E      		mov r13,r20
+ 257               	.L9:
+  54:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****             PORTC = BV(ledB);
+ 259               	.LM14:
+ 260 0074 F801      		movw r30,r16
+ 261 0076 6191      		ld r22,Z+
+ 262 0078 7191      		ld r23,Z+
+ 263 007a 8F01      		movw r16,r30
+ 264 007c F701      		movw r30,r14
+ 265 007e 8191      		ld r24,Z+
+ 266 0080 7F01      		movw r14,r30
+ 267 0082 90E0      		ldi r25,0
+ 268 0084 0E94 0000 		call eeprom_write_word
+ 270               	.LM15:
+ 271 0088 D8B8      		out 0x8,r13
+ 272               	.LBB27:
+ 273               	.LBB28:
+ 275               	.Ltext3:
+ 277               	.LM16:
+ 278 008a FFEF      		ldi r31,lo8(159999)
+ 279 008c 20E7      		ldi r18,hi8(159999)
+ 280 008e 82E0      		ldi r24,hlo8(159999)
+ 281 0090 F150      	1:	subi r31,1
+ 282 0092 2040      		sbci r18,0
+ 283 0094 8040      		sbci r24,0
+ 284 0096 01F4      		brne 1b
+ 285 0098 00C0      		rjmp .
+ 286 009a 0000      		nop
+ 287               	.LBE28:
+ 288               	.LBE27:
+ 290               	.Ltext4:
+  53:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         for(int i=1; i<=5; i++){
+ 292               	.LM17:
+ 293 009c C017      		cp r28,r16
+ 294 009e D107      		cpc r29,r17
+ 295 00a0 01F4      		brne .L9
+ 296               	.L7:
+ 297               	/* epilogue start */
+ 298               	.LBE26:
+  56:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****             _delay_ms(100);
+  57:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         }
+  58:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         tagNumber++;
+  59:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     }
+  60:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     else if(tagNumber ==2){
+  61:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         for(int i=1; i<=5; i++){
+  62:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****             write_eeprom_word(tag2[i], str[i]);
+  63:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         }
+  64:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         tagNumber++; //incriment so we can keep track if we have room or not
+  65:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     }
+  66:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** }
+ 300               	.LM18:
+ 301 00a2 DF91      		pop r29
+ 302 00a4 CF91      		pop r28
+ 303 00a6 1F91      		pop r17
+ 304 00a8 0F91      		pop r16
+ 305 00aa FF90      		pop r15
+ 306 00ac EF90      		pop r14
+ 307 00ae DF90      		pop r13
+ 308 00b0 0895      		ret
+ 309               	.L8:
+  60:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         for(int i=1; i<=5; i++){
+ 311               	.LM19:
+ 312 00b2 6230      		cpi r22,2
+ 313 00b4 7105      		cpc r23,__zero_reg__
+ 314 00b6 01F4      		brne .L7
+ 315 00b8 8C01      		movw r16,r24
+ 316 00ba 0E5F      		subi r16,-2
+ 317 00bc 1F4F      		sbci r17,-1
+ 318 00be 20E0      		ldi r18,lo8(tag2+1)
+ 319 00c0 E22E      		mov r14,r18
+ 320 00c2 20E0      		ldi r18,hi8(tag2+1)
+ 321 00c4 F22E      		mov r15,r18
+ 322 00c6 EC01      		movw r28,r24
+ 323 00c8 2C96      		adiw r28,12
+ 324               	.L11:
+ 325               	.LBB29:
+  62:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         }
+ 327               	.LM20:
+ 328 00ca F801      		movw r30,r16
+ 329 00cc 6191      		ld r22,Z+
+ 330 00ce 7191      		ld r23,Z+
+ 331 00d0 8F01      		movw r16,r30
+ 332 00d2 F701      		movw r30,r14
+ 333 00d4 8191      		ld r24,Z+
+ 334 00d6 7F01      		movw r14,r30
+ 335 00d8 90E0      		ldi r25,0
+ 336 00da 0E94 0000 		call eeprom_write_word
+  61:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****             write_eeprom_word(tag2[i], str[i]);
+ 338               	.LM21:
+ 339 00de 0C17      		cp r16,r28
+ 340 00e0 1D07      		cpc r17,r29
+ 341 00e2 01F4      		brne .L11
+ 342 00e4 00C0      		rjmp .L7
+ 343               	.LBE29:
+ 345               	.Lscope3:
+ 347               	.global	open
+ 349               	open:
+  67:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  68:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  69:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** int open(void){
+ 351               	.LM22:
+ 352               	.LFBB4:
+ 353               	/* prologue: function */
+ 354               	/* frame size = 0 */
+ 355               	/* stack size = 0 */
+ 356               	.L__stack_usage = 0
+  70:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     
+  71:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     PORTC = (BV(5));
+ 358               	.LM23:
+ 359 00e6 90E2      		ldi r25,lo8(32)
+ 360 00e8 98B9      		out 0x8,r25
+ 361               	.LBB30:
+ 362               	.LBB31:
+ 364               	.Ltext5:
+ 188:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 189:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #else
+ 190:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	uint16_t __ticks;
+ 191:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 4e3) * __ms;
+ 192:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	if (__tmp < 1.0)
+ 193:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks = 1;
+ 194:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	else if (__tmp > 65535)
+ 195:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	{
+ 196:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		//	__ticks = requested delay in 1/10 ms
+ 197:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks = (uint16_t) (__ms * 10.0);
+ 198:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		while(__ticks)
+ 199:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		{
+ 200:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 			// wait 1/10 ms
+ 201:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 			_delay_loop_2(((F_CPU) / 4e3) / 10);
+ 202:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 			__ticks --;
+ 203:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		}
+ 204:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		return;
+ 205:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	}
+ 206:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	else
+ 207:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks = (uint16_t)__tmp;
+ 208:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	_delay_loop_2(__ticks);
+ 209:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #endif
+ 210:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** }
+ 211:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 212:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /**
+ 213:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \ingroup util_delay
+ 214:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 215:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Perform a delay of \c __us microseconds, using _delay_loop_1().
+ 216:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 217:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 218:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 219:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 220:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The maximal possible delay is 768 us / F_CPU in MHz.
+ 221:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 222:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    If the user requests a delay greater than the maximal possible one,
+ 223:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    _delay_us() will automatically call _delay_ms() instead.  The user
+ 224:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    will not be informed about this case.
+ 225:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 226:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 227:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 us/ F_CPU in MHz. For
+ 228:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflow results in
+ 229:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    no delay i.e., 0us.
+ 230:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 231:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Conversion of \c __us into clock cycles may not always result in
+ 232:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 233:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __us
+ 234:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    microseconds of delay.
+ 235:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 236:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 237:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 238:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 239:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    respectively.
+ 240:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 241:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \note
+ 242:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 243:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
+ 244:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 245:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
+ 246:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    with previous versions, the macro \c __DELAY_BACKWARD_COMPATIBLE__
+ 247:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
+ 248:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
+ 249:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 250:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 251:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    not available to the compiler then.
+ 252:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 253:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****  */
+ 254:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** void
+ 255:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** _delay_us(double __us)
+ 256:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** {
+ 257:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	double __tmp ;
+ 258:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 259:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 260:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 261:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 262:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 263:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e6) * __us;
+ 264:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 265:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 266:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 267:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 268:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 269:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 270:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 271:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#else
+ 272:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		//round up by default
+ 273:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 274:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	#endif
+ 275:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 276:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 366               	.LM24:
+ 367 00ea EFE9      		ldi r30,lo8(3999)
+ 368 00ec FFE0      		ldi r31,hi8(3999)
+ 369 00ee 3197      	1:	sbiw r30,1
+ 370 00f0 01F4      		brne 1b
+ 371 00f2 00C0      		rjmp .
+ 372 00f4 0000      		nop
+ 373               	.LBE31:
+ 374               	.LBE30:
+ 376               	.Ltext6:
+  72:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     _delay_us(2000);
+  73:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     PORTC  ^=BV(5);
+ 378               	.LM25:
+ 379 00f6 88B1      		in r24,0x8
+ 380 00f8 8927      		eor r24,r25
+ 381 00fa 88B9      		out 0x8,r24
+ 382               	.LBB32:
+ 383               	.LBB33:
+ 385               	.Ltext7:
+ 387               	.LM26:
+ 388 00fc 8FE9      		ldi r24,lo8(-29537)
+ 389 00fe 9CE8      		ldi r25,hi8(-29537)
+ 390 0100 0197      	1:	sbiw r24,1
+ 391 0102 01F4      		brne 1b
+ 392 0104 00C0      		rjmp .
+ 393 0106 0000      		nop
+ 394               	.LBE33:
+ 395               	.LBE32:
+ 397               	.Ltext8:
+  74:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     _delay_us(18000);
+  75:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     
+  76:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     return 1;
+  77:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** }
+ 399               	.LM27:
+ 400 0108 81E0      		ldi r24,lo8(1)
+ 401 010a 90E0      		ldi r25,0
+ 402 010c 0895      		ret
+ 404               	.Lscope4:
+ 406               	.global	close
+ 408               	close:
+  78:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  79:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** int close(void){
+ 410               	.LM28:
+ 411               	.LFBB5:
+ 412               	/* prologue: function */
+ 413               	/* frame size = 0 */
+ 414               	/* stack size = 0 */
+ 415               	.L__stack_usage = 0
+  80:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     //ToDo: need to update this
+  81:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     //close sequence
+  82:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     PORTC = (BV(5));
+ 417               	.LM29:
+ 418 010e 90E2      		ldi r25,lo8(32)
+ 419 0110 98B9      		out 0x8,r25
+ 420               	.LBB34:
+ 421               	.LBB35:
+ 423               	.Ltext9:
+ 425               	.LM30:
+ 426 0112 EFEC      		ldi r30,lo8(1999)
+ 427 0114 F7E0      		ldi r31,hi8(1999)
+ 428 0116 3197      	1:	sbiw r30,1
+ 429 0118 01F4      		brne 1b
+ 430 011a 00C0      		rjmp .
+ 431 011c 0000      		nop
+ 432               	.LBE35:
+ 433               	.LBE34:
+ 435               	.Ltext10:
+  83:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     _delay_us(1000);
+  84:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     PORTC   ^=BV(5);
+ 437               	.LM31:
+ 438 011e 88B1      		in r24,0x8
+ 439 0120 8927      		eor r24,r25
+ 440 0122 88B9      		out 0x8,r24
+ 441               	.LBB36:
+ 442               	.LBB37:
+ 444               	.Ltext11:
+ 446               	.LM32:
+ 447 0124 8FE6      		ldi r24,lo8(-27537)
+ 448 0126 94E9      		ldi r25,hi8(-27537)
+ 449 0128 0197      	1:	sbiw r24,1
+ 450 012a 01F4      		brne 1b
+ 451 012c 00C0      		rjmp .
+ 452 012e 0000      		nop
+ 453               	.LBE37:
+ 454               	.LBE36:
+ 456               	.Ltext12:
+  85:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     _delay_us(19000);
+  86:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     return 1;
+  87:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** }
+ 458               	.LM33:
+ 459 0130 81E0      		ldi r24,lo8(1)
+ 460 0132 90E0      		ldi r25,0
+ 461 0134 0895      		ret
+ 463               	.Lscope5:
+ 465               	.global	initButton
+ 467               	initButton:
+  88:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  89:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** void initButton(){
+ 469               	.LM34:
+ 470               	.LFBB6:
+ 471               	/* prologue: function */
+ 472               	/* frame size = 0 */
+ 473               	/* stack size = 0 */
+ 474               	.L__stack_usage = 0
+  90:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     // uint8_t button = 3;
+  91:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     //uint8_t ledB = 2;
+  92:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     DDRC ^= BV(button); //set as input
+ 476               	.LM35:
+ 477 0136 97B1      		in r25,0x7
+ 478 0138 28E0      		ldi r18,lo8(8)
+ 479 013a 9227      		eor r25,r18
+ 480 013c 97B9      		out 0x7,r25
+  93:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     DDRC |= BV(ledB); //set output
+ 482               	.LM36:
+ 483 013e 3A9A      		sbi 0x7,2
+  94:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     
+  95:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     PORTC ^= BV(button); // set low
+ 485               	.LM37:
+ 486 0140 88B1      		in r24,0x8
+ 487 0142 8227      		eor r24,r18
+ 488 0144 88B9      		out 0x8,r24
+ 489 0146 0895      		ret
+ 491               	.Lscope6:
+ 492               		.section	.rodata.str1.1,"aMS",@progbits,1
+ 493               	.LC0:
+ 494 0000 6275 7474 		.string	"button press"
+ 494      6F6E 2070 
+ 494      7265 7373 
+ 494      00
+ 495               		.text
+ 497               	.global	buttonRead
+ 499               	buttonRead:
+  96:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     
+  97:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** }
+  98:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+  99:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** int buttonRead(){
+ 501               	.LM38:
+ 502               	.LFBB7:
+ 503               	/* prologue: function */
+ 504               	/* frame size = 0 */
+ 505               	/* stack size = 0 */
+ 506               	.L__stack_usage = 0
+ 100:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     if(bit_is_clear(PINC, button)){
+ 508               	.LM39:
+ 509 0148 3399      		sbic 0x6,3
+ 510 014a 00C0      		rjmp .L19
+ 101:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         LCDClear();
+ 512               	.LM40:
+ 513 014c 60E0      		ldi r22,0
+ 514 014e 81E0      		ldi r24,lo8(1)
+ 515 0150 0E94 0000 		call LCDByte
+ 516               	.LBB38:
+ 517               	.LBB39:
+ 519               	.Ltext13:
+ 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 521               	.LM41:
+ 522 0154 2FEF      		ldi r18,lo8(63999)
+ 523 0156 89EF      		ldi r24,hi8(63999)
+ 524 0158 90E0      		ldi r25,hlo8(63999)
+ 525 015a 2150      	1:	subi r18,1
+ 526 015c 8040      		sbci r24,0
+ 527 015e 9040      		sbci r25,0
+ 528 0160 01F4      		brne 1b
+ 529 0162 00C0      		rjmp .
+ 530 0164 0000      		nop
+ 531               	.LBE39:
+ 532               	.LBE38:
+ 534               	.Ltext14:
+ 102:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         _delay_ms(40);
+ 103:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         LCDWriteString("button press");
+ 536               	.LM42:
+ 537 0166 80E0      		ldi r24,lo8(.LC0)
+ 538 0168 90E0      		ldi r25,hi8(.LC0)
+ 539 016a 0E94 0000 		call LCDWriteString
+ 104:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         open();
+ 541               	.LM43:
+ 542 016e 0E94 0000 		call open
+ 543               	.LBB40:
+ 544               	.LBB41:
+ 546               	.Ltext15:
+ 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 548               	.LM44:
+ 549 0172 2FEF      		ldi r18,lo8(799999)
+ 550 0174 84E3      		ldi r24,hi8(799999)
+ 551 0176 9CE0      		ldi r25,hlo8(799999)
+ 552 0178 2150      	1:	subi r18,1
+ 553 017a 8040      		sbci r24,0
+ 554 017c 9040      		sbci r25,0
+ 555 017e 01F4      		brne 1b
+ 556 0180 00C0      		rjmp .
+ 557 0182 0000      		nop
+ 558               	.LBE41:
+ 559               	.LBE40:
+ 561               	.Ltext16:
+ 105:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         _delay_ms(500);
+ 106:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         close();
+ 563               	.LM45:
+ 564 0184 0E94 0000 		call close
+ 565               	.LBB42:
+ 566               	.LBB43:
+ 568               	.Ltext17:
+ 187:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** 
+ 570               	.LM46:
+ 571 0188 2FEF      		ldi r18,lo8(1599999)
+ 572 018a 89E6      		ldi r24,hi8(1599999)
+ 573 018c 98E1      		ldi r25,hlo8(1599999)
+ 574 018e 2150      	1:	subi r18,1
+ 575 0190 8040      		sbci r24,0
+ 576 0192 9040      		sbci r25,0
+ 577 0194 01F4      		brne 1b
+ 578 0196 00C0      		rjmp .
+ 579 0198 0000      		nop
+ 580               	.LBE43:
+ 581               	.LBE42:
+ 583               	.Ltext18:
+ 107:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         _delay_ms(1000);
+ 108:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         LCDClear();
+ 585               	.LM47:
+ 586 019a 60E0      		ldi r22,0
+ 587 019c 81E0      		ldi r24,lo8(1)
+ 588 019e 0E94 0000 		call LCDByte
+ 109:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         return 1;
+ 590               	.LM48:
+ 591 01a2 81E0      		ldi r24,lo8(1)
+ 592 01a4 90E0      		ldi r25,0
+ 593 01a6 0895      		ret
+ 594               	.L19:
+ 110:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     }
+ 111:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     return 0;
+ 596               	.LM49:
+ 597 01a8 80E0      		ldi r24,0
+ 598 01aa 90E0      		ldi r25,0
+ 112:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** }
+ 600               	.LM50:
+ 601 01ac 0895      		ret
+ 603               	.Lscope7:
+ 605               	.global	loadTags
+ 607               	loadTags:
+ 113:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+ 114:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** 
+ 115:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** void loadTags(void){
+ 609               	.LM51:
+ 610               	.LFBB8:
+ 611 01ae CF92      		push r12
+ 612 01b0 DF92      		push r13
+ 613 01b2 EF92      		push r14
+ 614 01b4 FF92      		push r15
+ 615 01b6 0F93      		push r16
+ 616 01b8 1F93      		push r17
+ 617 01ba CF93      		push r28
+ 618 01bc DF93      		push r29
+ 619               	/* prologue: function */
+ 620               	/* frame size = 0 */
+ 621               	/* stack size = 8 */
+ 622               	.L__stack_usage = 8
+ 623 01be C0E0      		ldi r28,lo8(tag1)
+ 624 01c0 D0E0      		ldi r29,hi8(tag1)
+ 625 01c2 80E0      		ldi r24,lo8(ram_tag1)
+ 626 01c4 C82E      		mov r12,r24
+ 627 01c6 80E0      		ldi r24,hi8(ram_tag1)
+ 628 01c8 D82E      		mov r13,r24
+ 629 01ca 90E0      		ldi r25,lo8(tag2)
+ 630 01cc E92E      		mov r14,r25
+ 631 01ce 90E0      		ldi r25,hi8(tag2)
+ 632 01d0 F92E      		mov r15,r25
+ 633 01d2 00E0      		ldi r16,lo8(ram_tag2)
+ 634 01d4 10E0      		ldi r17,hi8(ram_tag2)
+ 635               	.L21:
+ 636               	.LBB44:
+ 116:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     for(int i=0; i<5; i++){
+ 117:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         ram_tag1[i] = read_eeprom_word(tag1[i]);
+ 638               	.LM52:
+ 639 01d6 8991      		ld r24,Y+
+ 640 01d8 90E0      		ldi r25,0
+ 641 01da 0E94 0000 		call eeprom_read_word
+ 642 01de F601      		movw r30,r12
+ 643 01e0 8193      		st Z+,r24
+ 644 01e2 6F01      		movw r12,r30
+ 118:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****         ram_tag2[i] = read_eeprom_word(tag2[i]);
+ 646               	.LM53:
+ 647 01e4 F701      		movw r30,r14
+ 648 01e6 8191      		ld r24,Z+
+ 649 01e8 7F01      		movw r14,r30
+ 650 01ea 90E0      		ldi r25,0
+ 651 01ec 0E94 0000 		call eeprom_read_word
+ 652 01f0 F801      		movw r30,r16
+ 653 01f2 8193      		st Z+,r24
+ 654 01f4 8F01      		movw r16,r30
+ 116:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     for(int i=0; i<5; i++){
+ 656               	.LM54:
+ 657 01f6 F0E0      		ldi r31,hi8(tag1+5)
+ 658 01f8 C030      		cpi r28,lo8(tag1+5)
+ 659 01fa DF07      		cpc r29,r31
+ 660 01fc 01F4      		brne .L21
+ 661               	/* epilogue start */
+ 662               	.LBE44:
+ 119:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c ****     }
+ 120:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/Mifare_SERVO/Mifare_SERVO/RFID.c **** }
+ 664               	.LM55:
+ 665 01fe DF91      		pop r29
+ 666 0200 CF91      		pop r28
+ 667 0202 1F91      		pop r17
+ 668 0204 0F91      		pop r16
+ 669 0206 FF90      		pop r15
+ 670 0208 EF90      		pop r14
+ 671 020a DF90      		pop r13
+ 672 020c CF90      		pop r12
+ 673 020e 0895      		ret
+ 675               	.Lscope8:
+ 676               		.comm	ram_tag4,5,1
+ 678               		.comm	ram_tag3,5,1
+ 680               		.comm	ram_tag2,5,1
+ 682               		.comm	ram_tag1,5,1
+ 684               		.comm	tag2,5,1
+ 686               		.comm	tag1,5,1
+ 688               	.global	DELETE
+ 689               		.section	.rodata
+ 692               	DELETE:
+ 693 0000 91        		.byte	-111
+ 694 0001 92        		.byte	-110
+ 695 0002 05        		.byte	5
+ 696 0003 6B        		.byte	107
+ 697 0004 6D        		.byte	109
+ 699               	.global	ADD
+ 702               	ADD:
+ 703 0005 79        		.byte	121
+ 704 0006 F1        		.byte	-15
+ 705 0007 B5        		.byte	-75
+ 706 0008 3B        		.byte	59
+ 707 0009 06        		.byte	6
+ 709               	.global	card2
+ 712               	card2:
+ 713 000a 40        		.byte	64
+ 714 000b EE        		.byte	-18
+ 715 000c DF        		.byte	-33
+ 716 000d 87        		.byte	-121
+ 717 000e F6        		.byte	-10
+ 719               	.global	card1
+ 722               	card1:
+ 723 000f AE        		.byte	-82
+ 724 0010 44        		.byte	68
+ 725 0011 2D        		.byte	45
+ 726 0012 5B        		.byte	91
+ 727 0013 9C        		.byte	-100
+ 729               		.text
+ 731               	.Letext0:
+ 732               		.ident	"GCC: (GNU) 6.2.0"
+ 733               	.global __do_copy_data
+ 734               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 RFID.c
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:124    .text:0000000000000000 initLED
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:171    .text:0000000000000020 addQ
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:223    .text:000000000000004a addTag
+                            *COM*:0000000000000005 tag1
+                            *COM*:0000000000000005 tag2
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:349    .text:00000000000000e6 open
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:408    .text:000000000000010e close
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:467    .text:0000000000000136 initButton
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:499    .text:0000000000000148 buttonRead
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:607    .text:00000000000001ae loadTags
+                            *COM*:0000000000000005 ram_tag1
+                            *COM*:0000000000000005 ram_tag2
+                            *COM*:0000000000000005 ram_tag4
+                            *COM*:0000000000000005 ram_tag3
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:692    .rodata:0000000000000000 DELETE
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:702    .rodata:0000000000000005 ADD
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:712    .rodata:000000000000000a card2
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccmI4jMK.s:722    .rodata:000000000000000f card1
+
+UNDEFINED SYMBOLS
+eeprom_write_word
+LCDByte
+LCDWriteString
+eeprom_read_word
+__do_copy_data
+__do_clear_bss

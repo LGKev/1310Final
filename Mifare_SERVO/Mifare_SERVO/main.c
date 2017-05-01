@@ -1,25 +1,20 @@
 /*
  correctly reading tags now.
  on 3/17 this was working.
-
  I am modifying it now to see if i can get a servo to turn with a card read.
-
  * main.c
  *
  * Copyright 2013 Shimon <shimon@monistit.com>
-
  base code from Shimon to get the spi and rfid working. I added the servo support and implimented servo action on valid card read.
-
  the AVR requires a .1uF capacitor on power and ground. Without it the avr would randomly restart. I have had no restarts since the installation of the capacitors
  
  
  button polling works to turn on servo
  
- Not sure how I got card1 id. I dont know if it was uart or if it was with creative print lines 
-    I used creative print lines
+ Not sure how I got card1 id. I dont know if it was uart or if it was with creative print lines
+ I used creative print lines
  
  I want to find a way to write the read card to an array. I think its stored in str[k] array so that should do it.
-
  x*/
 
 #include <avr/io.h>
@@ -30,8 +25,6 @@
 #include <mfrc522.h>
 #include <string.h>
 #include <avr/eeprom.h> //so we can store cards
-
-#include "RFID_UI.h"
 
 #define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift, 1st bit.
 #define ToggleBit(port, bit) (port ^= (1 << bit) //  toggles the bit by negating
@@ -48,34 +41,26 @@ unsigned int EEMEM newCard;
 
 //uint8_t SelfTestBuffer[64];
 
-    /* === === ===    SERVO SETUP   === === === */
-    /*
-     pin PB1 using 16 bit timer
-     Read servo example that I have in xcode.
-
-     to move the servo to max:
-
-
-     OCR1A = ICR1 - 2000; //18000
-     _delay_ms(500);
-
-     to move servo to min
-     OCR1A = ICR1 - 1000; //1000 milisecond
-     _delay_ms(500);
-
-
-     cannot use timer 1 because its used for spi. so we have to use timer 2 or do all software
-
-
-     */
+/* === === ===    SERVO SETUP   === === === */
+/*
+ pin PB1 using 16 bit timer
+ Read servo example that I have in xcode.
+ to move the servo to max:
+ OCR1A = ICR1 - 2000; //18000
+ _delay_ms(500);
+ to move servo to min
+ OCR1A = ICR1 - 1000; //1000 milisecond
+ _delay_ms(500);
+ cannot use timer 1 because its used for spi. so we have to use timer 2 or do all software
+ */
 
 //void buttonInit(volatile uint8_t *port, int pin){
-//    
+//
 //}
 
 //void buttonRead(){
 //    //button is hardware debounced.
-//    
+//
 //}
 
 //RFID constants
@@ -103,67 +88,81 @@ int removeTag1 =0;
 int removeTag2 = 0; //variable used to identify which tag should be rmeoebed because a tag added 1st might be removed last.
 
 void initServo(void){
-//            //make A5 output.
-//            *ddr=BV(pin);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
-//            *port=BV(pin);     // PORTC is initially LOW OFF the led initially /
+    //            //make A5 output.
+    //            *ddr=BV(pin);      // PORTC declared as output 0xFF is all output 11111 so i have 8 bits i can set and 8 leds....
+    //            *port=BV(pin);     // PORTC is initially LOW OFF the led initially /
     //to do make the register parameter work
-
-        DDRC = BV(5);
-        //set to closed position
-        PORTC = (BV(5));
-        _delay_us(1000);
-        PORTC   ^=BV(5);
-        _delay_us(19000); //remember that total period is 2ms or 2k micros and you need to do it this way because of standard 50hz servo
-
+    
+    DDRC = BV(5);
+    //set to closed position
+    PORTC = (BV(5));
+    _delay_us(1000);
+    PORTC   ^=BV(5);
+    _delay_us(19000); //remember that total period is 2ms or 2k micros and you need to do it this way because of standard 50hz servo
+    
 }
 
+void initLED(void){
+    DDRC = BV(ledB);
+    
+    PORTC = BV(ledB);
+    _delay_ms(100);
+    PORTC ^= BV(ledB);
+}
 
+int addQ(int str[], int ADD[]){
+    for(int i=1; i<=5; i++){
+        if(str[i] != ADD[i])
+            return -1;
+    }
+    return 0;
+}
 
 unsigned int EEMEM tag[5]= {0,0,0,0,0};
 unsigned int ram_tag[5]; //this is where we write the read tag to the stack will be str[] array.
 
 //to do int tagNumber)
 void addTag(int str[], int tagNumber){
-        if(tagNumber ==1){
-            for(int i=1; i<=5; i++){
-                write_eeprom_word(tag1[i], str[i]);
-                PORTC = BV(ledB);
-                _delay_ms(100);
-            }
-            tagNumber++;
+    if(tagNumber ==1){
+        for(int i=1; i<=5; i++){
+            write_eeprom_word(tag1[i], str[i]);
+            PORTC = BV(ledB);
+            _delay_ms(100);
         }
-        else if(tagNumber ==2){
-            for(int i=1; i<=5; i++){
-                write_eeprom_word(tag2[i], str[i]);
-            }
-            tagNumber++; //incriment so we can keep track if we have room or not
+        tagNumber++;
+    }
+    else if(tagNumber ==2){
+        for(int i=1; i<=5; i++){
+            write_eeprom_word(tag2[i], str[i]);
         }
+        tagNumber++; //incriment so we can keep track if we have room or not
+    }
 }
 
 int open(void){
     
     PORTC = (BV(5));
     _delay_us(2000);
-   PORTC  ^=BV(5);
+    PORTC  ^=BV(5);
     _delay_us(18000);
     
-return 1;
-    }
+    return 1;
+}
 
 int close(void){
     //ToDo: need to update this
-        //close sequence
-       PORTC = (BV(5));
-        _delay_us(1000);
-       PORTC   ^=BV(5);
-        _delay_us(19000);
-        return 1;
+    //close sequence
+    PORTC = (BV(5));
+    _delay_us(1000);
+    PORTC   ^=BV(5);
+    _delay_us(19000);
+    return 1;
 }
 /* === === === END SERVO SETUP === === === */
 
 
-void initButton(void){
-   // uint8_t button = 3;
+void initButton(){
+    // uint8_t button = 3;
     //uint8_t ledB = 2;
     DDRC ^= BV(button); //set as input
     DDRC |= BV(ledB); //set output
@@ -172,7 +171,7 @@ void initButton(void){
     
 }
 
-int buttonRead(void){
+int buttonRead(){
     if(bit_is_clear(PINC, button)){
         LCDClear();
         _delay_ms(40);
@@ -201,95 +200,95 @@ int main(void)
     
     loadTags(); //load any tags stored in eeprom.
     initServo(); //make servo an output at pin 5
-
+    
     uint8_t byte;
     uint8_t str[MAX_LEN];
     _delay_ms(50);
     LCDInit(LS_BLINK);
     LCDWriteStringXY(2,0,"ECEN1310 RFID Tag Reader");
-
+    
     spi_init(); //start communication for rfid
     _delay_ms(1000);
     LCDClear();
-
+    
     open();  //for testing
     close(); //was for testing
-
+    
     //init reader
     mfrc522_init();
-
+    
     _delay_ms(1500);
     LCDClear();
-
+    
     int addNext = 0;
     int deleteNext =0;
-
+    
     
     PORTC |=BV(ledB);
     _delay_ms(90);
     PORTC ^= BV(ledB);
     _delay_ms(30);
     
-while(1){
-    loadTags();
-        byte = mfrc522_request(PICC_REQALL,str);
-
-        LCDHexDumpXY(0,0,byte);
-        buttonRead();
-            LCDClear();
-    while(addNext == 1){
-        byte = mfrc522_request(PICC_REQALL,str);
-        LCDClear();
-        LCDWriteString("Scan tag to ");
-        LCDWriteStringXY(0, 1, "be added.");
-        byte = mfrc522_request(PICC_REQALL,str);
-        if(byte == CARD_FOUND)
-        {
-            byte = mfrc522_get_card_serial(str);
-            if(byte == CARD_FOUND)
-            {
-                for(int i=0; i<=4; i++){
-                    if(str[i] == ram_tag1[i] || str[i]== ram_tag2[i]){
-                        addNext =0;//duplicate
-                        //not likely to happen but it could
-                    }
-                }//end of check if duplicate
-           
-                if(tagNumber ==1 && addNext ==1){
-                    LCDClear();
-                    LCDWriteString("ADDING CARD");
-                    _delay_ms(1000);
-                    for(int i=0; i<5; i++){
-                        write_eeprom_word(tag1[i], str[i]);
-                    }
-                    tagNumber++;
-                    addNext =0;
-                    LCDClear();
-                }
-               /* //find tag number
-                //This is what I would add if I had more time. Its difficult to find how to delete tags
-                for(int i=0; i<=4; i++){
-                    LCDClear();
-                    LCDWriteString("REMOVING CARD");
-                    _delay_ms(1000);
-                    if(str[i] == ram_tag1[i])
-                    {
-                        eeprom_write_word(tag1[i], 0);
-                    }
-                    else if(str[i] == ram_tag1[i]){
-                        reeprom_write_word(tag2[i], 0);
-                    }
-                }//end of looking for which tag to delete
-                
-                */
-                
-            }//end of if card found
-        }
+    while(1){
         loadTags();
         byte = mfrc522_request(PICC_REQALL,str);
-    }
-    
-    if(byte == CARD_FOUND && addNext !=1)
+        
+        LCDHexDumpXY(0,0,byte);
+        buttonRead();
+        LCDClear();
+        while(addNext == 1){
+            byte = mfrc522_request(PICC_REQALL,str);
+            LCDClear();
+            LCDWriteString("Scan tag to ");
+            LCDWriteStringXY(0, 1, "be added.");
+            byte = mfrc522_request(PICC_REQALL,str);
+            if(byte == CARD_FOUND)
+            {
+                byte = mfrc522_get_card_serial(str);
+                if(byte == CARD_FOUND)
+                {
+                    for(int i=0; i<=4; i++){
+                        if(str[i] == ram_tag1[i] || str[i]== ram_tag2[i]){
+                            addNext =0;//duplicate
+                            //not likely to happen but it could
+                        }
+                    }//end of check if duplicate
+                    
+                    if(tagNumber ==1 && addNext ==1){
+                        LCDClear();
+                        LCDWriteString("ADDING CARD");
+                        _delay_ms(1000);
+                        for(int i=0; i<5; i++){
+                            write_eeprom_word(tag1[i], str[i]);
+                        }
+                        tagNumber++;
+                        addNext =0;
+                        LCDClear();
+                    }
+                    /* //find tag number
+                     //This is what I would add if I had more time. Its difficult to find how to delete tags
+                     for(int i=0; i<=4; i++){
+                     LCDClear();
+                     LCDWriteString("REMOVING CARD");
+                     _delay_ms(1000);
+                     if(str[i] == ram_tag1[i])
+                     {
+                     eeprom_write_word(tag1[i], 0);
+                     }
+                     else if(str[i] == ram_tag1[i]){
+                     reeprom_write_word(tag2[i], 0);
+                     }
+                     }//end of looking for which tag to delete
+                     
+                     */
+                    
+                }//end of if card found
+            }
+            loadTags();
+            byte = mfrc522_request(PICC_REQALL,str);
+        }
+        
+        if(byte == CARD_FOUND && addNext !=1)
         {
             byte = mfrc522_get_card_serial(str);
             if(byte == CARD_FOUND)
@@ -309,7 +308,7 @@ while(1){
             }
             _delay_ms(100);//test
             LCDClear();//test
-
+            
             for(int k=0;k<5 ;k++){ //loop through id arras
                 LCDWriteIntXY(0,1,str[k], -1);
                 if(str[k] == card2[k] || str[k] == card1[k] || str[k] == ram_tag1[k] || str[k] ==ram_tag2[k]) //this is where you are testing
@@ -320,17 +319,17 @@ while(1){
                     LCDClear();
                     validCard = 1;
                 }
-            else if(str[k] == ADD[k]){
-                //nextTag read add
-                addNext = 1; //add the next tag
-                break;
+                else if(str[k] == ADD[k]){
+                    //nextTag read add
+                    addNext = 1; //add the next tag
+                    break;
                 } //end of add
-            else if(str[k] == DELETE[k]){
-                deleteNext =1;
-            }
-            else{
-                validCard = -1;
-            }
+                else if(str[k] == DELETE[k]){
+                    deleteNext =1;
+                }
+                else{
+                    validCard = -1;
+                }
             } //end of for loop checking if valid card
             if(validCard == 1){
                 LCDClear();
@@ -345,19 +344,19 @@ while(1){
                 LCDWriteString("not valid");
                 close();
             } //end of loop for checking valid card
-
+            
             if(card_display_Delay ==1){
-            _delay_ms(750);
-            LCDClear();
-            LCDWriteString("CHECKED");
-            _delay_ms(250);
-            LCDClear();
+                _delay_ms(750);
+                LCDClear();
+                LCDWriteString("CHECKED");
+                _delay_ms(250);
+                LCDClear();
             }
             
         } //end of valid card found
-
-    LCDWriteStringXY(0,0,"Present Tag");
-}
+        
+        LCDWriteStringXY(0,0,"Present Tag");
+    }
     
-
+    
 } //end of main
