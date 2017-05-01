@@ -36,7 +36,7 @@
 
 #define button 3 //that is the pin on portc that is input for button
 #define ledB 2 //led for indicator for button
-#define card_display_Delay 1 //adds delay for the card readout 0 for no delay, 1 for a 1000 delay
+#define card_display_Delay 0 //adds delay for the card readout 0 for no delay, 1 for a 1000 delay
 
 //macros for adding stuff to eeprom
 #define read_eeprom_word(address) eeprom_read_word((const uint8_t *) address)
@@ -96,6 +96,9 @@ int validCard = -2;
 int tagNumber = 1; // iterrate after each tag added
 int maxNumberTags =5; //maximum number of cards I can add- arbitrary, does not include the master keys (add, delete, master)
 
+int deleteNext =0;
+int removeTag1 =0;
+int removeTag2 = 0; //variable used to identify which tag should be rmeoebed because a tag added 1st might be removed last.
 
 void initServo(void){
 //            //make A5 output.
@@ -156,13 +159,6 @@ int open(void){
    PORTC  ^=BV(5);
     _delay_us(18000);
     
-//    _delay_ms(4000);
-    
-//    //close sequence
-//   PORTC = (BV(5));
-//    _delay_us(1000);
-//   PORTC   ^=BV(5);
-//    _delay_us(19000);
 return 1;
     }
 
@@ -234,15 +230,11 @@ int main(void)
     //init reader
     mfrc522_init();
 
-//    byte = mfrc522_read(ComIEnReg);
-//    mfrc522_write(ComIEnReg,byte|0x20);
-//    byte = mfrc522_read(DivIEnReg);
-//    mfrc522_write(DivIEnReg,byte|0x80);
-
     _delay_ms(1500);
     LCDClear();
 
     int addNext = 0;
+    int deleteNext =0;
 
     
     PORTC |=BV(ledB);
@@ -251,50 +243,68 @@ int main(void)
     _delay_ms(30);
     
 while(1){
+    loadTags();
         byte = mfrc522_request(PICC_REQALL,str);
 
         LCDHexDumpXY(0,0,byte);
         buttonRead();
-    if(addNext == 1){
-        _delay_ms(100);
+            LCDClear();
+    while(addNext == 1){
+        LCDClear();
         LCDWriteString("Scan tag to ");
         LCDWriteStringXY(0, 1, "be added.");
-       
+               _delay_ms(300);
         byte = mfrc522_request(PICC_REQALL,str);
         if(byte == CARD_FOUND)
         {
             byte = mfrc522_get_card_serial(str);
             if(byte == CARD_FOUND)
             {
-                if(tagNumber ==1){
+                for(int i=0; i<=4; i++){
+                    if(str[i] == ram_tag1[i] || str[i]== ram_tag2[i]){
+                        addNext =0;//duplicate
+                        //not likely to happen but it could
+                    }
+                }//end of check if duplicate
+           
+                if(tagNumber ==1 && addNext ==1){
                     LCDClear();
                     LCDWriteString("ADDING CARD");
-                    _delay_ms(2000);
-                    PORTC =BV(ledB);
-                    _delay_ms(90);
-                    PORTC ^= BV(ledB);
-                    _delay_ms(30);
+                    _delay_ms(1000);
                     for(int i=0; i<5; i++){
-                        PORTC =BV(ledB);
-                        _delay_ms(90);
-                        PORTC ^= BV(ledB);
-                        _delay_ms(30);
                         write_eeprom_word(tag1[i], str[i]);
                     }
                     tagNumber++;
                     addNext =0;
                     LCDClear();
                 }
-            }
+               /* //find tag number
+                //This is what I would add if I had more time. Its difficult to find how to delete tags
+                for(int i=0; i<=4; i++){
+                    LCDClear();
+                    LCDWriteString("REMOVING CARD");
+                    _delay_ms(1000);
+                    if(str[i] == ram_tag1[i])
+                    {
+                        eeprom_write_word(tag1[i], 0);
+                    }
+                    else if(str[i] == ram_tag1[i]){
+                        reeprom_write_word(tag2[i], 0);
+                    }
+                }//end of looking for which tag to delete
+                
+                */
+                
+            }//end of if card found
         }
         loadTags();
-        if(card_display_Delay==1){
-            PORTC =BV(ledB);
-            _delay_ms(90);
-            PORTC ^= BV(ledB);
-            _delay_ms(30);
-        }
+        byte = mfrc522_request(PICC_REQALL,str);
     }
+    LCDClear();
+    LCDWriteStringXY(0,0,"No. Stored:  ");
+    LCDWriteIntXY(0, 1, tagNumber-1, -1);
+    _delay_ms(200);
+
     
     if(byte == CARD_FOUND && addNext !=1)
         {
@@ -302,37 +312,24 @@ while(1){
             if(byte == CARD_FOUND)
             {
                 for(byte=0;byte<5;byte++){
-                    // LCDHexDumpXY(byte*2,0,str[byte]);
-                    //       LCDHexDumpXY(byte*2, 0, str[byte]);
-                  //  LCDWriteString(" ");
-                  
                     LCDWriteInt(str[byte], -1);
                     if(card_display_Delay==1){_delay_ms(1000);}
                 }
-
             }
             else
             { //not a valid card found
                 LCDWriteStringXY(0,1,"Error");
             }
-
-            LCDWriteStringXY(0, 1, "Card Comparison");
-            _delay_ms(1000);
-            LCDClear(); //test
             for(int i=0; i<5; i++){
                 _delay_ms(30);//test
-                //LCDWriteStringXY(0,0,"i:  ");                 // LCDWriteIntXY(5,0, i,1);//test
                 LCDWriteInt(str[i], -1);//test
-                //   _delay_ms(1000);
             }
             _delay_ms(100);//test
             LCDClear();//test
 
-            for(int k=0;k<5 ;k++){
-                // LCDHexDumpXY(byte*2,0,str[byte]);
-                //       LCDHexDumpXY(byte*2, 0, str[byte]);
+            for(int k=0;k<5 ;k++){ //loop through id arras
                 LCDWriteIntXY(0,1,str[k], -1);
-                if(str[k] == card2[k] || str[k] == card1[k] || str[k] == ram_tag1[k]) //this is where you are testing
+                if(str[k] == card2[k] || str[k] == card1[k] || str[k] == ram_tag1[k] || str[k] ==ram_tag2[k]) //this is where you are testing
                 {
                     LCDWriteIntXY(0,1,str[k], -1);
                     LCDWriteString("MATCH"); //jk i am testing
@@ -340,15 +337,17 @@ while(1){
                     LCDClear();
                     validCard = 1;
                 }
-                else{
-                    validCard = -1;
-                }
-                
-            if(str[k] == ADD[k]){
+            else if(str[k] == ADD[k]){
                 //nextTag read add
                 addNext = 1; //add the next tag
                 break;
                 } //end of add
+            else if(str[k] == DELETE[k]){
+                deleteNext =1;
+            }
+            else{
+                validCard = -1;
+            }
             } //end of for loop checking if valid card
             if(validCard == 1){
                 LCDClear();
@@ -357,24 +356,25 @@ while(1){
                 open();
                 validCard=5;
             } //end if test worked
-            if(validCard == -1){
+            if(validCard == -1 && addNext !=1){
                 LCDClear();
                 _delay_ms(100);
                 LCDWriteString("not valid");
                 close();
             } //end of loop for checking valid card
 
+            if(card_display_Delay ==1){
             _delay_ms(750);
             LCDClear();
             LCDWriteString("CHECKED");
             _delay_ms(250);
             LCDClear();
+            }
             
         } //end of valid card found
 
     LCDWriteStringXY(0,0,"Present Tag");
-    //      _delay_ms(200);
-    //    LCDClear();
-    }
+}
+    
 
 } //end of main
