@@ -31,6 +31,8 @@
 #include <string.h>
 #include <avr/eeprom.h> //so we can store cards
 
+#include "RFID_UI.h"
+
 #define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift, 1st bit.
 #define ToggleBit(port, bit) (port ^= (1 << bit) //  toggles the bit by negating
 
@@ -115,21 +117,7 @@ void initServo(void){
 
 }
 
-void initLED(void){
-    DDRC = BV(ledB);
-    
-    PORTC = BV(ledB);
-    _delay_ms(100);
-    PORTC ^= BV(ledB);
-}
 
-int addQ(int str[], int ADD[]){
-    for(int i=1; i<=5; i++){
-        if(str[i] != ADD[i])
-            return -1;
-    }
-    return 0;
-}
 
 unsigned int EEMEM tag[5]= {0,0,0,0,0};
 unsigned int ram_tag[5]; //this is where we write the read tag to the stack will be str[] array.
@@ -174,7 +162,7 @@ int close(void){
 /* === === === END SERVO SETUP === === === */
 
 
-void initButton(){
+void initButton(void){
    // uint8_t button = 3;
     //uint8_t ledB = 2;
     DDRC ^= BV(button); //set as input
@@ -184,7 +172,7 @@ void initButton(){
     
 }
 
-int buttonRead(){
+int buttonRead(void){
     if(bit_is_clear(PINC, button)){
         LCDClear();
         _delay_ms(40);

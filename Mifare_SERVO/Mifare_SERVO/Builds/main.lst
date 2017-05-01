@@ -1982,40 +1982,40 @@
  1638               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:117    .text:0000000000000000 initServo
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:173    .text:0000000000000026 initLED
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:222    .text:0000000000000046 addQ
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:274    .text:0000000000000070 addTag
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:117    .text:0000000000000000 initServo
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:173    .text:0000000000000026 initLED
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:222    .text:0000000000000046 addQ
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:274    .text:0000000000000070 addTag
                             *COM*:0000000000000005 tag1
                             *COM*:0000000000000005 tag2
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:400    .text:000000000000010c open
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:459    .text:0000000000000134 close
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:518    .text:000000000000015c initButton
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:550    .text:000000000000016e buttonRead
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:660    .text:00000000000001d4 loadTags
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:400    .text:000000000000010c open
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:459    .text:0000000000000134 close
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:518    .text:000000000000015c initButton
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:550    .text:000000000000016e buttonRead
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:660    .text:00000000000001d4 loadTags
                             *COM*:0000000000000005 ram_tag1
                             *COM*:0000000000000005 ram_tag2
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:752    .text.startup:0000000000000000 main
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1609   .data:0000000000000010 card2
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1589   .data:0000000000000006 DELETE
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1599   .data:000000000000000b ADD
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1619   .data:0000000000000015 card1
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1571   .data:0000000000000004 validCard
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1565   .data:0000000000000002 tagNumber
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:752    .text.startup:0000000000000000 main
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1609   .data:0000000000000010 card2
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1589   .data:0000000000000006 DELETE
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1599   .data:000000000000000b ADD
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1619   .data:0000000000000015 card1
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1571   .data:0000000000000004 validCard
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1565   .data:0000000000000002 tagNumber
                             *COM*:000000000000000a ram_tag
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1533   .eeprom:0000000000000000 tag
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1540   .bss:0000000000000000 removeTag2
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1546   .bss:0000000000000002 removeTag1
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1552   .bss:0000000000000004 deleteNext
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1559   .data:0000000000000000 maxNumberTags
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1533   .eeprom:0000000000000000 tag
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1540   .bss:0000000000000000 removeTag2
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1546   .bss:0000000000000002 removeTag1
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1552   .bss:0000000000000004 deleteNext
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1559   .data:0000000000000000 maxNumberTags
                             *COM*:0000000000000005 ram_tag4
                             *COM*:0000000000000005 ram_tag3
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccE6DC7g.s:1630   .eeprom:000000000000000a newCard
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//ccm07lsm.s:1630   .eeprom:000000000000000a newCard
 
 UNDEFINED SYMBOLS
 eeprom_write_word
