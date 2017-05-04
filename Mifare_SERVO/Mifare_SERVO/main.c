@@ -29,8 +29,9 @@
 #define BV(x) (1<<x)     // shifts bits by x. and sets the bit to 1 or 0 based on x 0 is zero shift, 1st bit.
 #define ToggleBit(port, bit) (port ^= (1 << bit) //  toggles the bit by negating
 
-#define button 3 //that is the pin on portc that is input for button
-#define ledB 2 //led for indicator for button
+#define button 0 //that is the pin on portc that is input for button
+#define ledG 2 //led for indicator for button
+#define ledR 1 //red led
 #define card_display_Delay 0 //adds delay for the card readout 0 for no delay, 1 for a 1000 delay
 
 //macros for adding stuff to eeprom
@@ -103,11 +104,20 @@ void initServo(void){
 }
 
 void initLED(void){
-    DDRC = BV(ledB);
+    DDRC = BV(ledG);
+    DDRC = BV(ledR); //output
+
+    _delay_ms(300);
+    PORTC = BV(ledG);
+    _delay_ms(200);
+    PORTC ^= BV(ledG);
     
-    PORTC = BV(ledB);
-    _delay_ms(100);
-    PORTC ^= BV(ledB);
+    _delay_ms(300);
+    PORTC = BV(ledR); //possibly needs an or |= BV(ledR);
+    _delay_ms(200);
+    PORTC ^= BV(ledR);
+    
+    
 }
 
 int addQ(int str[], int ADD[]){
@@ -119,6 +129,7 @@ int addQ(int str[], int ADD[]){
 }
 
 unsigned int EEMEM tag[5]= {0,0,0,0,0};
+//unsigned int EEMEM tag2[5]= {0,0,0,0,0};
 unsigned int ram_tag[5]; //this is where we write the read tag to the stack will be str[] array.
 
 //to do int tagNumber)
@@ -126,7 +137,7 @@ void addTag(int str[], int tagNumber){
     if(tagNumber ==1){
         for(int i=1; i<=5; i++){
             write_eeprom_word(tag1[i], str[i]);
-            PORTC = BV(ledB);
+            PORTC = BV(ledG);
             _delay_ms(100);
         }
         tagNumber++;
@@ -138,6 +149,38 @@ void addTag(int str[], int tagNumber){
         tagNumber++; //incriment so we can keep track if we have room or not
     }
 }
+/*
+void deleteTag(int str[]){
+
+    for(int i=0; i<=4; i++){
+        if(str[i] == DELETE[i]){
+            deleteNext =1;
+        }
+        else
+            deleteNext = 0;
+        }
+
+
+
+    for(int i=0; i<=4; i++){
+        if(str[i] != tag1[i] || str[i] != tag2[i]){
+            return; //not a tag in memory
+        }
+    }
+    else
+    {
+        //delete all tags;
+
+        for(int i=0; i<=4; i++){
+            write_eeprom_word(tag1[i], 0);
+          write_eeprom_word(tag2[i], 0);
+        }//end of delete for loop
+    }
+    loadTags(); //to ensure new eeprom is loaded
+    
+}
+
+*/
 
 int open(void){
     
@@ -161,17 +204,16 @@ int close(void){
 /* === === === END SERVO SETUP === === === */
 
 
-void initButton(){
+void initButton(void){
     // uint8_t button = 3;
-    //uint8_t ledB = 2;
+    //uint8_t ledG = 2;
     DDRC ^= BV(button); //set as input
-    DDRC |= BV(ledB); //set output
+    DDRC |= BV(ledG); //set output
     
     PORTC ^= BV(button); // set low
-    
 }
 
-int buttonRead(){
+int buttonRead(void){
     if(bit_is_clear(PINC, button)){
         LCDClear();
         _delay_ms(40);
@@ -193,9 +235,22 @@ void loadTags(void){
     }
 }
 
+void validTag(){
+    //flash green led if valid
+    PORTC |= BV(ledG);
+    _delay_ms(400);
+    PORTC ^= BV(ledG);
+    _delay_ms(400);
+    
+}
+
+
 
 int main(void)
 {
+
+    
+
     initLED();
     
     loadTags(); //load any tags stored in eeprom.
@@ -224,24 +279,89 @@ int main(void)
     int deleteNext =0;
     
     
-    PORTC |=BV(ledB);
+    PORTC |=BV(ledG);
     _delay_ms(90);
-    PORTC ^= BV(ledB);
+    PORTC ^= BV(ledG);
     _delay_ms(30);
     
     while(1){
+        
+       // initLED();
+        
         loadTags();
         byte = mfrc522_request(PICC_REQALL,str);
         
         LCDHexDumpXY(0,0,byte);
         buttonRead();
         LCDClear();
+        
+        while(deleteNext == 1){
+            LCDClear();
+            LCDWriteString("delete tag acivated");
+            _delay_ms(800);
+            byte = mfrc522_request(PICC_REQALL,str);
+            LCDClear();
+            LCDWriteString("Scan again to ");
+            LCDWriteStringXY(0, 1, "delete all tags.");
+            byte = mfrc522_request(PICC_REQALL,str);
+            if(byte == CARD_FOUND)
+            {
+                byte = mfrc522_get_card_serial(str);
+                if(byte == CARD_FOUND)
+                {
+                    for(int j=0; j<=4; j++){
+                        if (tagNumber == 0 || str[j] != tag1[j] || str[j] != tag2[j]) {
+                            deleteNext = 0;
+                        }
+                    }
+                        for(int i=0; i<=4; i++){
+                            if(str[i] == DELETE[i]){
+                                deleteNext =1;//duplicate
+                            }
+                            else
+                                deleteNext =0;
+                        }//end of check if duplicate
+                    
+                    if(deleteNext ==1){
+                        LCDClear();
+                        LCDWriteString("Removing Tags");
+                        _delay_ms(1000);
+                        for(int i=0; i<5; i++){
+                            write_eeprom_word(tag1[i], 0);
+                            write_eeprom_word(tag2[i], 0);
+                        }
+                        tagNumber =1;
+                        deleteNext =0;
+                        LCDClear();
+                        LCDWriteString("Tags Erased");
+                        _delay_ms(300);
+                        tagNumber =0;
+
+                    }
+                    deleteNext =0;
+                   // addNext =0;
+                }//end of if card found
+            }
+            loadTags();
+            byte = mfrc522_request(PICC_REQALL,str);
+        }//end of delete next
+        
         while(addNext == 1){
             byte = mfrc522_request(PICC_REQALL,str);
             LCDClear();
             LCDWriteString("Scan tag to ");
             LCDWriteStringXY(0, 1, "be added.");
             byte = mfrc522_request(PICC_REQALL,str);
+            
+            if(addNext ==1 && tagNumber >2)
+            {
+                addNext =0;
+                tagNumber =1;
+                LCDClear();
+                LCDWriteString("Full");
+                _delay_ms(1000);
+
+            }
             if(byte == CARD_FOUND)
             {
                 byte = mfrc522_get_card_serial(str);
@@ -253,16 +373,33 @@ int main(void)
                             //not likely to happen but it could
                         }
                     }//end of check if duplicate
+                    LCDClear();
+                    //LCDWriteString("whyyyyyy");
+                    _delay_ms(400);
                     
                     if(tagNumber ==1 && addNext ==1){
                         LCDClear();
-                        LCDWriteString("ADDING CARD");
+                        LCDWriteString("ADDING CARD 1");
                         _delay_ms(1000);
                         for(int i=0; i<5; i++){
                             write_eeprom_word(tag1[i], str[i]);
                         }
                         tagNumber++;
                         addNext =0;
+                        deleteNext =0;
+                        LCDClear();
+                    }
+                    
+                    else if(tagNumber ==2 && addNext ==1){
+                        LCDClear();
+                        LCDWriteString("ADDING CARD 2");
+                        _delay_ms(1000);
+                        for(int i=0; i<5; i++){
+                            write_eeprom_word(tag2[i], str[i]);
+                        }
+                        tagNumber++;
+                        addNext = 0;
+                        deleteNext =0;
                         LCDClear();
                     }
                     /* //find tag number
@@ -311,10 +448,10 @@ int main(void)
             
             for(int k=0;k<5 ;k++){ //loop through id arras
                 LCDWriteIntXY(0,1,str[k], -1);
-                if(str[k] == card2[k] || str[k] == card1[k] || str[k] == ram_tag1[k] || str[k] ==ram_tag2[k]) //this is where you are testing
+                if(str[k] == card2[k] || str[k] == card1[k] || str[k] == ram_tag1[k] || str[k] ==ram_tag2[k]) //tag compare
                 {
                     LCDWriteIntXY(0,1,str[k], -1);
-                    LCDWriteString("MATCH"); //jk i am testing
+                    LCDWriteString("MATCH");
                     _delay_ms(50);
                     LCDClear();
                     validCard = 1;
@@ -322,21 +459,28 @@ int main(void)
                 else if(str[k] == ADD[k]){
                     //nextTag read add
                     addNext = 1; //add the next tag
-                    break;
+                    
                 } //end of add
                 else if(str[k] == DELETE[k]){
                     deleteNext =1;
                 }
                 else{
                     validCard = -1;
+                    deleteNext = 0;
+                    addNext = 0;
                 }
-            } //end of for loop checking if valid card
+            } //end of for loop checking if what type of tag
             if(validCard == 1){
                 LCDClear();
                 _delay_ms(500);
                 LCDWriteString("SUCCESS");
+                validTag();
                 open();
                 validCard=5;
+                deleteNext =0;
+                _delay_ms(1000);
+                close();
+                
             } //end if test worked
             if(validCard == -1 && addNext !=1){
                 LCDClear();
