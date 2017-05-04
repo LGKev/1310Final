@@ -7,8 +7,8 @@
 
 
 void initIO(void) {
-    DDRC |= BV(2); //port c pin 2 output
-    DDRC |= BV(1); //port c pin 2 output
+    DDRC |= BV(2); //port c pin 2 output //GREEN
+    DDRC |= BV(1); //port c pin 1 output //RED
     DDRC ^= BV(0);
     PORTC ^= BV(0); //don't forget to set as input
 
@@ -20,15 +20,19 @@ int main(void) {
 	initIO();
 
 	while (1) {
+        
+        //green led
         PORTC |= BV(2);
         _delay_ms(30);
         PORTC ^= BV(2);
         _delay_ms(30);
         
-        PORTC |= BV(1);
-        _delay_ms(30);
-        PORTC ^= BV(1);
-        _delay_ms(30);
+        
+//        //red led
+//        PORTC |= BV(1);
+//        _delay_ms(30);
+//        PORTC ^= BV(1); //red
+//        _delay_ms(30);
         
     
         

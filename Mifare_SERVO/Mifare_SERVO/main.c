@@ -99,22 +99,21 @@ void initServo(void){
     PORTC = (BV(5));
     _delay_us(1000);
     PORTC   ^=BV(5);
-    _delay_us(19000); //remember that total period is 2ms or 2k micros and you need to do it this way because of standard 50hz servo
+    _delay_us(18999); //remember that total period is 2ms or 2k micros and you need to do it this way because of standard 50hz servo
     
 }
 
 void initLED(void){
-    DDRC = BV(ledG);
-    DDRC = BV(ledR); //output
+    DDRC |= BV(ledG);
+    DDRC |= BV(ledR); //output
 
     _delay_ms(300);
-    PORTC = BV(ledG);
+    PORTC|= BV(ledG);
     _delay_ms(200);
     PORTC ^= BV(ledG);
     
     _delay_ms(300);
-    PORTC = BV(ledR); //possibly needs an or |= BV(ledR);
-    _delay_ms(200);
+    PORTC |= BV(ledR);     _delay_ms(200);
     PORTC ^= BV(ledR);
     
     
@@ -135,7 +134,7 @@ unsigned int ram_tag[5]; //this is where we write the read tag to the stack will
 //to do int tagNumber)
 void addTag(int str[], int tagNumber){
     if(tagNumber ==1){
-        for(int i=1; i<=5; i++){
+        for(int i=1; i<5; i++){
             write_eeprom_word(tag1[i], str[i]);
             PORTC = BV(ledG);
             _delay_ms(100);
@@ -143,52 +142,45 @@ void addTag(int str[], int tagNumber){
         tagNumber++;
     }
     else if(tagNumber ==2){
-        for(int i=1; i<=5; i++){
+        for(int i=1; i<5; i++){
             write_eeprom_word(tag2[i], str[i]);
         }
         tagNumber++; //incriment so we can keep track if we have room or not
     }
 }
-/*
-void deleteTag(int str[]){
 
-    for(int i=0; i<=4; i++){
-        if(str[i] == DELETE[i]){
-            deleteNext =1;
-        }
-        else
-            deleteNext = 0;
-        }
-
-
-
-    for(int i=0; i<=4; i++){
-        if(str[i] != tag1[i] || str[i] != tag2[i]){
-            return; //not a tag in memory
-        }
+void validTag(int state){
+    //flash green led if valid
+    if(state == 1){
+        PORTC |= BV(ledG);
+        _delay_ms(300);
+        PORTC ^= BV(ledG);
+    }
+    else if(state ==-1){
+        PORTC |= BV(ledR);
+        _delay_ms(300);
+        PORTC ^= BV(ledR);
     }
     else
     {
-        //delete all tags;
-
-        for(int i=0; i<=4; i++){
-            write_eeprom_word(tag1[i], 0);
-          write_eeprom_word(tag2[i], 0);
-        }//end of delete for loop
+        PORTC ^= BV(ledG);
+        PORTC ^= BV(ledR);
     }
-    loadTags(); //to ensure new eeprom is loaded
-    
+
 }
 
-*/
 
 int open(void){
-    
+//    //initLED();
+//    DDRC =BV(ledG);
+    validTag(1);
+//    PORTC =BV(ledG);
+//    _delay_ms(1000);
     PORTC = (BV(5));
     _delay_us(2000);
     PORTC  ^=BV(5);
+   // validTag(0);
     _delay_us(18000);
-    
     return 1;
 }
 
@@ -205,11 +197,8 @@ int close(void){
 
 
 void initButton(void){
-    // uint8_t button = 3;
-    //uint8_t ledG = 2;
+
     DDRC ^= BV(button); //set as input
-    DDRC |= BV(ledG); //set output
-    
     PORTC ^= BV(button); // set low
 }
 
@@ -221,7 +210,6 @@ int buttonRead(void){
         open();
         _delay_ms(500);
         close();
-        _delay_ms(1000);
         LCDClear();
         return 1;
     }
@@ -235,23 +223,15 @@ void loadTags(void){
     }
 }
 
-void validTag(){
-    //flash green led if valid
-    PORTC |= BV(ledG);
-    _delay_ms(400);
-    PORTC ^= BV(ledG);
-    _delay_ms(400);
-    
-}
 
 
 
 int main(void)
 {
 
-    
 
-    initLED();
+  
+
     
     loadTags(); //load any tags stored in eeprom.
     initServo(); //make servo an output at pin 5
@@ -260,10 +240,14 @@ int main(void)
     uint8_t str[MAX_LEN];
     _delay_ms(50);
     LCDInit(LS_BLINK);
-    LCDWriteStringXY(2,0,"ECEN1310 RFID Tag Reader");
+    
+    LCDWriteStringXY(0,0,"ECEN1310 RFID");
+    LCDWriteStringXY(0,1, "Kevin Kuwata");
+      initLED();
+    
     
     spi_init(); //start communication for rfid
-    _delay_ms(1000);
+    _delay_ms(2000);
     LCDClear();
     
     open();  //for testing
@@ -285,7 +269,6 @@ int main(void)
     _delay_ms(30);
     
     while(1){
-        
        // initLED();
         
         loadTags();
@@ -466,17 +449,17 @@ int main(void)
                 }
                 else{
                     validCard = -1;
+                    validTag(-1);
                     deleteNext = 0;
                     addNext = 0;
                 }
             } //end of for loop checking if what type of tag
             if(validCard == 1){
                 LCDClear();
-                _delay_ms(500);
+                _delay_ms(100);
                 LCDWriteString("SUCCESS");
-                validTag();
                 open();
-                validCard=5;
+                //validCard=5;
                 deleteNext =0;
                 _delay_ms(1000);
                 close();
@@ -486,6 +469,7 @@ int main(void)
                 LCDClear();
                 _delay_ms(100);
                 LCDWriteString("not valid");
+                validTag(-1);
                 close();
             } //end of loop for checking valid card
             
@@ -504,3 +488,39 @@ int main(void)
     
     
 } //end of main
+
+
+
+
+/*
+ void deleteTag(int str[]){
+ 
+ for(int i=0; i<=4; i++){
+ if(str[i] == DELETE[i]){
+ deleteNext =1;
+ }
+ else
+ deleteNext = 0;
+ }
+ 
+ 
+ 
+ for(int i=0; i<=4; i++){
+ if(str[i] != tag1[i] || str[i] != tag2[i]){
+ return; //not a tag in memory
+ }
+ }
+ else
+ {
+ //delete all tags;
+ 
+ for(int i=0; i<=4; i++){
+ write_eeprom_word(tag1[i], 0);
+ write_eeprom_word(tag2[i], 0);
+ }//end of delete for loop
+ }
+ loadTags(); //to ensure new eeprom is loaded
+ 
+ }
+ 
+ */

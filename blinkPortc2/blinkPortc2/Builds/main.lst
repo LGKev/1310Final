@@ -62,24 +62,36 @@
  158 0000 0E94 0000 		call initIO
   21:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c **** 
   22:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c **** 	while (1) {
-  23:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         PORTC |= BV(2);
-  24:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
-  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         PORTC ^= BV(2);
- 160               	.LM7:
- 161 0004 24E0      		ldi r18,lo8(4)
+  23:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         
+  24:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         //green led
+  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         PORTC |= BV(2);
   26:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
-  27:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         
-  28:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         PORTC |= BV(1);
-  29:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
-  30:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         PORTC ^= BV(1);
+  27:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         PORTC ^= BV(2);
+ 160               	.LM7:
+ 161 0004 94E0      		ldi r25,lo8(4)
+  28:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
+  29:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         
+  30:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         
+  31:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c **** //        //red led
+  32:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c **** //        PORTC |= BV(1);
+  33:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c **** //        _delay_ms(30);
+  34:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c **** //        PORTC ^= BV(1); //red
+  35:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c **** //        _delay_ms(30);
+  36:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         
+  37:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****     
+  38:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         
+  39:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         while(bit_is_clear(PINC, 0)){
+  40:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****             PORTC |= BV(1);
+  41:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****             _delay_ms(400);
+  42:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****             PORTC ^= BV(1);
  163               	.LM8:
- 164 0006 92E0      		ldi r25,lo8(2)
+ 164 0006 22E0      		ldi r18,lo8(2)
  165               	.L5:
-  23:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
+  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
  167               	.LM9:
  168 0008 429A      		sbi 0x8,2
- 169               	.LBB14:
- 170               	.LBB15:
+ 169               	.LBB10:
+ 170               	.LBB11:
  172               	.Ltext1:
    1:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
    2:/usr/local/Cellar/avr-gcc/6.2.0/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
@@ -275,124 +287,85 @@
  178 0010 01F4      		brne 1b
  179 0012 00C0      		rjmp .
  180 0014 0000      		nop
- 181               	.LBE15:
- 182               	.LBE14:
+ 181               	.LBE11:
+ 182               	.LBE10:
  184               	.Ltext2:
-  25:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
+  27:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
  186               	.LM11:
  187 0016 88B1      		in r24,0x8
- 188 0018 8227      		eor r24,r18
+ 188 0018 8927      		eor r24,r25
  189 001a 88B9      		out 0x8,r24
- 190               	.LBB16:
- 191               	.LBB17:
+ 190               	.LBB12:
+ 191               	.LBB13:
  193               	.Ltext3:
  195               	.LM12:
  196 001c EFE5      		ldi r30,lo8(-5537)
  197 001e FAEE      		ldi r31,hi8(-5537)
  198 0020 3197      	1:	sbiw r30,1
  199 0022 01F4      		brne 1b
- 200 0024 00C0      		rjmp .
- 201 0026 0000      		nop
- 202               	.LBE17:
- 203               	.LBE16:
- 205               	.Ltext4:
-  28:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
- 207               	.LM13:
- 208 0028 419A      		sbi 0x8,1
- 209               	.LBB18:
- 210               	.LBB19:
- 212               	.Ltext5:
- 214               	.LM14:
- 215 002a EFE5      		ldi r30,lo8(-5537)
- 216 002c FAEE      		ldi r31,hi8(-5537)
- 217 002e 3197      	1:	sbiw r30,1
- 218 0030 01F4      		brne 1b
- 219 0032 00C0      		rjmp .
- 220 0034 0000      		nop
- 221               	.LBE19:
- 222               	.LBE18:
- 224               	.Ltext6:
- 226               	.LM15:
- 227 0036 88B1      		in r24,0x8
- 228 0038 8927      		eor r24,r25
- 229 003a 88B9      		out 0x8,r24
- 230               	.LBB20:
- 231               	.LBB21:
- 233               	.Ltext7:
- 235               	.LM16:
- 236 003c EFE5      		ldi r30,lo8(-5537)
- 237 003e FAEE      		ldi r31,hi8(-5537)
- 238 0040 3197      	1:	sbiw r30,1
- 239 0042 01F4      		brne 1b
- 240               	.L6:
- 241               	.LBE21:
- 242               	.LBE20:
- 243               	.LBB22:
- 244               	.LBB23:
- 245 0044 00C0      		rjmp .
- 246 0046 0000      		nop
- 247               	.LBE23:
- 248               	.LBE22:
- 250               	.Ltext8:
-  31:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         _delay_ms(30);
-  32:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         
-  33:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****     
-  34:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         
-  35:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****         while(bit_is_clear(PINC, 0)){
- 252               	.LM17:
- 253 0048 3099      		sbic 0x6,0
- 254 004a 00C0      		rjmp .L5
-  36:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****             PORTC |= BV(1);
- 256               	.LM18:
- 257 004c 419A      		sbi 0x8,1
- 258               	.LBB25:
- 259               	.LBB26:
- 261               	.Ltext9:
- 263               	.LM19:
- 264 004e FFEF      		ldi r31,lo8(639999)
- 265 0050 33EC      		ldi r19,hi8(639999)
- 266 0052 49E0      		ldi r20,hlo8(639999)
- 267 0054 F150      	1:	subi r31,1
- 268 0056 3040      		sbci r19,0
- 269 0058 4040      		sbci r20,0
- 270 005a 01F4      		brne 1b
- 271 005c 00C0      		rjmp .
- 272 005e 0000      		nop
- 273               	.LBE26:
- 274               	.LBE25:
- 276               	.Ltext10:
-  37:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****             _delay_ms(400);
-  38:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****             PORTC ^= BV(1);
- 278               	.LM20:
- 279 0060 88B1      		in r24,0x8
- 280 0062 8927      		eor r24,r25
- 281 0064 88B9      		out 0x8,r24
- 282               	.LBB27:
- 283               	.LBB24:
- 285               	.Ltext11:
- 287               	.LM21:
- 288 0066 8FEF      		ldi r24,lo8(639999)
- 289 0068 E3EC      		ldi r30,hi8(639999)
- 290 006a F9E0      		ldi r31,hlo8(639999)
- 291 006c 8150      	1:	subi r24,1
- 292 006e E040      		sbci r30,0
- 293 0070 F040      		sbci r31,0
- 294 0072 01F4      		brne 1b
- 295 0074 00C0      		rjmp .L6
- 296               	.LBE24:
- 297               	.LBE27:
- 299               	.Lscope2:
- 300               		.text
- 302               	.Letext0:
- 303               		.ident	"GCC: (GNU) 6.2.0"
+ 200               	.L6:
+ 201               	.LBE13:
+ 202               	.LBE12:
+ 203               	.LBB14:
+ 204               	.LBB15:
+ 205 0024 00C0      		rjmp .
+ 206 0026 0000      		nop
+ 207               	.LBE15:
+ 208               	.LBE14:
+ 210               	.Ltext4:
+  39:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****             PORTC |= BV(1);
+ 212               	.LM13:
+ 213 0028 3099      		sbic 0x6,0
+ 214 002a 00C0      		rjmp .L5
+  40:/Users/kevinKuwata1/Documents/xcode/ECEN1310Final/blinkPortc2/blinkPortc2/main.c ****             _delay_ms(400);
+ 216               	.LM14:
+ 217 002c 419A      		sbi 0x8,1
+ 218               	.LBB17:
+ 219               	.LBB18:
+ 221               	.Ltext5:
+ 223               	.LM15:
+ 224 002e FFEF      		ldi r31,lo8(639999)
+ 225 0030 33EC      		ldi r19,hi8(639999)
+ 226 0032 49E0      		ldi r20,hlo8(639999)
+ 227 0034 F150      	1:	subi r31,1
+ 228 0036 3040      		sbci r19,0
+ 229 0038 4040      		sbci r20,0
+ 230 003a 01F4      		brne 1b
+ 231 003c 00C0      		rjmp .
+ 232 003e 0000      		nop
+ 233               	.LBE18:
+ 234               	.LBE17:
+ 236               	.Ltext6:
+ 238               	.LM16:
+ 239 0040 88B1      		in r24,0x8
+ 240 0042 8227      		eor r24,r18
+ 241 0044 88B9      		out 0x8,r24
+ 242               	.LBB19:
+ 243               	.LBB16:
+ 245               	.Ltext7:
+ 247               	.LM17:
+ 248 0046 8FEF      		ldi r24,lo8(639999)
+ 249 0048 E3EC      		ldi r30,hi8(639999)
+ 250 004a F9E0      		ldi r31,hlo8(639999)
+ 251 004c 8150      	1:	subi r24,1
+ 252 004e E040      		sbci r30,0
+ 253 0050 F040      		sbci r31,0
+ 254 0052 01F4      		brne 1b
+ 255 0054 00C0      		rjmp .L6
+ 256               	.LBE16:
+ 257               	.LBE19:
+ 259               	.Lscope2:
+ 260               		.text
+ 262               	.Letext0:
+ 263               		.ident	"GCC: (GNU) 6.2.0"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7v2ol3.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7v2ol3.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7v2ol3.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7v2ol3.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7v2ol3.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7v2ol3.s:116    .text:0000000000000000 initIO
-/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc7v2ol3.s:148    .text.startup:0000000000000000 main
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc2G5Dew.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc2G5Dew.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc2G5Dew.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc2G5Dew.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc2G5Dew.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc2G5Dew.s:116    .text:0000000000000000 initIO
+/var/folders/lm/s_klhqwn77z639t7_2gx62rr0000gn/T//cc2G5Dew.s:148    .text.startup:0000000000000000 main
 
 NO UNDEFINED SYMBOLS

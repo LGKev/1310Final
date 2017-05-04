@@ -117,7 +117,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x0000000000000000      0x10e
+.text           0x0000000000000000       0xee
  *(.vectors)
  .vectors       0x0000000000000000       0x68 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/crtatmega328p.o
                 0x0000000000000000                __vectors
@@ -201,26 +201,26 @@ END GROUP
  .text          0x0000000000000094        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
                 0x0000000000000094                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x0000000000000094       0x76 Builds/main.o
+ .text.startup  0x0000000000000094       0x56 Builds/main.o
                 0x0000000000000094                main
  .text.libgcc.mul
-                0x000000000000010a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000ea        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.div
-                0x000000000000010a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
- .text.libgcc   0x000000000000010a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000ea        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x00000000000000ea        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.prologue
-                0x000000000000010a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000ea        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.builtins
-                0x000000000000010a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000ea        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.fmul
-                0x000000000000010a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000ea        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.fixed
-                0x000000000000010a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
-                0x000000000000010a                . = ALIGN (0x2)
+                0x00000000000000ea        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000ea                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000000000000010a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
-                0x000000000000010a                exit
-                0x000000000000010a                _exit
+ .fini9         0x00000000000000ea        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000ea                exit
+                0x00000000000000ea                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -239,11 +239,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000000000000010a        0x4 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+ .fini0         0x00000000000000ea        0x4 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  *(.fini0)
-                0x000000000000010e                _etext = .
+                0x00000000000000ee                _etext = .
 
-.data           0x0000000000800100        0x0 load address 0x000000000000010e
+.data           0x0000000000800100        0x0 load address 0x00000000000000ee
                 0x0000000000800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x0000000000800100        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/crtatmega328p.o
@@ -266,8 +266,8 @@ END GROUP
  *(.bss*)
  *(COMMON)
                 0x0000000000800100                PROVIDE (__bss_end, .)
-                0x000000000000010e                __data_load_start = LOADADDR (.data)
-                0x000000000000010e                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00000000000000ee                __data_load_start = LOADADDR (.data)
+                0x00000000000000ee                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0000000000800100        0x0
                 0x0000000000800100                PROVIDE (__noinit_start, .)
@@ -292,10 +292,10 @@ END GROUP
 .signature
  *(.signature*)
 
-.stab           0x0000000000000000      0x708
+.stab           0x0000000000000000      0x6a8
  *(.stab)
- .stab          0x0000000000000000      0x69c Builds/main.o
- .stab          0x000000000000069c       0x6c /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+ .stab          0x0000000000000000      0x63c Builds/main.o
+ .stab          0x000000000000063c       0x6c /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
                                          0x78 (size before relaxing)
 
 .stabstr        0x0000000000000000      0xe98

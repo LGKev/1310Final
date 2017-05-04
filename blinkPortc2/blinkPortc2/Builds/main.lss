@@ -3,25 +3,25 @@ Builds/main.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  0000010e  00000182  2**0
+  0 .data         00000000  00800100  000000ee  00000162  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000010e  00000000  00000000  00000074  2**1
+  1 .text         000000ee  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .stab         00000708  00000000  00000000  00000184  2**2
+  2 .stab         000006a8  00000000  00000000  00000164  2**2
                   CONTENTS, READONLY, DEBUGGING
-  3 .stabstr      00000e98  00000000  00000000  0000088c  2**0
+  3 .stabstr      00000e98  00000000  00000000  0000080c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .comment      00000011  00000000  00000000  00001724  2**0
+  4 .comment      00000011  00000000  00000000  000016a4  2**0
                   CONTENTS, READONLY
-  5 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00001738  2**2
+  5 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000016b8  2**2
                   CONTENTS, READONLY
-  6 .debug_info   000005f4  00000000  00000000  00001778  2**0
+  6 .debug_info   000005f4  00000000  00000000  000016f8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000005a2  00000000  00000000  00001d6c  2**0
+  7 .debug_abbrev 000005a2  00000000  00000000  00001cec  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000001d  00000000  00000000  0000230e  2**0
+  8 .debug_line   0000001d  00000000  00000000  0000228e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000208  00000000  00000000  0000232b  2**0
+  9 .debug_str    00000208  00000000  00000000  000022ab  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -62,7 +62,7 @@ Disassembly of section .text:
   70:	de bf       	out	0x3e, r29	; 62
   72:	cd bf       	out	0x3d, r28	; 61
   74:	0e 94 4a 00 	call	0x94	; 0x94 <main>
-  78:	0c 94 85 00 	jmp	0x10a	; 0x10a <_exit>
+  78:	0c 94 75 00 	jmp	0xea	; 0xea <_exit>
 
 0000007c <__bad_interrupt>:
   7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -96,23 +96,25 @@ void initIO(void) {
 int main(void) {
 	initIO();
   94:	0e 94 40 00 	call	0x80	; 0x80 <initIO>
-
 	while (1) {
+        
+        //green led
         PORTC |= BV(2);
         _delay_ms(30);
         PORTC ^= BV(2);
-  98:	24 e0       	ldi	r18, 0x04	; 4
-        _delay_ms(30);
+  98:	94 e0       	ldi	r25, 0x04	; 4
+    
         
-        PORTC |= BV(1);
-        _delay_ms(30);
-        PORTC ^= BV(1);
-  9a:	92 e0       	ldi	r25, 0x02	; 2
-
-int main(void) {
+        while(bit_is_clear(PINC, 0)){
+            PORTC |= BV(1);
+            _delay_ms(400);
+            PORTC ^= BV(1);
+  9a:	22 e0       	ldi	r18, 0x02	; 2
 	initIO();
 
 	while (1) {
+        
+        //green led
         PORTC |= BV(2);
   9c:	42 9a       	sbi	0x08, 2	; 8
 	#else
@@ -130,7 +132,7 @@ int main(void) {
         _delay_ms(30);
         PORTC ^= BV(2);
   aa:	88 b1       	in	r24, 0x08	; 8
-  ac:	82 27       	eor	r24, r18
+  ac:	89 27       	eor	r24, r25
   ae:	88 b9       	out	0x08, r24	; 8
   b0:	ef e5       	ldi	r30, 0x5F	; 95
   b2:	fa ee       	ldi	r31, 0xEA	; 234
@@ -138,61 +140,41 @@ int main(void) {
   b6:	f1 f7       	brne	.-4      	; 0xb4 <main+0x20>
   b8:	00 c0       	rjmp	.+0      	; 0xba <main+0x26>
   ba:	00 00       	nop
-        _delay_ms(30);
-        
-        PORTC |= BV(1);
-  bc:	41 9a       	sbi	0x08, 1	; 8
-  be:	ef e5       	ldi	r30, 0x5F	; 95
-  c0:	fa ee       	ldi	r31, 0xEA	; 234
-  c2:	31 97       	sbiw	r30, 0x01	; 1
-  c4:	f1 f7       	brne	.-4      	; 0xc2 <main+0x2e>
-  c6:	00 c0       	rjmp	.+0      	; 0xc8 <main+0x34>
-  c8:	00 00       	nop
-        _delay_ms(30);
-        PORTC ^= BV(1);
-  ca:	88 b1       	in	r24, 0x08	; 8
-  cc:	89 27       	eor	r24, r25
-  ce:	88 b9       	out	0x08, r24	; 8
-  d0:	ef e5       	ldi	r30, 0x5F	; 95
-  d2:	fa ee       	ldi	r31, 0xEA	; 234
-  d4:	31 97       	sbiw	r30, 0x01	; 1
-  d6:	f1 f7       	brne	.-4      	; 0xd4 <main+0x40>
-  d8:	00 c0       	rjmp	.+0      	; 0xda <main+0x46>
-  da:	00 00       	nop
-        _delay_ms(30);
+//        PORTC ^= BV(1); //red
+//        _delay_ms(30);
         
     
         
         while(bit_is_clear(PINC, 0)){
-  dc:	30 99       	sbic	0x06, 0	; 6
-  de:	de cf       	rjmp	.-68     	; 0x9c <main+0x8>
+  bc:	30 99       	sbic	0x06, 0	; 6
+  be:	ee cf       	rjmp	.-36     	; 0x9c <main+0x8>
             PORTC |= BV(1);
-  e0:	41 9a       	sbi	0x08, 1	; 8
-  e2:	ff ef       	ldi	r31, 0xFF	; 255
-  e4:	33 ec       	ldi	r19, 0xC3	; 195
-  e6:	49 e0       	ldi	r20, 0x09	; 9
-  e8:	f1 50       	subi	r31, 0x01	; 1
-  ea:	30 40       	sbci	r19, 0x00	; 0
-  ec:	40 40       	sbci	r20, 0x00	; 0
-  ee:	e1 f7       	brne	.-8      	; 0xe8 <main+0x54>
-  f0:	00 c0       	rjmp	.+0      	; 0xf2 <main+0x5e>
-  f2:	00 00       	nop
+  c0:	41 9a       	sbi	0x08, 1	; 8
+  c2:	ff ef       	ldi	r31, 0xFF	; 255
+  c4:	33 ec       	ldi	r19, 0xC3	; 195
+  c6:	49 e0       	ldi	r20, 0x09	; 9
+  c8:	f1 50       	subi	r31, 0x01	; 1
+  ca:	30 40       	sbci	r19, 0x00	; 0
+  cc:	40 40       	sbci	r20, 0x00	; 0
+  ce:	e1 f7       	brne	.-8      	; 0xc8 <main+0x34>
+  d0:	00 c0       	rjmp	.+0      	; 0xd2 <main+0x3e>
+  d2:	00 00       	nop
             _delay_ms(400);
             PORTC ^= BV(1);
-  f4:	88 b1       	in	r24, 0x08	; 8
-  f6:	89 27       	eor	r24, r25
-  f8:	88 b9       	out	0x08, r24	; 8
-  fa:	8f ef       	ldi	r24, 0xFF	; 255
-  fc:	e3 ec       	ldi	r30, 0xC3	; 195
-  fe:	f9 e0       	ldi	r31, 0x09	; 9
- 100:	81 50       	subi	r24, 0x01	; 1
- 102:	e0 40       	sbci	r30, 0x00	; 0
- 104:	f0 40       	sbci	r31, 0x00	; 0
- 106:	e1 f7       	brne	.-8      	; 0x100 <main+0x6c>
- 108:	e7 cf       	rjmp	.-50     	; 0xd8 <main+0x44>
+  d4:	88 b1       	in	r24, 0x08	; 8
+  d6:	82 27       	eor	r24, r18
+  d8:	88 b9       	out	0x08, r24	; 8
+  da:	8f ef       	ldi	r24, 0xFF	; 255
+  dc:	e3 ec       	ldi	r30, 0xC3	; 195
+  de:	f9 e0       	ldi	r31, 0x09	; 9
+  e0:	81 50       	subi	r24, 0x01	; 1
+  e2:	e0 40       	sbci	r30, 0x00	; 0
+  e4:	f0 40       	sbci	r31, 0x00	; 0
+  e6:	e1 f7       	brne	.-8      	; 0xe0 <main+0x4c>
+  e8:	e7 cf       	rjmp	.-50     	; 0xb8 <main+0x24>
 
-0000010a <_exit>:
- 10a:	f8 94       	cli
+000000ea <_exit>:
+  ea:	f8 94       	cli
 
-0000010c <__stop_program>:
- 10c:	ff cf       	rjmp	.-2      	; 0x10c <__stop_program>
+000000ec <__stop_program>:
+  ec:	ff cf       	rjmp	.-2      	; 0xec <__stop_program>
