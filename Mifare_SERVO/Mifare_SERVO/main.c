@@ -196,7 +196,6 @@ void validTag(int state ){
 int open(void){
     
    validTag(1);
-//    PORTC |= BV(ledG);
     PORTC = (BV(5));
     _delay_us(2000);
     PORTC  ^=BV(5);
@@ -212,7 +211,7 @@ int close(void){
     _delay_us(1000);
     PORTC   ^=BV(5);
     _delay_us(19000);
-    validTag(0);
+//    validTag(0);
 
     return 1;
 }
@@ -256,10 +255,6 @@ void loadTags(void){
 
 int main(void)
 {
-    
-    
-    
-    
     loadTags(); //load any tags stored in eeprom.
     initServo(); //make servo an output at pin 5
     
@@ -288,7 +283,6 @@ int main(void)
     //init reader
     mfrc522_init();
     
-    _delay_ms(1500);
     LCDClear();
     
     int addNext = 0;
@@ -364,10 +358,12 @@ int main(void)
         
         while(addNext == 1){
             PORTC |= BV(ledG);
-            PORTC |= BV(ledR);
-            _delay_ms(50);
             PORTC ^= BV(ledR);
+
+            _delay_ms(50);
             PORTC ^= BV(ledG);
+            PORTC |= BV(ledR);
+
             _delay_ms(50);
 
 
@@ -384,7 +380,8 @@ int main(void)
                 addNext =0;
                 tagNumber =3;
                 LCDClear();
-                LCDWriteString("Full");
+                LCDWriteStringXY(0,0, "EEPROM Tag Slots");
+                LCDWriteStringXY(0,1,"Full");
                 _delay_ms(1000);
                 
             }
@@ -396,15 +393,17 @@ int main(void)
                     for(int i=0; i<=4; i++){
                         if(str[i] == ram_tag1[i] || str[i]== ram_tag2[i]){
                             LCDClear();
-                            LCDWriteString("CARD ALREADY");
-                            LCDWriteString("IN EEPROM!");
+                            LCDWriteStringXY(0,0, "Error 3:");
+                            LCDWriteString("Tag already");
+                            LCDWriteStringXY(0,1, "stored");
                             _delay_ms(2000);
                             addNext =0;//duplicate
+                            i =5;
                             //not likely to happen but it could
                         }
-                        else if(str[i] == DELETE[i] || str[i] == ADD[i]){
+                        if(str[i] == ADD[i]){
                                 LCDClear();
-                                LCDWriteString("Error:");
+                                LCDWriteString("Error 1:");
                             LCDWriteStringXY(0,1,"attempting to");
                             _delay_ms(1000);
                             LCDWriteStringXY(0,1,"add a protected");
@@ -414,11 +413,25 @@ int main(void)
                             addNext =0;//duplicate
                             i=5;//key in preventing loop from executing multiple times.
                                 //not likely to happen but it could
-                            
-
+                        }
+//                        if(str[i] == DELETE[i]){
+//                            LCDClear();
+//                            LCDWriteString("Error 2:");
+//                            LCDWriteStringXY(0,1,"attempting to");
+//                            _delay_ms(1000);
+//                            LCDWriteStringXY(0,1,"add a protected");
+//                            _delay_ms(1000);
+//                            LCDWriteStringXY(0,1,"RFID tag.       ")
+//                            _delay_ms(1000);
+//                            addNext =0;//duplicate
+//                            i=5;//key in preventing loop from executing multiple times.
+//                            //not likely to happen but it could
+//                        }
+                        else{
+                            LCDClear();
+                            //addNext =1;
                         }
                     }//end of check if duplicate
-                    LCDClear();
                     if(tagNumber ==1 && addNext ==1){
                         LCDClear();
                         LCDWriteString("ADDING CARD 1");
@@ -444,23 +457,6 @@ int main(void)
                         deleteNext =0;
                         LCDClear();
                     }
-                    /* //find tag number
-                     //This is what I would add if I had more time. Its difficult to find how to delete tags
-                     for(int i=0; i<=4; i++){
-                     LCDClear();
-                     LCDWriteString("REMOVING CARD");
-                     _delay_ms(1000);
-                     if(str[i] == ram_tag1[i])
-                     {
-                     eeprom_write_word(tag1[i], 0);
-                     }
-                     else if(str[i] == ram_tag1[i]){
-                     reeprom_write_word(tag2[i], 0);
-                     }
-                     }//end of looking for which tag to delete
-                     
-                     */
-                    
                 }//end of if card found
             }
             loadTags();
@@ -530,7 +526,6 @@ int main(void)
                 //close();
                 validTag(-1);
                 _delay_ms(100);
-                validTag(-1);
             } //end of loop for checking valid card
             
             if(card_display_Delay ==1){
