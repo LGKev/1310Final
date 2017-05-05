@@ -188,14 +188,15 @@ void validTag(int state ){
     }
     else
     {
-        PORTC &= ~BV(ledG);
+     //   PORTC &= ~BV(ledG);
     }
     
 }
 
 int open(void){
     
-  //  validTag(1);
+   validTag(1);
+//    PORTC |= BV(ledG);
     PORTC = (BV(5));
     _delay_us(2000);
     PORTC  ^=BV(5);
@@ -266,7 +267,14 @@ int main(void)
     uint8_t str[MAX_LEN];
     _delay_ms(50);
     LCDInit(LS_BLINK);
-    LCDWriteStringXY(2,0,"ECEN1310 RFID Tag Reader");
+    LCDWriteStringXY(0,0,"ECEN1310 RFID");
+    LCDWriteStringXY(0,1, "Kevin Kuwata");
+
+    _delay_ms(2000);
+    LCDClear();
+    LCDWriteStringXY(0,0, "Tag Reader");
+    LCDWriteStringXY(0,1, "Kevin Kuwata");
+
     initLED(); //very strange init of led needs to be after load tags and servo!
 
     
@@ -355,6 +363,16 @@ int main(void)
         }//end of delete next
         
         while(addNext == 1){
+            PORTC |= BV(ledG);
+            PORTC |= BV(ledR);
+            _delay_ms(50);
+            PORTC ^= BV(ledR);
+            PORTC ^= BV(ledG);
+            _delay_ms(50);
+
+
+            
+            
             byte = mfrc522_request(PICC_REQALL,str);
             LCDClear();
             LCDWriteString("Scan tag to ");
@@ -364,7 +382,7 @@ int main(void)
             if(addNext ==1 && tagNumber >2)
             {
                 addNext =0;
-                tagNumber =1;
+                tagNumber =3;
                 LCDClear();
                 LCDWriteString("Full");
                 _delay_ms(1000);
@@ -377,14 +395,30 @@ int main(void)
                 {
                     for(int i=0; i<=4; i++){
                         if(str[i] == ram_tag1[i] || str[i]== ram_tag2[i]){
+                            LCDClear();
+                            LCDWriteString("CARD ALREADY");
+                            LCDWriteString("IN EEPROM!");
+                            _delay_ms(2000);
                             addNext =0;//duplicate
                             //not likely to happen but it could
                         }
+                        else if(str[i] == DELETE[i] || str[i] == ADD[i]){
+                                LCDClear();
+                                LCDWriteString("Error:");
+                            LCDWriteStringXY(0,1,"attempting to");
+                            _delay_ms(1000);
+                            LCDWriteStringXY(0,1,"add a protected");
+                            _delay_ms(1000);
+                            LCDWriteStringXY(0,1,"RFID tag.       ")
+                            _delay_ms(1000);
+                            addNext =0;//duplicate
+                            i=5;//key in preventing loop from executing multiple times.
+                                //not likely to happen but it could
+                            
+
+                        }
                     }//end of check if duplicate
                     LCDClear();
-                    //LCDWriteString("whyyyyyy");
-                    _delay_ms(400);
-                    
                     if(tagNumber ==1 && addNext ==1){
                         LCDClear();
                         LCDWriteString("ADDING CARD 1");
@@ -392,7 +426,7 @@ int main(void)
                         for(int i=0; i<5; i++){
                             write_eeprom_word(tag1[i], str[i]);
                         }
-                        tagNumber++;
+                        tagNumber=2;
                         addNext =0;
                         deleteNext =0;
                         LCDClear();
@@ -405,7 +439,7 @@ int main(void)
                         for(int i=0; i<5; i++){
                             write_eeprom_word(tag2[i], str[i]);
                         }
-                        tagNumber++;
+                        tagNumber=3;
                         addNext = 0;
                         deleteNext =0;
                         LCDClear();
@@ -482,7 +516,6 @@ int main(void)
                 LCDClear();
                 _delay_ms(500);
                 LCDWriteString("Access Granted");
-                validTag(1);
                 open();
                 validCard=5;
                 deleteNext =0;
