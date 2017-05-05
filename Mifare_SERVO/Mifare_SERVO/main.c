@@ -70,9 +70,9 @@ uint8_t card1[5] = {174,68,45,91,156}; //only 5 elements!!!
 uint8_t card2[5] = {64, 238 , 223, 135, 246};
 uint8_t ADD[5] ={ 121, 241, 181 ,59, 6}; //add card used to add other cards.
 uint8_t DELETE[5] = {145, 146  ,5 ,107 ,109}; //delete card used to delete the next card scanned.
-uint8_t tag1[5];
+uint8_t tag1[5]; //eprom tag and needs to be loadded to ram
 uint8_t tag2[5];
-uint8_t ram_tag1[5];
+uint8_t ram_tag1[5];//tag1 is tag stored in ram that is read from the eeprom
 uint8_t ram_tag2[5];
 uint8_t ram_tag3[5];
 uint8_t ram_tag4[5];
@@ -134,7 +134,7 @@ unsigned int ram_tag[5]; //this is where we write the read tag to the stack will
 //to do int tagNumber)
 void addTag(int str[], int tagNumber){
     if(tagNumber ==1){
-        for(int i=1; i<=5; i++){
+        for(int i=1; i<=4; i++){
             write_eeprom_word(tag1[i], str[i]);
             PORTC = BV(ledG);
             _delay_ms(100);
@@ -142,7 +142,7 @@ void addTag(int str[], int tagNumber){
         tagNumber++;
     }
     else if(tagNumber ==2){
-        for(int i=1; i<=5; i++){
+        for(int i=1; i<=4; i++){
             write_eeprom_word(tag2[i], str[i]);
         }
         tagNumber++; //incriment so we can keep track if we have room or not
@@ -339,6 +339,11 @@ int main(void)
                         for(int i=0; i<5; i++){
                             write_eeprom_word(tag1[i], 0);
                             write_eeprom_word(tag2[i], 0);
+                            PORTC |= BV(ledR);
+                            _delay_ms(50);
+                            PORTC ^= BV(ledR);
+                            _delay_ms(50);
+
                         }
                         tagNumber =1;
                         deleteNext =0;
@@ -394,7 +399,7 @@ int main(void)
                         if(str[i] == ram_tag1[i] || str[i]== ram_tag2[i]){
                             LCDClear();
                             LCDWriteStringXY(0,0, "Error 3:");
-                            LCDWriteString("Tag already");
+                            LCDWriteString("Already ");
                             LCDWriteStringXY(0,1, "stored");
                             _delay_ms(2000);
                             addNext =0;//duplicate
@@ -438,6 +443,11 @@ int main(void)
                         _delay_ms(1000);
                         for(int i=0; i<5; i++){
                             write_eeprom_word(tag1[i], str[i]);
+                            PORTC |=BV(ledG);
+                            _delay_ms(50);
+                            PORTC ^= BV(ledG);
+                            _delay_ms(50);
+                            
                         }
                         tagNumber=2;
                         addNext =0;
@@ -445,12 +455,16 @@ int main(void)
                         LCDClear();
                     }
                     
-                    else if(tagNumber ==2 && addNext ==1){
+                    if(tagNumber ==2 && addNext ==1){
                         LCDClear();
                         LCDWriteString("ADDING CARD 2");
                         _delay_ms(1000);
                         for(int i=0; i<5; i++){
                             write_eeprom_word(tag2[i], str[i]);
+                            PORTC |=BV(ledG);
+                            _delay_ms(50);
+                            PORTC ^= BV(ledG);
+                            _delay_ms(50);
                         }
                         tagNumber=3;
                         addNext = 0;
@@ -483,7 +497,7 @@ int main(void)
             }
             _delay_ms(100);//test
             LCDClear();//test
-            
+
             for(int k=0;k<5 ;k++){ //loop through id arras
                 LCDWriteIntXY(0,1,str[k], -1);
                 if(str[k] == card2[k] || str[k] == card1[k] || str[k] == ram_tag1[k] || str[k] ==ram_tag2[k]) //tag compare
