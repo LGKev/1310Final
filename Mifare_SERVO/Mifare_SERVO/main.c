@@ -179,7 +179,7 @@ void validTag(int state ){
     if(state == 1){
         PORTC |= BV(ledG);
         _delay_ms(300);
-        PORTC ^= BV(ledG);
+        //PORTC ^= BV(ledG);
     }
     else if(state ==-1){
         PORTC |= BV(ledR);
@@ -188,20 +188,18 @@ void validTag(int state ){
     }
     else
     {
-        PORTC ^= BV(ledG);
-        //PORTC ^= BV(ledR);
+        PORTC &= ~BV(ledG);
     }
     
 }
 
 int open(void){
     
-    validTag(1);
+  //  validTag(1);
     PORTC = (BV(5));
     _delay_us(2000);
     PORTC  ^=BV(5);
     _delay_us(18000);
-    validTag(0);
     
     return 1;
 }
@@ -213,6 +211,8 @@ int close(void){
     _delay_us(1000);
     PORTC   ^=BV(5);
     _delay_us(19000);
+    validTag(0);
+
     return 1;
 }
 /* === === === END SERVO SETUP === === === */
@@ -343,7 +343,7 @@ int main(void)
                         LCDClear();
                         LCDWriteString("Tags Erased");
                         _delay_ms(300);
-                        tagNumber =0;
+                        tagNumber =1;
                         
                     }
                     deleteNext =0;
@@ -481,7 +481,8 @@ int main(void)
             if(validCard == 1){
                 LCDClear();
                 _delay_ms(500);
-                LCDWriteString("SUCCESS");
+                LCDWriteString("Access Granted");
+                validTag(1);
                 open();
                 validCard=5;
                 deleteNext =0;
@@ -492,8 +493,11 @@ int main(void)
             if(validCard == -1 && addNext !=1){
                 LCDClear();
                 _delay_ms(100);
-                LCDWriteString("not valid");
-                close();
+                LCDWriteString("Access Denied");
+                //close();
+                validTag(-1);
+                _delay_ms(100);
+                validTag(-1);
             } //end of loop for checking valid card
             
             if(card_display_Delay ==1){

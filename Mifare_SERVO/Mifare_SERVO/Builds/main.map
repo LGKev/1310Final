@@ -147,7 +147,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x0000000000000000      0xfc8
+.text           0x0000000000000000      0xfe8
  *(.vectors)
  .vectors       0x0000000000000000       0x68 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/crtatmega328p.o
                 0x0000000000000000                __vectors
@@ -238,128 +238,128 @@ END GROUP
                 0x00000000000001f6                LCDWriteInt
                 0x000000000000028e                LCDGotoXY
                 0x00000000000002b2                LCDHexDumpXY
- .text          0x00000000000002ee      0x2ca Builds/main.o
-                0x00000000000002ee                initServo
-                0x0000000000000314                initLED
-                0x0000000000000376                addQ
-                0x00000000000003a0                addTag
-                0x000000000000043c                validTag
-                0x000000000000047e                open
-                0x00000000000004b6                close
-                0x00000000000004de                initButton
-                0x00000000000004f0                buttonRead
-                0x0000000000000556                loadTags
- .text          0x00000000000005b8      0x332 Builds/mfrc522.o
-                0x00000000000005b8                mfrc522_write
-                0x00000000000005d2                mfrc522_read
-                0x00000000000005e8                mfrc522_reset
-                0x00000000000005f0                mfrc522_init
-                0x000000000000063c                mfrc522_to_card
-                0x0000000000000814                mfrc522_request
-                0x000000000000087a                mfrc522_get_card_serial
- .text          0x00000000000008ea       0x16 Builds/spi.o
-                0x00000000000008ea                spi_init
-                0x00000000000008f4                spi_transmit
- .text          0x0000000000000900        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
- .text          0x0000000000000900        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
- .text          0x0000000000000900        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
- .text          0x0000000000000900        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
- .text          0x0000000000000900        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
- .text          0x0000000000000900        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_word.o)
- .text          0x0000000000000900        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_word.o)
- .text          0x0000000000000900        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_block.o)
- .text          0x0000000000000900        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_byte.o)
-                0x0000000000000900                . = ALIGN (0x2)
+ .text          0x00000000000002ee      0x2c6 Builds/main.o
+                0x000000000000030c                initServo
+                0x0000000000000332                initLED
+                0x0000000000000394                addQ
+                0x00000000000003be                addTag
+                0x000000000000045a                validTag
+                0x0000000000000482                open
+                0x00000000000004aa                close
+                0x00000000000004da                initButton
+                0x00000000000004ec                buttonRead
+                0x0000000000000552                loadTags
+ .text          0x00000000000005b4      0x332 Builds/mfrc522.o
+                0x00000000000005b4                mfrc522_write
+                0x00000000000005ce                mfrc522_read
+                0x00000000000005e4                mfrc522_reset
+                0x00000000000005ec                mfrc522_init
+                0x0000000000000638                mfrc522_to_card
+                0x0000000000000810                mfrc522_request
+                0x0000000000000876                mfrc522_get_card_serial
+ .text          0x00000000000008e6       0x16 Builds/spi.o
+                0x00000000000008e6                spi_init
+                0x00000000000008f0                spi_transmit
+ .text          0x00000000000008fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+ .text          0x00000000000008fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+ .text          0x00000000000008fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+ .text          0x00000000000008fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+ .text          0x00000000000008fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+ .text          0x00000000000008fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_word.o)
+ .text          0x00000000000008fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_word.o)
+ .text          0x00000000000008fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_block.o)
+ .text          0x00000000000008fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_byte.o)
+                0x00000000000008fc                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x0000000000000900      0x622 Builds/main.o
-                0x0000000000000900                main
+ .text.startup  0x00000000000008fc      0x646 Builds/main.o
+                0x00000000000008fc                main
  .text.libgcc.mul
-                0x0000000000000f22        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+                0x0000000000000f42        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
  .text.libgcc.div
-                0x0000000000000f22       0x28 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
-                0x0000000000000f22                __divmodhi4
-                0x0000000000000f22                _div
- .text.libgcc   0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+                0x0000000000000f42       0x28 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+                0x0000000000000f42                __divmodhi4
+                0x0000000000000f42                _div
+ .text.libgcc   0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
  .text.libgcc.prologue
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
  .text.libgcc.builtins
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
  .text.libgcc.fmul
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
  .text.libgcc.fixed
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
  .text.libgcc.mul
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.div
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
- .text.libgcc   0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.prologue
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.builtins
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.fmul
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.fixed
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.mul
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.div
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
- .text.libgcc   0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.prologue
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.builtins
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.fmul
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.fixed
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.mul
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.div
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc   0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.prologue
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.builtins
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.fmul
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.fixed
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.mul
-                0x0000000000000f4a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+                0x0000000000000f6a        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
  .text.libgcc.div
-                0x0000000000000f4a       0x28 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
-                0x0000000000000f4a                __udivmodhi4
- .text.libgcc   0x0000000000000f72        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+                0x0000000000000f6a       0x28 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+                0x0000000000000f6a                __udivmodhi4
+ .text.libgcc   0x0000000000000f92        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
  .text.libgcc.prologue
-                0x0000000000000f72        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+                0x0000000000000f92        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
  .text.libgcc.builtins
-                0x0000000000000f72        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+                0x0000000000000f92        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
  .text.libgcc.fmul
-                0x0000000000000f72        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+                0x0000000000000f92        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
  .text.libgcc.fixed
-                0x0000000000000f72        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+                0x0000000000000f92        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
  .text.avr-libc
-                0x0000000000000f72        0xc /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_word.o)
-                0x0000000000000f72                eeprom_read_word
+                0x0000000000000f92        0xc /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_word.o)
+                0x0000000000000f92                eeprom_read_word
  .text.avr-libc
-                0x0000000000000f7e        0xa /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_word.o)
-                0x0000000000000f7e                eeprom_write_word
+                0x0000000000000f9e        0xa /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_word.o)
+                0x0000000000000f9e                eeprom_write_word
  .text.avr-libc
-                0x0000000000000f88       0x20 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_block.o)
-                0x0000000000000f88                eeprom_read_block
-                0x0000000000000f8c                eeprom_read_blraw
+                0x0000000000000fa8       0x20 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_block.o)
+                0x0000000000000fa8                eeprom_read_block
+                0x0000000000000fac                eeprom_read_blraw
  .text.avr-libc
-                0x0000000000000fa8       0x1c /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_byte.o)
-                0x0000000000000fa8                eeprom_write_byte
-                0x0000000000000faa                eeprom_write_r18
-                0x0000000000000fc4                . = ALIGN (0x2)
+                0x0000000000000fc8       0x1c /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_byte.o)
+                0x0000000000000fc8                eeprom_write_byte
+                0x0000000000000fca                eeprom_write_r18
+                0x0000000000000fe4                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000000000000fc4        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
-                0x0000000000000fc4                exit
-                0x0000000000000fc4                _exit
+ .fini9         0x0000000000000fe4        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000fe4                exit
+                0x0000000000000fe4                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -378,11 +378,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000000000000fc4        0x4 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+ .fini0         0x0000000000000fe4        0x4 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
  *(.fini0)
-                0x0000000000000fc8                _etext = .
+                0x0000000000000fe8                _etext = .
 
-.data           0x0000000000800100       0xf0 load address 0x0000000000000fc8
+.data           0x0000000000800100       0xfc load address 0x0000000000000fe8
                 0x0000000000800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x0000000000800100        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/crtatmega328p.o
@@ -410,52 +410,53 @@ END GROUP
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x000000000080011a       0xd6 Builds/main.o
+                0x000000000080011a       0xe1 Builds/main.o
  *(.gnu.linkonce.d*)
-                0x00000000008001f0                . = ALIGN (0x2)
-                0x00000000008001f0                _edata = .
-                0x00000000008001f0                PROVIDE (__data_end, .)
+                0x00000000008001fc                . = ALIGN (0x2)
+ *fill*         0x00000000008001fb        0x1 
+                0x00000000008001fc                _edata = .
+                0x00000000008001fc                PROVIDE (__data_end, .)
 
-.bss            0x00000000008001f0       0x2e
-                0x00000000008001f0                PROVIDE (__bss_start, .)
+.bss            0x00000000008001fc       0x2e
+                0x00000000008001fc                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x00000000008001f0        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/crtatmega328p.o
- .bss           0x00000000008001f0        0x0 Builds/lcd.o
- .bss           0x00000000008001f0        0x6 Builds/main.o
-                0x00000000008001f0                removeTag2
-                0x00000000008001f2                removeTag1
-                0x00000000008001f4                deleteNext
- .bss           0x00000000008001f6        0x0 Builds/mfrc522.o
- .bss           0x00000000008001f6        0x0 Builds/spi.o
- .bss           0x00000000008001f6        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
- .bss           0x00000000008001f6        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
- .bss           0x00000000008001f6        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
- .bss           0x00000000008001f6        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
- .bss           0x00000000008001f6        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
- .bss           0x00000000008001f6        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_word.o)
- .bss           0x00000000008001f6        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_word.o)
- .bss           0x00000000008001f6        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_block.o)
- .bss           0x00000000008001f6        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_byte.o)
+ .bss           0x00000000008001fc        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/crtatmega328p.o
+ .bss           0x00000000008001fc        0x0 Builds/lcd.o
+ .bss           0x00000000008001fc        0x6 Builds/main.o
+                0x00000000008001fc                removeTag2
+                0x00000000008001fe                removeTag1
+                0x0000000000800200                deleteNext
+ .bss           0x0000000000800202        0x0 Builds/mfrc522.o
+ .bss           0x0000000000800202        0x0 Builds/spi.o
+ .bss           0x0000000000800202        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+ .bss           0x0000000000800202        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+ .bss           0x0000000000800202        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+ .bss           0x0000000000800202        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+ .bss           0x0000000000800202        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+ .bss           0x0000000000800202        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_word.o)
+ .bss           0x0000000000800202        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_word.o)
+ .bss           0x0000000000800202        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eerd_block.o)
+ .bss           0x0000000000800202        0x0 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/../../../../avr/lib/avr5/libatmega328p.a(eewr_byte.o)
  *(.bss*)
  *(COMMON)
- COMMON         0x00000000008001f6       0x28 Builds/main.o
-                0x00000000008001f6                ram_tag1
-                0x00000000008001fb                tag1
-                0x0000000000800200                ram_tag3
-                0x0000000000800205                tag2
-                0x000000000080020a                ram_tag2
-                0x000000000080020f                ram_tag
-                0x0000000000800219                ram_tag4
-                0x000000000080021e                PROVIDE (__bss_end, .)
-                0x0000000000000fc8                __data_load_start = LOADADDR (.data)
-                0x00000000000010b8                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x0000000000800202       0x28 Builds/main.o
+                0x0000000000800202                ram_tag1
+                0x0000000000800207                tag1
+                0x000000000080020c                ram_tag3
+                0x0000000000800211                tag2
+                0x0000000000800216                ram_tag2
+                0x000000000080021b                ram_tag
+                0x0000000000800225                ram_tag4
+                0x000000000080022a                PROVIDE (__bss_end, .)
+                0x0000000000000fe8                __data_load_start = LOADADDR (.data)
+                0x00000000000010e4                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x000000000080021e        0x0
-                0x000000000080021e                PROVIDE (__noinit_start, .)
+.noinit         0x000000000080022a        0x0
+                0x000000000080022a                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x000000000080021e                PROVIDE (__noinit_end, .)
-                0x000000000080021e                _end = .
-                0x000000000080021e                PROVIDE (__heap_start, .)
+                0x000000000080022a                PROVIDE (__noinit_end, .)
+                0x000000000080022a                _end = .
+                0x000000000080022a                PROVIDE (__heap_start, .)
 
 .eeprom         0x0000000000810000        0xc
  *(.eeprom*)
@@ -476,29 +477,29 @@ END GROUP
 .signature
  *(.signature*)
 
-.stab           0x0000000000000000     0x2fd0
+.stab           0x0000000000000000     0x3000
  *(.stab)
  .stab          0x0000000000000000      0xc48 Builds/lcd.o
- .stab          0x0000000000000c48     0x129c Builds/main.o
-                                       0x1464 (size before relaxing)
- .stab          0x0000000000001ee4      0x90c Builds/mfrc522.o
+ .stab          0x0000000000000c48     0x12cc Builds/main.o
+                                       0x1494 (size before relaxing)
+ .stab          0x0000000000001f14      0x90c Builds/mfrc522.o
                                         0xad4 (size before relaxing)
- .stab          0x00000000000027f0      0x354 Builds/spi.o
+ .stab          0x0000000000002820      0x354 Builds/spi.o
                                         0x534 (size before relaxing)
- .stab          0x0000000000002b44      0x138 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
+ .stab          0x0000000000002b74      0x138 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_divmodhi4.o)
                                         0x144 (size before relaxing)
- .stab          0x0000000000002c7c       0x6c /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
+ .stab          0x0000000000002cac       0x6c /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_exit.o)
                                          0x78 (size before relaxing)
- .stab          0x0000000000002ce8       0xd8 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
+ .stab          0x0000000000002d18       0xd8 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_copy_data.o)
                                          0xe4 (size before relaxing)
- .stab          0x0000000000002dc0       0xb4 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
+ .stab          0x0000000000002df0       0xb4 /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_clear_bss.o)
                                          0xc0 (size before relaxing)
- .stab          0x0000000000002e74      0x15c /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
+ .stab          0x0000000000002ea4      0x15c /usr/local/Cellar/avr-gcc/6.2.0/lib/gcc/avr/6.2.0/avr5/libgcc.a(_udivmodhi4.o)
                                         0x168 (size before relaxing)
 
-.stabstr        0x0000000000000000     0x1504
+.stabstr        0x0000000000000000     0x151c
  *(.stabstr)
- .stabstr       0x0000000000000000     0x1504 Builds/lcd.o
+ .stabstr       0x0000000000000000     0x151c Builds/lcd.o
 
 .stab.excl
  *(.stab.excl)
