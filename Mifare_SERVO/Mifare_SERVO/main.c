@@ -104,17 +104,16 @@ void initServo(void){
 }
 
 void initLED(void){
-    DDRC = BV(ledG);
-    DDRC = BV(ledR); //output
+    DDRC |= BV(ledG);
+    DDRC |= BV(ledR); //output
     
     _delay_ms(300);
-    PORTC = BV(ledG);
+    PORTC|= BV(ledG);
     _delay_ms(200);
     PORTC ^= BV(ledG);
     
     _delay_ms(300);
-    PORTC = BV(ledR); //possibly needs an or |= BV(ledR);
-    _delay_ms(200);
+    PORTC |= BV(ledR);     _delay_ms(200);
     PORTC ^= BV(ledR);
     
     
@@ -176,12 +175,33 @@ void addTag(int str[], int tagNumber){
  }
  */
 
+void validTag(int state ){
+    if(state == 1){
+        PORTC |= BV(ledG);
+        _delay_ms(300);
+        PORTC ^= BV(ledG);
+    }
+    else if(state ==-1){
+        PORTC |= BV(ledR);
+        _delay_ms(300);
+        PORTC ^= BV(ledR);
+    }
+    else
+    {
+        PORTC ^= BV(ledG);
+        //PORTC ^= BV(ledR);
+    }
+    
+}
+
 int open(void){
     
+    validTag(1);
     PORTC = (BV(5));
     _delay_us(2000);
     PORTC  ^=BV(5);
     _delay_us(18000);
+    validTag(0);
     
     return 1;
 }
@@ -229,14 +249,7 @@ void loadTags(void){
     }
 }
 
-void validTag(){
-    //flash green led if valid
-    PORTC |= BV(ledG);
-    _delay_ms(400);
-    PORTC ^= BV(ledG);
-    _delay_ms(400);
-    
-}
+
 
 
 
@@ -245,7 +258,6 @@ int main(void)
     
     
     
-    initLED();
     
     loadTags(); //load any tags stored in eeprom.
     initServo(); //make servo an output at pin 5
@@ -255,6 +267,8 @@ int main(void)
     _delay_ms(50);
     LCDInit(LS_BLINK);
     LCDWriteStringXY(2,0,"ECEN1310 RFID Tag Reader");
+    initLED(); //very strange init of led needs to be after load tags and servo!
+
     
     spi_init(); //start communication for rfid
     _delay_ms(1000);
@@ -468,7 +482,6 @@ int main(void)
                 LCDClear();
                 _delay_ms(500);
                 LCDWriteString("SUCCESS");
-                validTag();
                 open();
                 validCard=5;
                 deleteNext =0;
